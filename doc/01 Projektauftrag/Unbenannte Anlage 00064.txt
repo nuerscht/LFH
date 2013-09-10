@@ -1,0 +1,86 @@
+
+> 
+> 
+> Folgende einzelne Prozesse des E-Shops könnten wir uns vorstellen:
+> 
+> 
+> 
+> 
+> 
+> *         Bank (Paypal-Anbindung) --> gesetzliche Vorschriften der Länder (EU-Recht)
+> 
+> 
+> 
+> *         Logistik
+> 
+> 
+> 
+> *         Web Frontend
+> 
+> 
+> 
+> *         Angebote/Produktpräsentation/intelligente Produktvorschläge
+> 
+> 
+> 
+> *         …
+> 
+> 
+> 
+> 
+> 
+> Wenn Ihnen noch weitere Prozesse einfallen, können Sie diese gern mit Rücksprache hinzufügen und auch entwickeln.
+> 
+> 
+> 
+> Sie müssen sich nicht alle Prozesse vornehmen, Sie können sich das oder die Module heraussuchen, welche Sie mit einem realistischen Workload für
+> Ihre Gruppe einschätzen und umsetzen können.
+> 
+> 
+> 
+> Eine Anpassung an unsere Organisationsstruktur wäre ebenso wünschenswert. Wir stellen zum Einen wöchentlich unseren Teilprojektstatus vor. Dazu
+> benutzen wir eine Powerpoint-Vorlage, in der der Status mithilfe von Ampeln dargestellt wird. Ebenso wird die Arbeitszeit in einer entsprechenden
+> Vorlage erfasst und wöchentlich von unserem Controller ausgewertet. Beide Vorlagen finden Sie als Beispiel anbei. Wir bitten darum, dass auch Sie
+> eventuell dieses Vorgehen während der „Projektphase“ etablieren. Ebenso finden Sie das von uns erstellte Pflichtenheft als kleine Orientierung im
+> Anhang.
+> 
+> 
+> 
+> Leider können wir für Sie keine Entwicklungsumgebung bereitstellen, so dass das bei Ihnen in der Schweiz separat passieren muss.
+> 
+> 
+> Das soll es nun erst einmal gewesen sein. Sollten Sie Fragen oder Anregungen haben, sind wir gern für Sie da!
+> 
+> Wir freuen uns sehr auf eine Zusammenarbeit!
+> 
+> 
+> 
+> Mit freundlichen Grüßen,
+> 
+> Marco Claes und Ramona Heimberg
+> 
+> 
+> ***********************
+> Guten Tag Herr Winiger
+> 
+> Mangels mehrheitsfähig Ideen innerhalb des Teams,
+> haben wir uns dazu entschlossen mit der FH-Leibnitz zu kooperieren.
+> 
+> Grüsse
+> Jonas Alder
+> 
+> 
+> 
+> 
+> 2013/6/15  <alexander.winiger@ffhs.ch>
+>> Guten Abend / Morgen Herr Adler,
+>> 
+>> Ich erlaube mir Sie anzufragen, ob Sie in Ihrer Gruppe schon entschieden haben, ob Sie ein eigenes Produkt bauen oder doch mit den Kollegen der
+> Leibnitz-FH kooperieren wollen.
+>> 
+>> Für eine Antwort, so Ihr Entscheid denn spruchreif ist, bin ich Ihnen dankbar.
+>> 
+>> Beste Grüsse,
+>> Alexander Winiger
+> <untitled-[1.1.2]><image002.jpg><Teilprojektstatusberichte_Beispiele.pptx><Pflichtenheft_MAVE_CI_final.pdf><Arbeitszeiterfassung_Beispiel.xlsx>
+
