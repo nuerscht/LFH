@@ -1,0 +1,1 @@
+It's only to force git to create a folder, because empty directories will be ignored!
