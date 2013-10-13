@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_XP3KsDMwEeOUYeheld5Z-Q" name="Eshomo Model">
+  <ownedComment xmi:id="_AUYOEDQ7EeOr04fKLDanew" annotatedElement="_XP3KsDMwEeOUYeheld5Z-Q _xbUVgDMxEeOUYeheld5Z-Q">
+    <body>Can have billing and shippingaddress</body>
+  </ownedComment>
   <packagedElement xmi:type="uml:Class" xmi:id="_NmqmYDMxEeOUYeheld5Z-Q" name="Product">
     <ownedAttribute xmi:id="_JUO6gDN2EeOUYeheld5Z-Q" name="productId" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
@@ -105,10 +108,15 @@
     <generalization xmi:id="_uESvUDMxEeOUYeheld5Z-Q" general="_TkKfkDMxEeOUYeheld5Z-Q"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_xbUVgDMxEeOUYeheld5Z-Q" name="Cart">
-    <ownedAttribute xmi:id="_dVYX0DN6EeOUYeheld5Z-Q" name="orderId">
+    <ownedAttribute xmi:id="_dVYX0DN6EeOUYeheld5Z-Q" name="orderId" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_dVYX0TN6EeOUYeheld5Z-Q"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_dVYX0jN6EeOUYeheld5Z-Q" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_dsS1MDQ5EeOr04fKLDanew" name="status" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_dslwIDQ5EeOr04fKLDanew" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_dslwITQ5EeOr04fKLDanew" value="1"/>
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_1lJ4sDMxEeOUYeheld5Z-Q" name="Address">
@@ -177,6 +185,9 @@
     </ownedEnd>
   </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_fnVroDMzEeOUYeheld5Z-Q" name="adresssToCarts" memberEnd="_fnfcoDMzEeOUYeheld5Z-Q _fnfcozMzEeOUYeheld5Z-Q" navigableOwnedEnd="_fnfcoDMzEeOUYeheld5Z-Q _fnfcozMzEeOUYeheld5Z-Q">
+    <ownedComment xmi:id="__AyfQDQ6EeOr04fKLDanew" annotatedElement="_fnVroDMzEeOUYeheld5Z-Q">
+      <body>Empty comment</body>
+    </ownedComment>
     <ownedEnd xmi:id="_fnfcoDMzEeOUYeheld5Z-Q" name="addresses" type="_1lJ4sDMxEeOUYeheld5Z-Q" association="_fnVroDMzEeOUYeheld5Z-Q">
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fnfcoTMzEeOUYeheld5Z-Q" value="1"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fnfcojMzEeOUYeheld5Z-Q" value="2"/>
@@ -238,6 +249,9 @@
     </ownedLiteral>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_VTSbkDN4EeOUYeheld5Z-Q" name="ProductProperty">
+    <ownedComment xmi:id="_qGCuMDQ7EeOr04fKLDanew" annotatedElement="_VTSbkDN4EeOUYeheld5Z-Q">
+      <body>A product can have additional properties as size etc.. this is a generic solution</body>
+    </ownedComment>
     <ownedAttribute xmi:id="_eI8NoDN4EeOUYeheld5Z-Q" name="propertyName" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eI8NoTN4EeOUYeheld5Z-Q"/>
@@ -257,6 +271,33 @@
     <ownedEnd xmi:id="_5AsTMjN4EeOUYeheld5Z-Q" name="products" type="_NmqmYDMxEeOUYeheld5Z-Q" association="_5AiiMDN4EeOUYeheld5Z-Q">
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5AsTMzN4EeOUYeheld5Z-Q" value="1"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5AsTNDN4EeOUYeheld5Z-Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_vPGkoDQ5EeOr04fKLDanew" name="Position">
+    <ownedAttribute xmi:id="_9fvYsDQ5EeOr04fKLDanew" name="article">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_9fvYsTQ5EeOr04fKLDanew" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_9fvYsjQ5EeOr04fKLDanew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_GeCwcDQ6EeOr04fKLDanew" name="amount">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#float"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_GeL6YDQ6EeOr04fKLDanew" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_GeL6YTQ6EeOr04fKLDanew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_S_EBADQ6EeOr04fKLDanew" name="discount">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#float"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_S_EBATQ6EeOr04fKLDanew"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_S_EBAjQ6EeOr04fKLDanew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_sIzFkDQ6EeOr04fKLDanew" name="positionsToCarts" memberEnd="_sIzFkTQ6EeOr04fKLDanew _sIzFlDQ6EeOr04fKLDanew" navigableOwnedEnd="_sIzFlDQ6EeOr04fKLDanew">
+    <ownedEnd xmi:id="_sIzFkTQ6EeOr04fKLDanew" name="positions" type="_vPGkoDQ5EeOr04fKLDanew" aggregation="composite" association="_sIzFkDQ6EeOr04fKLDanew">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sIzFkjQ6EeOr04fKLDanew" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sIzFkzQ6EeOr04fKLDanew" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_sIzFlDQ6EeOr04fKLDanew" name="carts" type="_xbUVgDMxEeOUYeheld5Z-Q" association="_sIzFkDQ6EeOr04fKLDanew">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sIzFlTQ6EeOr04fKLDanew" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sIzFljQ6EeOr04fKLDanew" value="1"/>
     </ownedEnd>
   </packagedElement>
 </uml:Model>
