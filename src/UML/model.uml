@@ -274,17 +274,17 @@
     </ownedEnd>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_vPGkoDQ5EeOr04fKLDanew" name="Position">
-    <ownedAttribute xmi:id="_9fvYsDQ5EeOr04fKLDanew" name="article">
+    <ownedAttribute xmi:id="_9fvYsDQ5EeOr04fKLDanew" name="article" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_9fvYsTQ5EeOr04fKLDanew" value="1"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_9fvYsjQ5EeOr04fKLDanew" value="1"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_GeCwcDQ6EeOr04fKLDanew" name="amount">
+    <ownedAttribute xmi:id="_GeCwcDQ6EeOr04fKLDanew" name="amount" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#float"/>
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_GeL6YDQ6EeOr04fKLDanew" value="1"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_GeL6YTQ6EeOr04fKLDanew" value="1"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_S_EBADQ6EeOr04fKLDanew" name="discount">
+    <ownedAttribute xmi:id="_S_EBADQ6EeOr04fKLDanew" name="discount" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#float"/>
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_S_EBATQ6EeOr04fKLDanew"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_S_EBAjQ6EeOr04fKLDanew" value="1"/>
