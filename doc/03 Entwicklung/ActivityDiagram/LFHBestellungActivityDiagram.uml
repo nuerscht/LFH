@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_cWOxADwXEeO4z_rjdmGZCg" name="NewModel">
+  <packagedElement xmi:type="uml:Activity" xmi:id="_fRu40DwXEeO4z_rjdmGZCg" name="Bestellung" node="_yJGncDwXEeO4z_rjdmGZCg _81obkDwXEeO4z_rjdmGZCg _nf1GMDwYEeO4z_rjdmGZCg _NEAdsDzTEeOUr8BazLDlpA _T-JlUDzTEeOUr8BazLDlpA _U3luwDzTEeOUr8BazLDlpA _Yo4ZoDzUEeOUr8BazLDlpA _SSl7EDzWEeOUr8BazLDlpA">
+    <edge xmi:type="uml:ControlFlow" xmi:id="_iCnloDzTEeOUr8BazLDlpA" name="Artikel zum Warenkorb hinzufügen_To_Decision_1" source="_yJGncDwXEeO4z_rjdmGZCg" target="_T-JlUDzTEeOUr8BazLDlpA">
+      <guard xmi:type="uml:LiteralBoolean" xmi:id="_iCozwDzTEeOUr8BazLDlpA" name="Artikel zum Warenkorb hinzufügen_To_Decision_1_guard" value="true"/>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_iCozwTzTEeOUr8BazLDlpA" name="Artikel zum Warenkorb hinzufügen_To_Decision_1_weight"/>
+    </edge>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_jY1KoDzTEeOUr8BazLDlpA" name="Decision_1_To_Merge_1" source="_T-JlUDzTEeOUr8BazLDlpA" target="_U3luwDzTEeOUr8BazLDlpA">
+      <ownedComment xmi:id="__kwN0DzTEeOUr8BazLDlpA" annotatedElement="_jY1KoDzTEeOUr8BazLDlpA">
+        <body xsi:nil="true"/>
+      </ownedComment>
+      <guard xmi:type="uml:OpaqueExpression" xmi:id="_yX9KcDzVEeOUr8BazLDlpA" name="Decision_1_To_Merge_1_guard">
+        <body>Weitere Artikel</body>
+      </guard>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_jY1xsTzTEeOUr8BazLDlpA" name="Decision_1_To_Merge_1_weight"/>
+    </edge>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_lbN5IDzTEeOUr8BazLDlpA" name="Initial_1_To_Merge_1" source="_NEAdsDzTEeOUr8BazLDlpA" target="_U3luwDzTEeOUr8BazLDlpA">
+      <guard xmi:type="uml:LiteralBoolean" xmi:id="_lbOgMDzTEeOUr8BazLDlpA" name="Initial_1_To_Merge_1_guard" value="true"/>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_lbPHQDzTEeOUr8BazLDlpA" name="Initial_1_To_Merge_1_weight"/>
+    </edge>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_mTmSoDzTEeOUr8BazLDlpA" name="Merge_1_To_Artikel zum Warenkorb hinzufügen" source="_U3luwDzTEeOUr8BazLDlpA" target="_yJGncDwXEeO4z_rjdmGZCg">
+      <guard xmi:type="uml:LiteralBoolean" xmi:id="_mTmSoTzTEeOUr8BazLDlpA" name="Merge_1_To_Artikel zum Warenkorb hinzufügen_guard" value="true"/>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_mTm5sDzTEeOUr8BazLDlpA" name="Merge_1_To_Artikel zum Warenkorb hinzufügen_weight"/>
+    </edge>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_olA7oDzTEeOUr8BazLDlpA" name="Decision_1_To_Zahlungsart auswählen" source="_T-JlUDzTEeOUr8BazLDlpA" target="_81obkDwXEeO4z_rjdmGZCg">
+      <guard xmi:type="uml:OpaqueExpression" xmi:id="_11iroDzVEeOUr8BazLDlpA" name="Decision_1_To_Zahlungsart auswählen_guard">
+        <body>Alle Artikel</body>
+      </guard>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_olBisTzTEeOUr8BazLDlpA" name="Decision_1_To_Zahlungsart auswählen_weight"/>
+    </edge>
+    <edge xmi:type="uml:ObjectFlow" xmi:id="_iwx2sDzUEeOUr8BazLDlpA" name="Output_0_To_DataStore_1_ObjectFlow" target="_Yo4ZoDzUEeOUr8BazLDlpA"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_7rFYIDzUEeOUr8BazLDlpA" name="Fork_1_To_ActivityFinal_1" target="_nf1GMDwYEeO4z_rjdmGZCg">
+      <guard xmi:type="uml:LiteralBoolean" xmi:id="_7rF_MDzUEeOUr8BazLDlpA" name="Fork_1_To_ActivityFinal_1_guard" value="true"/>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_7rF_MTzUEeOUr8BazLDlpA" name="Fork_1_To_ActivityFinal_1_weight"/>
+    </edge>
+    <edge xmi:type="uml:ObjectFlow" xmi:id="_QP64sDzWEeOUr8BazLDlpA" name="Bestellung_To_Bestellungen_ObjectFlow" source="_ORaaEDzVEeOUr8BazLDlpA" target="_Yo4ZoDzUEeOUr8BazLDlpA"/>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_WvouIDzWEeOUr8BazLDlpA" name="Zahlungsart auswählen_To_Bestellung bestätigen" source="_81obkDwXEeO4z_rjdmGZCg" target="_SSl7EDzWEeOUr8BazLDlpA">
+      <guard xmi:type="uml:LiteralBoolean" xmi:id="_WvpVMDzWEeOUr8BazLDlpA" name="Zahlungsart auswählen_To_Bestellung bestätigen_guard" value="true"/>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_Wvp8QDzWEeOUr8BazLDlpA" name="Zahlungsart auswählen_To_Bestellung bestätigen_weight"/>
+    </edge>
+    <edge xmi:type="uml:ControlFlow" xmi:id="_X7GbsDzWEeOUr8BazLDlpA" name="Bestellung bestätigen_To_ActivityFinal_1" source="_SSl7EDzWEeOUr8BazLDlpA" target="_nf1GMDwYEeO4z_rjdmGZCg">
+      <guard xmi:type="uml:LiteralBoolean" xmi:id="_X7HCwDzWEeOUr8BazLDlpA" name="Bestellung bestätigen_To_ActivityFinal_1_guard" value="true"/>
+      <weight xmi:type="uml:LiteralInteger" xmi:id="_X7HCwTzWEeOUr8BazLDlpA" name="Bestellung bestätigen_To_ActivityFinal_1_weight"/>
+    </edge>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_yJGncDwXEeO4z_rjdmGZCg" name="Artikel zum Warenkorb hinzufügen" outgoing="_iCnloDzTEeOUr8BazLDlpA" incoming="_mTmSoDzTEeOUr8BazLDlpA" isLocallyReentrant="true"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_81obkDwXEeO4z_rjdmGZCg" name="Zahlungsart auswählen" outgoing="_WvouIDzWEeOUr8BazLDlpA" incoming="_olA7oDzTEeOUr8BazLDlpA">
+      <outputValue xmi:id="_ORaaEDzVEeOUr8BazLDlpA" name="Bestellung" outgoing="_QP64sDzWEeOUr8BazLDlpA"/>
+    </node>
+    <node xmi:type="uml:ActivityFinalNode" xmi:id="_nf1GMDwYEeO4z_rjdmGZCg" name="ActivityFinal_1" incoming="_7rFYIDzUEeOUr8BazLDlpA _X7GbsDzWEeOUr8BazLDlpA"/>
+    <node xmi:type="uml:InitialNode" xmi:id="_NEAdsDzTEeOUr8BazLDlpA" name="Initial_1" outgoing="_lbN5IDzTEeOUr8BazLDlpA"/>
+    <node xmi:type="uml:DecisionNode" xmi:id="_T-JlUDzTEeOUr8BazLDlpA" name="Decision_1" outgoing="_jY1KoDzTEeOUr8BazLDlpA _olA7oDzTEeOUr8BazLDlpA" incoming="_iCnloDzTEeOUr8BazLDlpA"/>
+    <node xmi:type="uml:MergeNode" xmi:id="_U3luwDzTEeOUr8BazLDlpA" name="Merge_1" outgoing="_mTmSoDzTEeOUr8BazLDlpA" incoming="_jY1KoDzTEeOUr8BazLDlpA _lbN5IDzTEeOUr8BazLDlpA"/>
+    <node xmi:type="uml:DataStoreNode" xmi:id="_Yo4ZoDzUEeOUr8BazLDlpA" name="Bestellungen" incoming="_iwx2sDzUEeOUr8BazLDlpA _QP64sDzWEeOUr8BazLDlpA"/>
+    <node xmi:type="uml:OpaqueAction" xmi:id="_SSl7EDzWEeOUr8BazLDlpA" name="Bestellung bestätigen" outgoing="_X7GbsDzWEeOUr8BazLDlpA" incoming="_WvouIDzWEeOUr8BazLDlpA"/>
+  </packagedElement>
+</uml:Model>
