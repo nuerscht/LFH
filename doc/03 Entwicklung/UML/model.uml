@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_XP3KsDMwEeOUYeheld5Z-Q" name="Eshomo Model">
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_XP3KsDMwEeOUYeheld5Z-Q" name="Eshomo Model">
   <ownedComment xmi:id="_AUYOEDQ7EeOr04fKLDanew" annotatedElement="_XP3KsDMwEeOUYeheld5Z-Q _xbUVgDMxEeOUYeheld5Z-Q">
     <body>Can have billing and shippingaddress</body>
   </ownedComment>
@@ -44,26 +44,8 @@
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_BrClETM1EeOUYeheld5Z-Q" value="5"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_BrClEjM1EeOUYeheld5Z-Q" value="*"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_ulh3UDM1EeOUYeheld5Z-Q" name="name" visibility="private">
-      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ulrBQDM1EeOUYeheld5Z-Q" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ulrBQTM1EeOUYeheld5Z-Q" value="*"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_b-i4oDM2EeOUYeheld5Z-Q" name="firstName" visibility="private">
-      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_b-sCkDM2EeOUYeheld5Z-Q" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_b-sCkTM2EeOUYeheld5Z-Q" value="*"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_7ZauoDM3EeOUYeheld5Z-Q" name="displayName" visibility="private">
-      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7ZauoTM3EeOUYeheld5Z-Q" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7ZauojM3EeOUYeheld5Z-Q" value="*"/>
-      <defaultValue xmi:type="uml:LiteralString" xmi:id="_FG-ZEDM4EeOUYeheld5Z-Q">
-        <value xsi:nil="true"/>
-      </defaultValue>
-    </ownedAttribute>
     <ownedAttribute xmi:id="_O79rwDM5EeOUYeheld5Z-Q" name="isActive" visibility="private">
-      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/XMLPrimitiveTypes.library.uml#Boolean"/>
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_O8G1sDM5EeOUYeheld5Z-Q" value="1"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_O8G1sTM5EeOUYeheld5Z-Q" value="1"/>
     </ownedAttribute>
@@ -71,6 +53,12 @@
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FMZ-8DN1EeOUYeheld5Z-Q" value="1"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FMZ-8TN1EeOUYeheld5Z-Q" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_1fDKAEz2EeOXyrllVGRtYw" name="name" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/XMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_5fSFQEz2EeOXyrllVGRtYw" name="givenName">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/XMLPrimitiveTypes.library.uml#String"/>
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_WvkEkDMxEeOUYeheld5Z-Q" name="Customer">
@@ -102,9 +90,6 @@
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_iUqfcDMxEeOUYeheld5Z-Q" name="Administrator">
-    <ownedComment xmi:id="_yr8rYDM7EeOUYeheld5Z-Q" annotatedElement="_iUqfcDMxEeOUYeheld5Z-Q">
-      <body>Maybe not necessary, instead use a field isAdmin and move all fields from Customer to User.</body>
-    </ownedComment>
     <generalization xmi:id="_uESvUDMxEeOUYeheld5Z-Q" general="_TkKfkDMxEeOUYeheld5Z-Q"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_xbUVgDMxEeOUYeheld5Z-Q" name="Cart">
@@ -125,12 +110,12 @@
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LqtKATNzEeOUYeheld5Z-Q"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Lq27ADNzEeOUYeheld5Z-Q" value="*"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_dgITcDNzEeOUYeheld5Z-Q" name="postCode" visibility="private">
+    <ownedAttribute xmi:id="_dgITcDNzEeOUYeheld5Z-Q" name="zip" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_dgRdYDNzEeOUYeheld5Z-Q" value="1"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_dgRdYTNzEeOUYeheld5Z-Q" value="1"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_l-Y5MDNzEeOUYeheld5Z-Q" name="city" visibility="private">
+    <ownedAttribute xmi:id="_l-Y5MDNzEeOUYeheld5Z-Q" name="place" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_l-Y5MTNzEeOUYeheld5Z-Q"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_l-Y5MjNzEeOUYeheld5Z-Q" value="*"/>
@@ -144,12 +129,30 @@
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_22RU8TN2EeOUYeheld5Z-Q"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_22RU8jN2EeOUYeheld5Z-Q" value="*"/>
     </ownedAttribute>
+    <ownedAttribute xmi:id="_Vqzf0Ez3EeOXyrllVGRtYw" name="phone">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/XMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_bBWtwEz3EeOXyrllVGRtYw" name="mobile">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/XMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_d8qoUEz3EeOXyrllVGRtYw" name="fax">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/XMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_hF_wwEz3EeOXyrllVGRtYw" name="pobox">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/XMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_l1saEEz3EeOXyrllVGRtYw" name="status">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+    </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="__i-MsDMxEeOUYeheld5Z-Q" name="Tag">
     <ownedAttribute xmi:id="_SZBKMDN1EeOUYeheld5Z-Q" name="name" visibility="private">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_SZBKMTN1EeOUYeheld5Z-Q"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_SZBKMjN1EeOUYeheld5Z-Q" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_KjEL0Ez2EeOXyrllVGRtYw" name="description" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/XMLPrimitiveTypes.library.uml#String"/>
     </ownedAttribute>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_Dy6-8DMyEeOUYeheld5Z-Q" name="Rating">
