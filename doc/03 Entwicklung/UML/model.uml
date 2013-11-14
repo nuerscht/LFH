@@ -305,4 +305,22 @@
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5tjooU00EeOMhfjoMUCdhA" value="1"/>
     </ownedEnd>
   </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_lm0cgE03EeOyk9PocT1fyA" name="Attribute">
+    <ownedAttribute xmi:id="_qvNSoE03EeOyk9PocT1fyA" name="id" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_tre2gE03EeOyk9PocT1fyA" name="value" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/XMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_yP410E03EeOyk9PocT1fyA" name="productsToAttributes" memberEnd="_yP410U03EeOyk9PocT1fyA _yP5c4k03EeOyk9PocT1fyA" navigableOwnedEnd="_yP410U03EeOyk9PocT1fyA _yP5c4k03EeOyk9PocT1fyA">
+    <ownedEnd xmi:id="_yP410U03EeOyk9PocT1fyA" name="products" type="_NmqmYDMxEeOUYeheld5Z-Q" association="_yP410E03EeOyk9PocT1fyA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_yP5c4E03EeOyk9PocT1fyA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_yP5c4U03EeOyk9PocT1fyA" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_yP5c4k03EeOyk9PocT1fyA" name="attributes" type="_lm0cgE03EeOyk9PocT1fyA" isOrdered="true" isReadOnly="true" association="_yP410E03EeOyk9PocT1fyA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_yP6D8E03EeOyk9PocT1fyA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_yP6D8U03EeOyk9PocT1fyA" value="*"/>
+    </ownedEnd>
+  </packagedElement>
 </uml:Model>
