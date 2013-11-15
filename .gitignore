@@ -1,6 +1,13 @@
 *.class
-
+*.classpath
 # Package Files #
 *.jar
 *.war
 *.ear
+
+# Play folders #
+logs
+project/project
+project/target
+target
+tmp
