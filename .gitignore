@@ -15,3 +15,5 @@ target
 tmp
 dist
 .cache
+.settings/org.scala-ide.play2.prefs
+.settings/org.scala-ide.sdt.core.prefs
