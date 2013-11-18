@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.annotation.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -77,5 +78,29 @@ public class Cart extends Model {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    /**
+     * Fetches a new open Cart from the database if one exists.
+     * If no open Cart has been found it creates a new one.
+     *
+     * @param user The current logged in user.
+     * @return
+     */
+    public static Cart fetchOrCreateOpenCart(User user) {
+        Cart cart = Ebean.find(Cart.class)
+                .where()
+                .eq("user_id", user.getId())
+                .eq("status_id", CartStatus.OPEN)
+                .findUnique();
+
+        if (cart == null) {
+            cart = new Cart();
+            cart.setUser(user);
+            cart.setStatus(CartStatus.find.byId(CartStatus.OPEN)); // it's okay if this throws when status not found
+            cart.save();
+        }
+
+        return cart;
     }
 }
