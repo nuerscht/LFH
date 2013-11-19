@@ -1,0 +1,37 @@
+Von:	sandro.dallo@students.ffhs.ch
+An:	sf@live.de
+Cc:	Ramona Heimberg; Marco Claes
+Betreff:	AW: Schnittstellen für den E-Shop
+
+Hallo Sebastian
+
+Danke für Deine Info. In dem Fall haben wir das Schnittstellen Dokument fehl interpretiert, ist ja halb so 
+schlimm.  Wir werden dies in das Change Management aufnehmen und dann auch gleich genehmigen, 
+sofern dies auch im Sinne der Projektleitung der LFH ist.
+Sind wir in diesem Fall frei in der Wahl der Testdaten für Produkte, Kunden und Bestellungen? 
+
+Danke und Gruss
+Sandro Dallo
+
+Von: Sebastian Fritsche [mailto:sf@live.de]  
+Gesendet: Dienstag, 19. November 2013 12:53 
+An: sandro.dallo@students.ffhs.ch 
+Betreff: Schnittstellen für den E-Shop
+
+
+Hallo Sandro,
+
+Marco hatte mir ausgerichtet, dass Ihr uns um Testdaten gebeten habt. Aktuell ist uns nicht ganz 
+klar, was genau Ihr benötigt. So wie wir die Schnittstelle definiert haben, wollen wir ja lediglich 
+Daten aus eurem System auslesen und keine Übertragen. Wie genau wir die Informationen 
+benötigen und wie wir uns vorstellen diese abzurufen ist von uns ja bereits definiert worden. Das 
+Service.pdf enthält hier ja sogar konkrete Beispiele wie der Aufbau der von euch zu liefernden 
+xml-Datei seien soll.
+
+Bitte lass mich doch wissen, welche Punkte noch unklar sind und wie wir euch helfen können.
+
+Anbei schicke ich Euch noch einmal die Service.pdf mit allen wichtigen Informationen.
+
+Gruß
+
+Sebastian Fritsche
