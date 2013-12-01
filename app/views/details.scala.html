@@ -1,15 +1,49 @@
-@(product: Product)
+@(product: Product, ratingForm: Form[controllers.Application.Rating])
 
+@import helper._
+@import helper.twitterBootstrap._
 
-    <header>
-        <hgroup>
-            <h1>Product Details</h1>
-            <h2>All the products</h2>
-        </hgroup>
-    </header>
+@main("Welcome to the LFH Shop") {
+	@if(ratingForm.hasGlobalErrors) {
+    	<div class="error">
+        	@ratingForm.globalError.message
+    	</div>
+	}else{
+		<div class="error">
+        	No Error!
+    	</div>
+	}
 
-    <ul> 
-		<li>@product.getTitle()</li>
-		<li>@product.getPrice()</li>
-	</ul>
+    <div class="products">
+			<span>@product.getTitle()<span>
+			<span>@product.getPrice()<span>
+    </div>
+    
+    
+    
+    @form(routes.Application.submitRating(product.getId)) {
+   		<fieldset>
+            <legend>General information</legend>
+            
+            @inputText(
+                ratingForm("rating"), 
+                '_label -> "Rating"
+            )
+            
+            @inputText(
+                ratingForm("comment"), 
+                '_label -> "Comment"
+            )
+            
+        </fieldset>
+
+        <div class="actions">
+            <input type="submit" class="btn primary" value="Rate">
+            <a href="@routes.Application.productDetails(product.getId)" class="btn">Cancel</a>
+        </div>
+        
+    }
+}
+
+    
 

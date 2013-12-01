@@ -1,16 +1,13 @@
 @(products: List[Product])
 
-
-    <header>
-        <hgroup>
-            <h1>Product Overview</h1>
-            <h2>All the products</h2>
-        </hgroup>
-    </header>
-
-    <ul> 
-	@for(product <- products) {
-  		<li>@product.getTitle()</li>
-	} 
-	</ul>
+@main("Welcome to the LFH Shop") {
+    <div class="products">
+		@for(product <- products) {
+  		    <div class="product">
+            	<img src="http://placehold.it/100x100" class="img-thumbnail" alt="Product image">
+            	@product.getTitle()
+        	</div>
+		} 
+    </div>
+}
 

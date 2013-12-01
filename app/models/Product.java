@@ -127,9 +127,9 @@ public class Product extends Model {
      *
      * @param page Page to display
      * @param pageSize Number of products per page
-     * @param sortBy Computer property used for sorting
+     * @param sortBy Product property used for sorting
      * @param order Sort order (either or asc or desc)
-     * @param filter Filter applied on the name column
+     * @param filter Filter applied on the products
      */
     public static Page<Product> page(int page, int pageSize, String sortBy, String order, String filter) {
         return 

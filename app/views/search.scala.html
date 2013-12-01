@@ -1,16 +1,12 @@
 @(currentPage: com.avaje.ebean.Page[Product])
 
-
-    <header>
-        <hgroup>
-            <h1>Product Search</h1>
-            <h2>Found products</h2>
-        </hgroup>
-    </header>
-
-    <ul> 
-	@for(product <- currentPage.getList) {
-  		<li>@product.getTitle()</li>
-	} 
-	</ul>
-
+@main("Welcome to the LFH Shop") {
+    <div class="products">
+		@for(product <- currentPage.getList) {
+  		    <div class="product">
+            	<img src="http://placehold.it/100x100" class="img-thumbnail" alt="Product image">
+            	@product.getTitle()
+        	</div>
+		} 
+    </div>
+}
