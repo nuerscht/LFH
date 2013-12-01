@@ -8,12 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-<<<<<<< HEAD
-=======
 import models.LogApi;
 import models.LogLogin;
 import models.User;
->>>>>>> origin/master
 import play.Logger;
 import play.Logger.ALogger;
 import play.libs.F.Promise;
@@ -29,11 +26,8 @@ import play.mvc.SimpleResult;
  *
  */
 public class LogActionImpl extends Action<LogAction> {
-<<<<<<< HEAD
-=======
 	
 	 private ALogger appLogger = Logger.of("application");
->>>>>>> origin/master
 		
 	/**
 	 * Writes a log entry to the specified application log as configured in the annotation. 
@@ -41,12 +35,6 @@ public class LogActionImpl extends Action<LogAction> {
 	@Override
 	public Promise<SimpleResult> call(Context ctx) throws Throwable {
 		
-<<<<<<< HEAD
-		ALogger logger = Logger.of(configuration.value());
-		LogLevel level = configuration.logLevel();
-		String msg = String.format("Requested URL: %s \nPassed parameters:\n%s \nUsername: %s \n\nHeaders:\n%s", 
-				ctx.request().path(), getParameters(ctx.request()),ctx.request().username(),getHeaderString(ctx.request().headers()));
-=======
 		logToFile(ctx);
 		if(configuration.value().equalsIgnoreCase("api"))
 			logToApiDb(ctx);
@@ -98,7 +86,6 @@ public class LogActionImpl extends Action<LogAction> {
 		LogLevel level = configuration.logLevel();
 		String msg = String.format("Requested URL: %s \nPassed parameters:\n%s \nUsername: %s \n\nHeaders:\n%s", 
 				ctx.request().path(), getParameters(ctx.request(),"\n"),ctx.session().get("username"),getHeaderString(ctx.request().headers(),"\n"));
->>>>>>> origin/master
 		
 		switch (level) {
 		case DEBUG:
@@ -119,17 +106,9 @@ public class LogActionImpl extends Action<LogAction> {
 		default:
 			break;
 		}
-<<<<<<< HEAD
-
-		return delegate.call(ctx);
-	}
-
-	private String getParameters(Request request) {
-=======
 	}
 
 	private String getParameters(Request request, String delimiter) {
->>>>>>> origin/master
 		StringBuilder sb = new StringBuilder();
 		Map<String,String[]> map = request.queryString();
 		List<FilePart> files = null;
@@ -149,11 +128,7 @@ public class LogActionImpl extends Action<LogAction> {
 		}
 		
 		for (Entry<String, String[]> entry : map.entrySet()) {
-<<<<<<< HEAD
-			sb.append(String.format("Parameter: %s -> Value: %s \n", 
-=======
 			sb.append(String.format("Parameter: %s -> Value: %s " + delimiter, 
->>>>>>> origin/master
 					entry.getKey(),
 					getString(entry.getValue())
 					));
@@ -165,16 +140,6 @@ public class LogActionImpl extends Action<LogAction> {
 			}
 		}
 		
-<<<<<<< HEAD
-		return sb.toString();
-	}
-
-
-	private String getHeaderString(Map<String, String[]> headers) {
-		StringBuilder sb = new StringBuilder();
-		for (Entry<String, String[]> entry : headers.entrySet()) {
-			sb.append(String.format("Header: %s -> Value: %s \n", 
-=======
 		String retVal = sb.toString();
 		
 		return retVal.substring(0, retVal.lastIndexOf(delimiter));
@@ -185,18 +150,13 @@ public class LogActionImpl extends Action<LogAction> {
 		StringBuilder sb = new StringBuilder();
 		for (Entry<String, String[]> entry : headers.entrySet()) {
 			sb.append(String.format("Header: %s -> Value: %s " + delimiter, 
->>>>>>> origin/master
 					entry.getKey(),
 					getString(entry.getValue())
 					));
 		}
 		
-<<<<<<< HEAD
-		return sb.toString();
-=======
 		String retVal = sb.toString();		
 		return retVal.substring(0, retVal.lastIndexOf(delimiter));
->>>>>>> origin/master
 	}
 	
 	private Object getString(String[] value) {
