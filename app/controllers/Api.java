@@ -1,7 +1,7 @@
 package controllers;
 
-import customaction.LogAction;
-import customaction.LogLevel;
+import customactions.LogAction;
+import customactions.LogLevel;
 import play.Logger;
 import play.Logger.ALogger;
 import play.i18n.Messages;

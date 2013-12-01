@@ -1,4 +1,4 @@
-package customaction;
+package customactions;
 
 import java.lang.annotation.*;
 import play.mvc.With;
