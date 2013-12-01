@@ -9,6 +9,7 @@ GET     /                           controllers.Application.index()
 GET		/customers					controllers.Api.customers(id: String, datetime: String ?= null)
 GET		/orders						controllers.Api.orders(id: String, datetime: String ?= null)
 GET		/articles					controllers.Api.articles(id: String, datetime: String ?= null)
+GET		/version					controllers.Api.version()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
