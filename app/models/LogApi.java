@@ -21,8 +21,28 @@ public class LogApi extends Model {
 
     @CreatedTimestamp
     private Date createdAt;
+    
+    private String info;
+    
+    private String params;
 
-    public static Finder<Integer, LogApi> find = new Finder<Integer, LogApi>(Integer.class, LogApi.class);
+    public String getParams() {
+		return params;
+	}
+
+	public void setParams(String params) {
+		this.params = params;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
+	public static Finder<Integer, LogApi> find = new Finder<Integer, LogApi>(Integer.class, LogApi.class);
 
     public Integer getId() {
         return id;

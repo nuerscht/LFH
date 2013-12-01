@@ -23,8 +23,18 @@ public class LogLogin extends Model {
 
     @CreatedTimestamp
     private Date createdAt;
+    
+    private String info;
 
-    public static Finder<Integer, LogLogin> find = new Finder<Integer, LogLogin>(Integer.class, LogLogin.class);
+    public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
+	public static Finder<Integer, LogLogin> find = new Finder<Integer, LogLogin>(Integer.class, LogLogin.class);
 
     public Integer getId() {
         return id;

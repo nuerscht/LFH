@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import models.LogApi;
+import models.LogLogin;
+import models.User;
 import play.Logger;
 import play.Logger.ALogger;
 import play.libs.F.Promise;
@@ -23,6 +26,8 @@ import play.mvc.SimpleResult;
  *
  */
 public class LogActionImpl extends Action<LogAction> {
+	
+	 private ALogger appLogger = Logger.of("application");
 		
 	/**
 	 * Writes a log entry to the specified application log as configured in the annotation. 
@@ -30,10 +35,57 @@ public class LogActionImpl extends Action<LogAction> {
 	@Override
 	public Promise<SimpleResult> call(Context ctx) throws Throwable {
 		
+		logToFile(ctx);
+		if(configuration.value().equalsIgnoreCase("api"))
+			logToApiDb(ctx);
+		if(configuration.value().equalsIgnoreCase("login"))
+			logToLoginDb(ctx);
+		
+		return delegate.call(ctx);
+	}
+
+	private void logToLoginDb(Context ctx) {
+		try {
+			LogLogin log = new LogLogin();
+			User user = User.find.where()
+					.eq("email", ctx.session()
+							.get("username").toString())
+					.findUnique();
+			log.setUser(user);
+			log.setInfo(String.format("URL: %s | IP: %s | Host: %s ",
+					ctx.request().path(),
+					ctx.request().remoteAddress(),
+					ctx.request().host())
+					);
+			log.save();
+		} catch (Exception e) {
+			appLogger.error(e.getMessage(),e);
+		}		
+	}
+
+	private void logToApiDb(Context ctx) {
+		try {
+			LogApi log = new LogApi();
+			User user = User.find.where()
+					.eq("email", ctx.session()
+							.get("username"))
+					.findUnique();
+			log.setUser(user);
+			log.setInfo(getHeaderString(ctx.request().headers(), ", "));
+			log.setRequestUri(ctx.request().path());	
+			log.setParams(getParameters(ctx.request(), ", "));
+			log.save();
+		} catch (Exception e) {
+			appLogger.error(e.getMessage(),e);
+		}		
+		
+	}
+
+	private void logToFile(Context ctx) {
 		ALogger logger = Logger.of(configuration.value());
 		LogLevel level = configuration.logLevel();
 		String msg = String.format("Requested URL: %s \nPassed parameters:\n%s \nUsername: %s \n\nHeaders:\n%s", 
-				ctx.request().path(), getParameters(ctx.request()),ctx.request().username(),getHeaderString(ctx.request().headers()));
+				ctx.request().path(), getParameters(ctx.request(),"\n"),ctx.session().get("username"),getHeaderString(ctx.request().headers(),"\n"));
 		
 		switch (level) {
 		case DEBUG:
@@ -54,11 +106,9 @@ public class LogActionImpl extends Action<LogAction> {
 		default:
 			break;
 		}
-
-		return delegate.call(ctx);
 	}
 
-	private String getParameters(Request request) {
+	private String getParameters(Request request, String delimiter) {
 		StringBuilder sb = new StringBuilder();
 		Map<String,String[]> map = request.queryString();
 		List<FilePart> files = null;
@@ -78,7 +128,7 @@ public class LogActionImpl extends Action<LogAction> {
 		}
 		
 		for (Entry<String, String[]> entry : map.entrySet()) {
-			sb.append(String.format("Parameter: %s -> Value: %s \n", 
+			sb.append(String.format("Parameter: %s -> Value: %s " + delimiter, 
 					entry.getKey(),
 					getString(entry.getValue())
 					));
@@ -90,20 +140,23 @@ public class LogActionImpl extends Action<LogAction> {
 			}
 		}
 		
-		return sb.toString();
+		String retVal = sb.toString();
+		
+		return retVal.substring(0, retVal.lastIndexOf(delimiter));
 	}
 
 
-	private String getHeaderString(Map<String, String[]> headers) {
+	private String getHeaderString(Map<String, String[]> headers, String delimiter) {
 		StringBuilder sb = new StringBuilder();
 		for (Entry<String, String[]> entry : headers.entrySet()) {
-			sb.append(String.format("Header: %s -> Value: %s \n", 
+			sb.append(String.format("Header: %s -> Value: %s " + delimiter, 
 					entry.getKey(),
 					getString(entry.getValue())
 					));
 		}
 		
-		return sb.toString();
+		String retVal = sb.toString();		
+		return retVal.substring(0, retVal.lastIndexOf(delimiter));
 	}
 	
 	private Object getString(String[] value) {
