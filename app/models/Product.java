@@ -1,10 +1,14 @@
 package models;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.Page;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
@@ -12,6 +16,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
 import java.util.Date;
 
 @Entity
@@ -115,5 +120,25 @@ public class Product extends Model {
         }
 
         return false;
+    }
+    
+    /**
+     * Return a page of computer
+     *
+     * @param page Page to display
+     * @param pageSize Number of products per page
+     * @param sortBy Computer property used for sorting
+     * @param order Sort order (either or asc or desc)
+     * @param filter Filter applied on the name column
+     */
+    public static Page<Product> page(int page, int pageSize, String sortBy, String order, String filter) {
+        return 
+            find.where()
+                .or(Expr.like("Title", "%" + filter + "%"),
+                		Expr.like("Description", "%" + filter + "%"))
+                .orderBy(sortBy + " " + order)
+                .findPagingList(pageSize)
+                .setFetchAhead(false)
+                .getPage(page);
     }
 }

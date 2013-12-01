@@ -5,6 +5,13 @@
 # Home page
 GET     /                           controllers.Application.index()
 
+# Products
+GET     /products                   controllers.Application.products()
+GET     /details/:id                controllers.Application.productDetails(id: Integer)
+GET     /search            			controllers.Application.search(p:Int ?= 0, s ?= "Title", o ?= "asc", q ?= "")
+
+POST 	/rate/:id					controllers.Application.submitRating(id: Integer)
+
 # API
 GET		/customers					controllers.Api.customers(id: String, datetime: String ?= null)
 GET		/orders						controllers.Api.orders(id: String, datetime: String ?= null)
