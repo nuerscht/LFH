@@ -1,0 +1,16 @@
+@(currentPage: com.avaje.ebean.Page[Product])
+
+
+    <header>
+        <hgroup>
+            <h1>Product Search</h1>
+            <h2>Found products</h2>
+        </hgroup>
+    </header>
+
+    <ul> 
+	@for(product <- currentPage.getList) {
+  		<li>@product.getTitle()</li>
+	} 
+	</ul>
+
