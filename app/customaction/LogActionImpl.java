@@ -141,8 +141,9 @@ public class LogActionImpl extends Action<LogAction> {
 		}
 		
 		String retVal = sb.toString();
-		
-		return retVal.substring(0, retVal.lastIndexOf(delimiter));
+		if(retVal.lastIndexOf(delimiter) > 0)
+			retVal = retVal.substring(0, retVal.lastIndexOf(delimiter));
+		return retVal;
 	}
 
 
@@ -155,8 +156,10 @@ public class LogActionImpl extends Action<LogAction> {
 					));
 		}
 		
-		String retVal = sb.toString();		
-		return retVal.substring(0, retVal.lastIndexOf(delimiter));
+		String retVal = sb.toString();
+		if(retVal.lastIndexOf(delimiter) > 0)
+			retVal = retVal.substring(0, retVal.lastIndexOf(delimiter));
+		return retVal;
 	}
 	
 	private Object getString(String[] value) {
