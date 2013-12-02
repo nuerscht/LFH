@@ -1,6 +1,6 @@
-@(currentPage: com.avaje.ebean.Page[Product])
+@(currentPage: com.avaje.ebean.Page[Product], login: Html)
 
-@main("Welcome to the LFH Shop") {
+@main("Welcome to the LFH Shop", login) {
     <div class="products">
 		@for(product <- currentPage.getList) {
   		    <div class="product">

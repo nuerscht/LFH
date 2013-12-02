@@ -1,9 +1,21 @@
-@(product: Product, ratingForm: Form[controllers.Application.Rating])
+@(product: models.Product, ratings: List[Rating], ratingForm: Form[Rating], login: Html)
 
 @import helper._
 @import helper.twitterBootstrap._
 
-@main("Welcome to the LFH Shop") {
+@main("Welcome to the LFH Shop", login) {
+	<h1>@product.getTitle()</h1>
+	
+	<div class="details">
+		<ul>
+			<li>@product.getId()</li>
+			<li>@product.getPrice()</li>
+			<li>@product.getEan()</li>
+		</ul>
+		<div>
+			@product.getDescription()
+		</div>
+    </div>
 	@if(ratingForm.hasGlobalErrors) {
     	<div class="error">
         	@ratingForm.globalError.message
@@ -14,35 +26,35 @@
     	</div>
 	}
 
-    <div class="products">
-			<span>@product.getTitle()<span>
-			<span>@product.getPrice()<span>
-    </div>
     
     
     
-    @form(routes.Application.submitRating(product.getId)) {
+    <div>
+    @form(routes.Product.submitRating(product.getId)) {
    		<fieldset>
-            <legend>General information</legend>
+            <legend>Bewerten</legend>
             
-            @inputText(
-                ratingForm("rating"), 
-                '_label -> "Rating"
+            @inputRadioGroup(
+                ratingForm("rate"), 
+                options = options("1" -> "1" ,"2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"),
+                '_label -> "Rating",
+                'required -> "required"
             )
             
-            @inputText(
+            @textarea(
                 ratingForm("comment"), 
                 '_label -> "Comment"
             )
-            
+
         </fieldset>
 
         <div class="actions">
             <input type="submit" class="btn primary" value="Rate">
-            <a href="@routes.Application.productDetails(product.getId)" class="btn">Cancel</a>
+            <a href="@routes.Product.productDetails(product.getId)" class="btn">Cancel</a>
         </div>
         
     }
+    </div>
 }
 
     
