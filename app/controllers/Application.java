@@ -1,5 +1,6 @@
 package controllers;
 
+<<<<<<< HEAD
 import java.util.List;
 
 import models.*;
@@ -11,10 +12,13 @@ import play.mvc.*;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlRow;
 import com.avaje.ebean.config.GlobalProperties;
+=======
+import play.mvc.*;
+>>>>>>> origin/master
 
 import views.html.*;
 
-public class Application extends Controller {
+public class Application extends Eshomo {
 
 	public static final int NUM_PRODUCTS_PER_PAGE = 20;
 	final static Form<Rating> ratingForm = Form.form(Rating.class);
@@ -23,13 +27,14 @@ public class Application extends Controller {
      * @return The main page
      */
     public static Result index() {
-        User user = User.find.byId(1);
+    	models.User user = models.User.find.byId(1);
         if (user != null) {
-            return ok(index.render(user.getEmail() + ": " + user.getType().getDescription()));
+            return ok(index.render(user.getEmail() + ": " + user.getType().getDescription(), getLoginContent()));
         } else {
-            return ok(index.render("Welcome to the LFH shop"));
+            return ok(index.render("Welcome to the LFH shop", getLoginContent()));
         }
     }
+<<<<<<< HEAD
     
     /**
      * @return Product overview
@@ -92,4 +97,6 @@ public class Application extends Controller {
         }
     }
 
+=======
+>>>>>>> origin/master
 }

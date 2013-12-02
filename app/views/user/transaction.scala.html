@@ -1,0 +1,21 @@
+@(transactions: List[controllers.User.Order], login: Html)
+
+@main("LFH Shop - Transaktions&uuml;bersicht", login) {
+	<h1>Bestellungen</h1>
+	<table class="table table-striped">
+		<tr>
+			<th>Nr.</th>
+			<th>Datum</th>
+			<th>Status</th>
+			<th>Total</th>
+		</tr>
+	@for(transaction <- transactions) {
+  		<tr>
+  			<td>@transaction.id</td>
+  			<td>@transaction.date</td>
+  			<td>@transaction.status</td>
+  			<td>CHF @transaction.price</td>
+  		<tr>
+	} 
+	</table>
+}
