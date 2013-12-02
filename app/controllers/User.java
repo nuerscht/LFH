@@ -98,7 +98,6 @@ public class User extends Eshomo {
 		
 		List<Cart> carts = Ebean.find(Cart.class).where().eq("user_id", getLoggedInUserId()).where().eq("status_id", CartStatus.ORDERED).orderBy().asc("updated_at").findList();
 
-		System.out.println(getLoggedInUserId());
 		List<Order> orders = new ArrayList<Order>();
 		
 		Iterator<Cart> itrCarts= carts.iterator();
