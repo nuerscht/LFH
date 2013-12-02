@@ -3,16 +3,13 @@
  */
 package controllers;
 
-import static play.data.Form.form;
 import models.Address;
 import models.User;
 import play.api.templates.Html;
 import play.data.DynamicForm;
 import play.mvc.Controller;
-import play.mvc.Result;
 import views.html.account.login;
 import views.html.account.loggedin;
-import views.html.account.register;
 
 /**
  * @author boe

@@ -4,7 +4,6 @@ import static play.data.Form.form;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import models.CartHasProduct;
 import models.CartStatus;
 import play.data.DynamicForm;
 import play.mvc.Result;
-import views.html.account.register;
 import views.html.user.transaction;
 import views.html.user.userdata;
 
@@ -28,8 +26,6 @@ public class User extends Eshomo {
 			models.User user = models.User.find.byId(userId);
 		
 			List<Address> addresses = Ebean.find(Address.class).where().eq("user_id", userId).where().eq("is_active", 1).findList();
-			
-			System.out.println(addresses);
 			
 			Address address = addresses.get(0);
 
