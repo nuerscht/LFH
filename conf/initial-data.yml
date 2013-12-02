@@ -235,22 +235,28 @@ attributes:
 tags:
  - !!models.Tag
    &comp
-   description: Computer
+   id: Computer
+   description: Aktuelle Computer und Zubehör
  - !!models.Tag
    &lap
-   description: Laptop
+   id: Laptop
+   description: Aktuelle Laptop und Zubehör
  - !!models.Tag
    &tablet
-   description: Tablets
+   id: Tablets
+   description: Aktuelle Tablets und Zubehör
  - !!models.Tag
    &soft
-   description: Software
+   id: Software
+   description: Aktuelle Software
  - !!models.Tag
    &other
-   description: Diverses
+   id: Diverses
+   description: Aktuelle Produkte
  - !!models.Tag
    &mob
-   description: Mobile
+   id: Mobile
+   description: Aktuelle Smartphones und Zubehör
 # ProductTag
 prodTags:
  - !!models.ProductHasTag
@@ -314,10 +320,12 @@ prodTags:
 usertypes:
  - !!models.UserType
   &admin
-  description: Admin
+  id: admin
+  description: Administrative Benutzer
  - !!models.UserType
   &customer
-  description: Customer
+  id: customer
+  description: Kunden
 users:
  - !!models.User
    &boe

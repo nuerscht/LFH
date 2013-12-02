@@ -27,7 +27,14 @@ public class Tag extends Model {
         return id;
     }
 
-    public String getDescription() {
+    /**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getDescription() {
         return description;
     }
     /**

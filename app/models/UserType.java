@@ -18,7 +18,13 @@ public class UserType extends Model {
     @Constraints.MaxLength(45)
     private String id;
 
-    @Constraints.Required
+    /**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+	@Constraints.Required
     private String description;
 
 	public static Finder<String, UserType> find = new Finder<String, UserType>(String.class, UserType.class);
