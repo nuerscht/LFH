@@ -1,16 +1,398 @@
 # Products
 products:
  - !!models.Product 
-     &P
-     title: Superbase Cap
-     price: 12.25
+     &shuttle
+     title: Shuttle XH61V (USB 3.0, LGA 1155, HDMI)
+     price: 189.00
      ean: 1234567890123
-     description: super duper cap
+     description: 6-Kanal HD Audio, Dual LAN, HDMI und DVI-I out, Heatpipe Kühltechnik, vormontierte Kabel, Aluminium Gehäuse
+ - !!models.Product 
+     &hpz230
+     title: HP Z230, Intel Xeon E3-1245v3, 8GB, SSD, DVD-RW
+     price: 1680.00
+     ean: 2345678901231
+     description: Geniessen Sie Workstation-Leistung mit Grafiken der nächsten Generation zu Preisen, die Sie von einem Desktop-PC erwarten würden. Mit Convertible Minitower- oder Small Form Factor-Modellen bietet Ihnen HP das Design der Enterprise-Klasse, das am besten zu Ihnen passt.
+ - !!models.Product 
+     &proliant
+     title: HP ProLiant N54L, Turion II Neo N54L, 4 GB, Micro-Tower
+     price: 279.00
+     ean: 3456789012312
+     description: AMD Turion II Dual Core Neo N54L (2.2 GHz, 15W, 2MB), AMD RS785E/SB820M, 1x 4 GB DDR3-10600E Unbuffered ECC, max. 8 GB, 2-DIMM Slots (belegt mit 1x 4 GB), Integriert (128 MB), keine Festplatte vorinstalliert, 4x 3.5" HDD (Maximum 8 TB)
+ - !!models.Product 
+     &hpz620
+     title: HP Z620, Intel Xeon E5-2620, 16GB, 256GB SSD
+     price: 2456.00
+     ean: 4567890123123
+     description: Jetzt noch vielseitiger. Die HP Z620 Workstation vereint dank der bis zu 16 separaten Prozessorkerne hohe Rechnungs- und Visualisierungsleistung in einem geräuscharmen und kompakten Design. Das System mit zwei Sockets sorgt mit Intel Xeon Prozessoren der nächsten Generation und Unterstützung für bis zu acht Displays für eine höhere Produktivität.
+ - !!models.Product 
+     &hp6305
+     title: HP Compaq 6305 Pro, AMD A8, 8GB, 500GB
+     price: 648.00
+     ean: 5678901231234
+     description: Erstellen Sie Präsentationen mit aufwendigen Grafiken auf dem HP Compaq Pro 6305 Microtower und lassen Sie Ihrer Produktivität freien Lauf mit der neuesten AMD-Prozessortechnologie. Nutzen Sie zum Optimieren und individuellen Anpassen die vielen Erweiterungsoptionen und die Mehrfach-Display-Konfigurationen für eine expandierte Bildschirmumgebung.
+ - !!models.Product 
+     &hpt310
+     title: HP Zero Client t310, Tera2321, 512MB, 256MB Flash
+     price: 421.00
+     ean: 6789012312345
+     description: Der speziell für VMware-Umgebungen konzipierte HP t310 Zero-Client bietet dank der PCoIP-Technologie von VMware eine erstaunliche Verarbeitungsleistung. Genießen Sie mit diesem Desktop-PC eine nahtlose Benutzererfahrung mit umfangreichen Multimedia-Optionen
+ - !!models.Product 
+     &franklin
+     title: Franklin EST-5114, 14-sprachiger sprechender Übersetzer
+     price: 133.00
+     ean: 7890123123456
+     description: 280'000 Stichwörter pro Sprache mit korrekter und deutlicher Sprachausgabe von Muttersprachlern vertont. Mehr als 1'000 nützliche Sätze und Wendungen für die Reise pro Sprache. Persönliche Wörterbücher bei eigenen Eingaben können auf dem Gerät oder auf dem Computer erstellt und dann auf das Gerät übertragen werden.
+ - !!models.Product 
+     &asus
+     title: Google nexus 7 v2, 32 GB - WiFi - Schwarz
+     price: 233.00
+     ean: 8901231234567
+     description: Das Nexus 7 der zweiten Generation ist der Nachfolger des erfolgreichen Nexus 7 v1, welches mit der Android-Version 4.3 auf den Markt kommt. 7 Zoll Display, handlich und leicht, NFC, WiFi, Bluetooth, GPS, Front- und Rear-Kamera. Android 4.3 läuft auf einem Qualcomm Snapdragon S4 Pro 8064 (QuadCore) mit 1.5GHz.
+ - !!models.Product 
+     &amazon
+     title: Amazon NEW Kindle Paperwhite, 2 GB - WiF
+     price: 179.00
+     ean: 9012312345678
+     description: Das eBook Reader Original, der Amazon Kindle! Integrierte Hintergrundbeleuchtung und bis 8 Wochen Batterielaufzeit! Zugang zu tausenden von Büchern bei Amazon im Kindle Store (Englisch) über WiFi, kompatibel mit diversen Textformaten
+ - !!models.Product 
+     &ipad
+     title: Apple iPad Air, 16 GB - WiFi - Spacegrau
+     price: 549.00
+     ean: 1123123456789
+     description: Webbrowser, Mail, Fotos, Musik, Videos, iBooks, Apple Maps, Kalender, Notizen, Spotlight Suche und mehr! Multitouch, Zugriff zum iTunes- und App-Store um Musik und Programme zu laden. Integriert sind zwei Kameras, Lautsprecher und Mikrofon. iOS 7 läuft auf einem Apple A7 SOC Dual-Core Prozessor, Quad-Core Grafik. Multilingual.
+ - !!models.Product 
+     &probook
+     title: HP ProBook 470 G1, i5-4200M, 17.3" HD+
+     price: 869.00
+     ean: 2123123456789
+     description: Leistung mit Stil. Ansehen, präsentieren, an Videokonferenzen teilnehmen oder auch alles gleichzeitig tun – kein Problem mit diesem langlebigen, stilvollen Notebook. Dieses vielseitige und sichere HP ProBook mit 17.3" Monitor hinterlässt im Büro und ausserhalb des Büros Eindruck
+ - !!models.Product 
+     &lumia920
+     title: Lumia 920 Gelb
+     price: 299.00
+     ean: 3123123456789
+     description: Das innovativste an Technik zusammengefasst im Nokia Lumia 920 - Pureview Kamera mit Carl Zeiss Optic mit einer 8.7 Megapixel-Kamera, 4.5 Zoll Display mit PureMotion HD+, 32GB Speicher sowie 7GB Skydrive, dazu mit LTE. Windows Phone 8 läuft auf einem Dual-Core 1.5GHz S4 Snapdragon Prozessor.
+ - !!models.Product 
+     &lumia620
+     title: Lumia 620 
+     price: 199.00
+     ean: 4123123456789
+     description: Das Lumia 620, smartes Design innen wie aussen - Sie werden auffallen damit das ist garantiert. 5 Megapixel Kamera, WLAN, AGPS, uvm beigeistern das neuste Windows 8 Phone von Nokia. Windows Phone 8 läuft auf einem Snapdragon S4 1GHZ Dual-Core Prozessor.
+ - !!models.Product 
+     &lumia925
+     title: Lumia 925 Grau 
+     price: 399.00
+     ean: 5123123456789
+     description: Das Lumia 925, smartes Design, hoch qualitativ in einem schönen neuen dünnen Gehäuse verpackt. 8.7 Megapixel Pureview Kamera, 4.5 Zoll Amoled Display, WiFi, Cloud Speicher, Gratis Navigationssoftware uvm. Windows Phone 8 läuft auf einem Snapdragon Dual-Core mit 1.5 GHz
+ - !!models.Product 
+     &ativ
+     title: Ativ S 16GB Grau
+     price: 239.00
+     ean: 6123123456789
+     description: Ativ S, das erste Windows Phone 8 Gerät das der Welt vorgestellt wurde mit unglaublichen technischen Details - 4.8 Zoll HD Super Amoled Display, microSDXC Support bis zu 64GB, NFC-Support und einem grossen Akku. Windows Phone 8 läuft auf einem Dual-Core 1.5GHz Prozessor.
+ - !!models.Product 
+     &galaxy
+     title: Samsung I9082 Galaxy Grand - Dual SIM - White
+     price: 299.00
+     ean: 7123123456789
+     description: Samsung präsentiert mit dem Galaxy Grand das neue high end Dual SIM Smartphone! Jetzt mit 5 Zoll grossen Display, grösseren Akku (2100 mAh), S-Voice, 8MP Kamera, uvm. Android 4.1 läuft auf einem Dual-Core 1.2 GHz Prozessor.
+ - !!models.Product 
+     &s4
+     title: Samsung I9505 Galaxy S 4 - 16 GB - 4G - White Frost
+     price: 519.00
+     ean: 8123123456789
+     description: Das Neue S4 präsentiert sich grösser und doch ist es kleiner. 5" Full-HD Amoled Display mit Gorilla Glas 3, 13 MP Kamera, NFC, Infrarotremote, microSD Slot bis zu 64GB Speichererweiterung, 50GB Dropbox uvm. Android 4.2 läuft auf einem Quad-Core Prozessor mit 1.9 GHz
+ - !!models.Product 
+     &office
+     title: Microsoft Office 2013 - Das Handbuch inkl. CD -D-
+     price: 44.00
+     ean: 9123123456789
+     description: Sie möchten sich schnell in Office 2013 und Office 365 zurechtfinden und die neuen Möglichkeiten sofort in die Praxis umsetzen? Ob auf dem Desktop, dem Tablet oder in der Cloud - das vorliegende Handbuch bietet Ihnen das notwendige Know-how für den Einsatz von Word 2013, Excel 2013, PowerPoint 2013, Outlook 2013, OneNote 2013 und Access 2013.
+ - !!models.Product 
+     &symantec
+     title: Norton Internet Security 2014 - 3 PCs, -D/F/I-
+     price: 49.00
+     ean: 9923123456789
+     description: Erweiterter Internet- und Virenschutz – ganz gleich, wo Sie unterwegs sind oder wie Sie das Internet nutzen. Verbesserte SONAR-Technologie und ständige Bedrohungsüberwachung bleiben neuen Bedrohungen immer einen Schritt voraus. Das ultraschnelle Interneterkennungssystem stoppt Bedrohungen, bevor sie auf Ihren PC gelangen können.
 
 # Attributes
 attributes:
  - !!models.Attribute
-    value: Grüne Streifen
-    product: *P
-    
-  
+    value: Windows
+    product: *symantec
+ - !!models.Attribute
+    value: 3 PC Lizenzen
+    product: *symantec
+ - !!models.Attribute
+    value: Windows
+    product: *office
+ - !!models.Attribute
+    value: Touchpad optimiert
+    product: *office
+ - !!models.Attribute
+    value: 5.0 Zoll
+    product: *s4
+ - !!models.Attribute
+    value: 16 Gb interner Speicher
+    product: *s4
+ - !!models.Attribute
+    value: 5.0 Zoll
+    product: *galaxy
+ - !!models.Attribute
+    value: 8 Gb interner Speicher
+    product: *galaxy
+ - !!models.Attribute
+    value: 4.8 Zoll
+    product: *ativ
+ - !!models.Attribute
+    value: 16 Gb interner Speicher
+    product: *ativ
+ - !!models.Attribute
+    value: 4.5 Zoll
+    product: *lumia925
+ - !!models.Attribute
+    value: LTE 50 Mbps UL 100 Mbps DL
+    product: *lumia925
+ - !!models.Attribute
+    value: 3.8 Zoll
+    product: *lumia620
+ - !!models.Attribute
+    value: LCD, Clearblack
+    product: *lumia620
+ - !!models.Attribute
+    value: 4.5 Zoll
+    product: *lumia920
+ - !!models.Attribute
+    value: LTE 50 Mbps UL 100 Mbps DL
+    product: *lumia920
+ - !!models.Attribute
+    value: Intel Core i5-4200M
+    product: *probook
+ - !!models.Attribute
+    value: 17.3" TFT, entspiegelt
+    product: *probook
+ - !!models.Attribute
+    value: 16 Gb Speicher
+    product: *ipad
+ - !!models.Attribute
+    value: 9.7 Zoll
+    product: *ipad
+ - !!models.Attribute
+    value: 1024x768 Pixel
+    product: *amazon
+ - !!models.Attribute
+    value: 6 Zoll Touchscreen
+    product: *amazon
+ - !!models.Attribute
+    value: 16 Gb DDR3 Ram
+    product: *shuttle
+ - !!models.Attribute
+    value: Intel Core i5
+    product: *shuttle
+ - !!models.Attribute
+    value: Intel Xeon E3-1245
+    product: *hpz230    
+ - !!models.Attribute
+    value: 256 Gb SSD, Sata-III
+    product: *hpz230
+ - !!models.Attribute
+    value: AMD Turion II Dual Core
+    product: *proliant
+ - !!models.Attribute
+    value: 4 Gb DDR3 Ram
+    product: *proliant
+ - !!models.Attribute
+    value: Intel Xeon E3-1245
+    product: *hpz620
+ - !!models.Attribute
+    value: 12 Gb DDR3 Ram
+    product: *hpz620
+ - !!models.Attribute
+    value: AMD A8-5500B (3.2GHz)
+    product: *hp6305
+ - !!models.Attribute
+    value: 500 GB S-ATA-3
+    product: *hp6305
+ - !!models.Attribute
+    value: 512MB DDR3 SDRAM
+    product: *hpt310
+ - !!models.Attribute
+    value: 32 Mb Flashspeicher
+    product: *hpt310
+ - !!models.Attribute
+    value: Englisch
+    product: *franklin
+ - !!models.Attribute
+    value: Chinesisch
+    product: *franklin
+ - !!models.Attribute
+    value: 32 GB ROM,
+    product: *asus
+ - !!models.Attribute
+    value: 2 GB DDR3 RAM
+    product: *asus
+# Tags
+tags:
+ - !!models.Tag
+   &comp
+   description: Computer
+ - !!models.Tag
+   &lap
+   description: Laptop
+ - !!models.Tag
+   &tablet
+   description: Tablets
+ - !!models.Tag
+   &soft
+   description: Software
+ - !!models.Tag
+   &other
+   description: Diverses
+ - !!models.Tag
+   &mob
+   description: Mobile
+# ProductTag
+prodTags:
+ - !!models.ProductHasTag
+   product: *shuttle
+   tag: *comp
+ - !!models.ProductHasTag
+   product: *hpz230
+   tag: *comp    
+ - !!models.ProductHasTag
+   product: *proliant
+   tag: *comp
+ - !!models.ProductHasTag
+   product: *hpz620
+   tag: *comp
+ - !!models.ProductHasTag
+   product: *hp6305
+   tag: *comp
+ - !!models.ProductHasTag
+   product: *hpt310
+   tag: *comp
+ - !!models.ProductHasTag
+   product: *franklin
+   tag: *other
+ - !!models.ProductHasTag
+   product: *asus
+   tag: *tablet
+ - !!models.ProductHasTag
+   product: *amazon
+   tag: *tablet
+ - !!models.ProductHasTag
+   product: *ipad
+   tag: *tablet
+ - !!models.ProductHasTag
+   product: *probook
+   tag: *lap
+ - !!models.ProductHasTag
+   product: *lumia920
+   tag: *mob
+ - !!models.ProductHasTag
+   product: *lumia620
+   tag: *mob
+ - !!models.ProductHasTag
+   product: *lumia925
+   tag: *mob
+ - !!models.ProductHasTag
+   product: *ativ
+   tag: *mob
+ - !!models.ProductHasTag
+   product: *galaxy
+   tag: *mob
+ - !!models.ProductHasTag
+   product: *s4
+   tag: *mob
+ - !!models.ProductHasTag
+   product: *office
+   tag: *soft
+ - !!models.ProductHasTag
+   product: *symantec
+   tag: *soft
+# User and UserType
+usertypes:
+ - !!models.UserType
+  &admin
+  description: Admin
+ - !!models.UserType
+  &customer
+  description: Customer
+users:
+ - !!models.User
+   &boe
+   email: patrick.boesch@students.ffhs.ch
+   password: ffhs2011
+   isActive: true
+   type: *admin
+ - !!models.User
+   &vil
+   email: andy.villiger@students.ffhs.ch
+   password: ffhs2011
+   isActive: true
+   type: *admin
+ - !!models.User
+   &ald
+   email: jonas.alder@students.ffhs.ch
+   password: ffhs2011
+   isActive: true
+   type: *admin
+ - !!models.User
+   &dal
+   email: sandro.dallo@students.ffhs.ch
+   password: ffhs2011
+   isActive: true
+   type: *admin
+ - !!models.User
+   &user1
+   email: user1@students.ffhs.ch
+   password: ffhs2011
+   isActive: true
+   type: *customer
+ - !!models.User
+   &user2
+   email: user2@students.ffhs.ch
+   password: ffhs2011
+   isActive: true
+   type: *customer
+ - !!models.User
+   &user3
+   email: user3@students.ffhs.ch
+   password: ffhs2011
+   isActive: true
+   type: *customer
+# adresses
+adresses:
+ - !!models.Address
+    &ad1
+    user: *user1
+    firstname: Max
+    lastname: Muster
+    street: Musterstrasse 1
+    zip: 8046
+    place: Zürich
+    phone: 099 999 99 99
+    email: user1@students.ffhs.ch
+    isActive: true
+ - !!models.Address
+    &ad2
+    user: *user2
+    firstname: Maxine
+    lastname: Master
+    street: Marktgasse 17
+    zip: 5000
+    place: Bern
+    phone: 099 888 88 88
+    email: user2@students.ffhs.ch
+    isActive: true
+ - !!models.Address
+    &ad3
+    user: *user3
+    firstname: Lara
+    lastname: Croft
+    street: Rue de tunnel 2
+    zip: 7000
+    place: Lausanne
+    phone: 099 777 77 77
+    email: user3@students.ffhs.ch
+    isActive: true

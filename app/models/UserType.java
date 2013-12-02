@@ -21,7 +21,7 @@ public class UserType extends Model {
     @Constraints.Required
     private String description;
 
-    public static Finder<String, UserType> find = new Finder<String, UserType>(String.class, UserType.class);
+	public static Finder<String, UserType> find = new Finder<String, UserType>(String.class, UserType.class);
 
     public String getId() {
         return id;
@@ -30,4 +30,10 @@ public class UserType extends Model {
     public String getDescription() {
         return description;
     }
+    /**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

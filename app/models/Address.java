@@ -45,7 +45,8 @@ public class Address extends Model {
     @Constraints.Required
     private Boolean isActive;
 
-    @UpdatedTimestamp
+
+	@UpdatedTimestamp
     private Date updatedAt;
 
     @CreatedTimestamp
@@ -125,7 +126,7 @@ public class Address extends Model {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
+    public void setIsActive(Boolean active) {
         isActive = active;
     }
 

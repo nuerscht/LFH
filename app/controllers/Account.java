@@ -129,7 +129,7 @@ public class Account extends Eshomo {
 		address.setPlace(bindedForm.get("place"));
 		address.setStreet(bindedForm.get("street"));
 		address.setZip(bindedForm.get("zip"));
-		address.setActive(true);
+		address.setIsActive(true);
     	
 		//save to database
 		user.setEmail(bindedForm.get("email"));
