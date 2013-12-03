@@ -25,7 +25,20 @@ public class CartStatus extends Model {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getDescription() {
         return description;
+    }
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

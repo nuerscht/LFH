@@ -18,12 +18,6 @@ public class UserType extends Model {
     @Constraints.MaxLength(45)
     private String id;
 
-    /**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
 	@Constraints.Required
     private String description;
 
@@ -31,6 +25,13 @@ public class UserType extends Model {
 
     public String getId() {
         return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDescription() {
