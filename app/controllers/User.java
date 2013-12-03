@@ -33,9 +33,9 @@ public class User extends UserData {
 		if (isLoggedIn()) {		
 			models.User user = getUserObj();
 		
-			List<Address> addresses = Ebean.find(Address.class).where().eq("user_id", user.getId()).where().eq("is_active", 1).findList();
 			
-			Address address = addresses.get(0);
+			Address address = getAddressByUserId(user.getId());
+
 
 			return ok (
 					userdata.render(form(models.User.class).fill(user), form(Address.class).fill(address), "", "", getLoginContent())
@@ -43,6 +43,19 @@ public class User extends UserData {
 		} else {
 			return forbidden();
 		}
+	}
+	
+	private static Address getAddressByUserId(final int userid) {
+		List<Address> addresses = Ebean.find(Address.class).where().eq("user_id", userid).where().eq("is_active", 1).findList();
+		
+		Address address = null;
+		if (addresses.size() > 0) {
+			address = addresses.get(0);
+		} else {
+			address = new Address();
+		}
+		
+		return address;
 	}
 	
 	/**
@@ -55,11 +68,13 @@ public class User extends UserData {
 			String      message     = "";
     		DynamicForm bindedForm  = form().bindFromRequest();
     		    		
-			models.User user = getUserObj();
-		
-			List<Address> addresses = Ebean.find(Address.class).where().eq("user_id", user.getId()).where().eq("is_active", 1).findList();
+			models.User user = getUserObj();			
+			Address address = getAddressByUserId(user.getId());
 			
-			Address address = addresses.get(0);
+
+			//if new address
+			if (address.getUser() == null)
+				address.setUser(user);
 			
 			//has Password changed
 			if (bindedForm.get("password") != null && !bindedForm.get("password").isEmpty()) {
