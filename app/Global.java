@@ -18,6 +18,7 @@ public class Global extends GlobalSettings {
 		loadInitData(app);		
 	}
 
+
 	private void loadInitData(Application app) {
 		if(Ebean.find(Product.class).findRowCount() == 0){			
 			@SuppressWarnings("unchecked")

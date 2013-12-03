@@ -1,12 +1,15 @@
 package models;
 
 import java.util.*;
+
 import javax.persistence.*;
 
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+
 import play.db.ebean.*;
 import play.data.format.*;
 import play.data.validation.*;
@@ -31,8 +34,12 @@ public class User extends Model {
     @Constraints.MinLength(40)
     @Constraints.MaxLength(40)
     private String password;
+    
+    @Constraints.MinLength(40)
+    @Constraints.MaxLength(40)
+    private String token;
 
-    @Constraints.Required
+	@Constraints.Required
     private Boolean isActive = true;
 
 
@@ -89,12 +96,19 @@ public class User extends Model {
         this.createdAt = createdAt;
     }
 
-    public void setPassword(String password) {
+    @SuppressWarnings("deprecation")
+	public void setPassword(String password) {
         this.salt = DigestUtils.shaHex(RandomStringUtils.randomAscii(40));
-        this.password = DigestUtils.shaHex(this.salt + password);
+        this.password = DigestUtils.shaHex(this.salt + password);        
+        this.token = DigestUtils.shaHex(this.salt + password + this.email);
     }
 
-    public boolean isPasswordCorrect(String password) {
+    @SuppressWarnings("deprecation")
+	public boolean isPasswordCorrect(String password) {
         return DigestUtils.shaHex(this.salt + password).equals(this.password);
     }
+    public String getToken() {
+		return token;
+	}
+
 }
