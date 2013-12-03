@@ -20,7 +20,7 @@ public class Eshomo extends Controller {
 	/**
 	 * stores user login in session
 	 * @author boe
-	 * @param userId
+	 * @param user
 	 * @throws  
 	 */
 	protected static void userLogin(final models.User user)  {

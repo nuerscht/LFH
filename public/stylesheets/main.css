@@ -38,8 +38,9 @@
     min-height: 100px;
     margin-top: 30px;
     margin-bottom: 30px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 115px;
     border-top: 1px solid #ddd;
 }
 
@@ -54,4 +55,8 @@
     left: 0;
     width: 100px;
     height: 100px;
+}
+
+.products > .product > p {
+    font-size: 0.8em;
 }

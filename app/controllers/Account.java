@@ -37,10 +37,8 @@ public class Account extends UserData {
 				userLogout();
 			}
 		}
-		
-		return ok(
-			index.render("", getLoginContent())
-		);
+
+        return Application.index();
 	}
 	
 	/**
@@ -50,9 +48,7 @@ public class Account extends UserData {
 	 */
 	public static Result logout() {
 		userLogout();
-		return ok(
-			index.render("", getLoginContent())
-		);
+        return Application.index();
 	}
 	
     /**
