@@ -15,6 +15,27 @@ import play.libs.WS;
 import play.libs.F.Callback;
 import play.test.TestBrowser;
 
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.avaje.ebean.Ebean;
+
+import models.Address;
+import models.Cart;
+import models.CartHasProduct;
+import models.CartStatus;
+import play.data.DynamicForm;
+import play.mvc.Result;
+import views.html.user.transaction;
+import views.html.user.userdata;
+
+/**
+ * testing for user functionality
+ * @author boe
+ */
 public class UserIntegrationTest {
 	/**
 	 * checks if user data site is returning http status 403 if user is NOT logged in

@@ -19,17 +19,21 @@ import views.html.user.transaction;
 import views.html.user.userdata;
 
 /**
- * testing for user functionality
+ * controller for user functionality
  * @author boe
  */
-public class User extends Eshomo {
+public class User extends UserData {
+	
+	/**
+	 * shows user data (login/address) in backend
+	 * @author boe
+	 * @return
+	 */
 	public static Result showData() {
-		if (isLoggedIn()) {
-			Integer userId = getLoggedInUserId();
+		if (isLoggedIn()) {		
+			models.User user = getUserObj();
 		
-			models.User user = models.User.find.byId(userId);
-		
-			List<Address> addresses = Ebean.find(Address.class).where().eq("user_id", userId).where().eq("is_active", 1).findList();
+			List<Address> addresses = Ebean.find(Address.class).where().eq("user_id", user.getId()).where().eq("is_active", 1).findList();
 			
 			Address address = addresses.get(0);
 
@@ -41,16 +45,19 @@ public class User extends Eshomo {
 		}
 	}
 	
+	/**
+	 * handles update requests for user data updates
+	 * @author boe
+	 * @return
+	 */
 	public static Result updateData() {
 		if (isLoggedIn()) {
 			String      message     = "";
     		DynamicForm bindedForm  = form().bindFromRequest();
-    		
-			Integer userId = getLoggedInUserId();
-    		
-			models.User user = models.User.find.byId(userId);
+    		    		
+			models.User user = getUserObj();
 		
-			List<Address> addresses = Ebean.find(Address.class).where().eq("user_id", userId).where().eq("is_active", 1).findList();
+			List<Address> addresses = Ebean.find(Address.class).where().eq("user_id", user.getId()).where().eq("is_active", 1).findList();
 			
 			Address address = addresses.get(0);
 			
@@ -91,6 +98,10 @@ public class User extends Eshomo {
 		}
 	}
 	
+	/**
+	 * helper class to display transactions
+	 * @author boe
+	 */
 	public static class Order {
 		public Integer    id;
 		public String     date;
@@ -98,6 +109,10 @@ public class User extends Eshomo {
 		public String     price;
 	}
 	
+	/**
+	 * shows the orders for the logged in user
+	 * @return
+	 */
 	public static Result showTransactions() {
 		if (isLoggedIn()) {
 			List<Cart> carts = Ebean.find(Cart.class).where().eq("user_id", getLoggedInUserId()).where().eq("status_id", CartStatus.ORDERED).orderBy().asc("updated_at").findList();
