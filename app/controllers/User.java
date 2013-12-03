@@ -18,6 +18,10 @@ import play.mvc.Result;
 import views.html.user.transaction;
 import views.html.user.userdata;
 
+/**
+ * testing for user functionality
+ * @author boe
+ */
 public class User extends Eshomo {
 	public static Result showData() {
 		if (isLoggedIn()) {
