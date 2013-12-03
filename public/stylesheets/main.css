@@ -34,10 +34,9 @@
  */
 
 .products > .product {
+    box-sizing: content-box;
     position: relative;
     min-height: 100px;
-    margin-top: 30px;
-    margin-bottom: 30px;
     padding-top: 15px;
     padding-bottom: 15px;
     padding-left: 115px;
@@ -45,8 +44,8 @@
 }
 
 .products > .product:first-child {
-    border-top: none;
     margin-top: 15px;
+    border-top: none;
 }
 
 .products > .product > img {
