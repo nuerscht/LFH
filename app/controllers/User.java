@@ -51,7 +51,7 @@ public class User extends Eshomo {
 			Address address = addresses.get(0);
 			
 			//has Password changed
-			if (!bindedForm.get("password").isEmpty()) {
+			if (bindedForm.get("password") != null && !bindedForm.get("password").isEmpty()) {
 		    	message = validatePassword(address, user, bindedForm);
 				
 				if (!message.isEmpty()) {
@@ -95,36 +95,39 @@ public class User extends Eshomo {
 	}
 	
 	public static Result showTransactions() {
-		
-		List<Cart> carts = Ebean.find(Cart.class).where().eq("user_id", getLoggedInUserId()).where().eq("status_id", CartStatus.ORDERED).orderBy().asc("updated_at").findList();
-
-		List<Order> orders = new ArrayList<Order>();
-		
-		Iterator<Cart> itrCarts= carts.iterator();
-		while (itrCarts.hasNext()) {
-			Cart cart = itrCarts.next();
+		if (isLoggedIn()) {
+			List<Cart> carts = Ebean.find(Cart.class).where().eq("user_id", getLoggedInUserId()).where().eq("status_id", CartStatus.ORDERED).orderBy().asc("updated_at").findList();
+	
+			List<Order> orders = new ArrayList<Order>();
 			
-			Order order  = new Order();
-			order.id     = cart.getId();
-			order.date   = new SimpleDateFormat("dd.MM.yyyy").format(cart.getUpdatedAt());
-			order.status = cart.getStatus().getDescription().toString();
-			
-			List<CartHasProduct> cartDetails = Ebean.find(CartHasProduct.class).where().eq("cart_id", cart.getId()).findList();
-			
-			Double price = 0.0;
-			Iterator<CartHasProduct> itrCartDetails = cartDetails.iterator();
-			while (itrCartDetails.hasNext()) {
-				CartHasProduct cartDetail = itrCartDetails.next();
+			Iterator<Cart> itrCarts= carts.iterator();
+			while (itrCarts.hasNext()) {
+				Cart cart = itrCarts.next();
 				
-				price += cartDetail.getPrice() * cartDetail.getAmount();
+				Order order  = new Order();
+				order.id     = cart.getId();
+				order.date   = new SimpleDateFormat("dd.MM.yyyy").format(cart.getUpdatedAt());
+				order.status = cart.getStatus().getDescription().toString();
+				
+				List<CartHasProduct> cartDetails = Ebean.find(CartHasProduct.class).where().eq("cart_id", cart.getId()).findList();
+				
+				Double price = 0.0;
+				Iterator<CartHasProduct> itrCartDetails = cartDetails.iterator();
+				while (itrCartDetails.hasNext()) {
+					CartHasProduct cartDetail = itrCartDetails.next();
+					
+					price += cartDetail.getPrice() * cartDetail.getAmount();
+				}
+				
+				order.price = String.format("%1$,.2f", price);
+				orders.add(order);
 			}
 			
-			order.price = String.format("%1$,.2f", price);
-			orders.add(order);
+			return ok(
+				transaction.render(orders, getLoginContent())
+			);
+		} else {
+			return forbidden();
 		}
-		
-		return ok(
-			transaction.render(orders, getLoginContent())
-		);
 	}
 }

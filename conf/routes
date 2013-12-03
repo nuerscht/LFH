@@ -19,7 +19,7 @@ GET 	/account/logout				controllers.Account.logout()
 
 #User
 GET		/user/data					controllers.User.showData()
-GET		/user/data/update			controllers.User.updateData()
+POST 	/user/data/update			controllers.User.updateData()
 GET		/user/transactions			controllers.User.showTransactions()
 
 # Map static resources from the /public folder to the /assets URL path
