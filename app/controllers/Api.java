@@ -1,5 +1,6 @@
 package controllers;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import com.avaje.ebean.ExpressionList;
 import models.Address;
 import models.Attribute;
 import models.Cart;
+import models.CartHasProduct;
 import models.Product;
 import models.User;
 import play.i18n.Messages;
@@ -34,13 +36,13 @@ public class Api extends Controller {
 	 * @param datetime Get all articles since the passed date (unix timestamp)
 	 * @return XML or Json list of articles (depends on query parameter type)
 	 */	
-	@TokenAuthenticator
+	//@TokenAuthenticator
 	@LogAction(value = "api", logLevel = LogLevel.DEBUG)
 	public static Result articles(final String id, final String datetime) {
 		return getItems(id, datetime, Product.class);
 	}
 
-	@TokenAuthenticator
+	//@TokenAuthenticator
 	@LogAction(value = "api", logLevel = LogLevel.DEBUG)
 	public static Result customers(final String id, final String datetime) {
 		return getItems(id, datetime, User.class);
@@ -62,12 +64,13 @@ public class Api extends Controller {
 			 
 			 List items = getItemsFromDb(getId,dt,exType);
 			 
-			 String currentTag = getEtagOfItems(items,exType);			 
+			 long currentTag = getEtagOfItems(items,exType);			 
 			 
-			 return null;
+			 return ok(String.valueOf(currentTag));
 			 
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			logger.logToApiDb(Controller.ctx() , String.format(Messages.get("api.request.unsupported"),id,datetime));
+			logger.logToFile(e.getMessage(), LogLevel.ERROR, "api");
 			return badRequest( String.format(Messages.get("api.request.unsupported"),id,datetime));
 		}	
 			
@@ -75,35 +78,34 @@ public class Api extends Controller {
 
 
 
-	private static long getEtagOfItems(List items,Class exType) {
-		long tag = Long.MAX_VALUE;
+	private static int getEtagOfItems(List items,Class exType)
+	throws NoSuchMethodException, InvocationTargetException, IllegalAccessException{
+		int tag = Integer.MAX_VALUE;
 		for (Object item : items) {
-			long id = (long) exType.getField("id").get(item);
-			Date cDate = (Date) exType.getField("created_at").get(item);
-			Date uDate = (Date) exType.getField("updated_at").get(item);
-			tag = tag ^ id;
+			int id = (int) exType.getMethod("getId").invoke(item);
+			Date cDate = (Date) exType.getMethod("getCreatedAt").invoke(item);
+			Date uDate = (Date) exType.getMethod("getUpdatedAt").invoke(item);
+			tag = tag + id;
 			if(cDate != null)
-				tag = tag ^ (cDate.getTime() << 32);
+				tag = tag + cDate.hashCode();
 			if(uDate != null)
-				tag = tag ^ (uDate.getTime() >> 32);
+				tag = tag + uDate.hashCode();
 			
 			if(exType == Product.class){
-				tag = tag ^ getEtagOfItems(((Product)item).getAttributes(), Attribute.class);
+				tag = tag + 17 * getEtagOfItems(((Product)item).getAttributes(), Attribute.class);
 			}
 			if(exType == User.class){
-				tag = tag ^ getEtagOfItems(((User)item).getAddresses(), Address.class);
+				tag = tag + 17 * getEtagOfItems(((User)item).getAddresses(), Address.class);
 			}
 			if(exType == Cart.class){
-				tag = tag ^ getEtagOfItems(((Cart)item).get, Address.class);
-			}
-				
-			
-				
+				tag = tag + 17 * getEtagOfItems(((Cart)item).getCartHasProduct(), CartHasProduct.class);
+			}				
 		}
-		return null;
+		return tag;
 	}
+	
 
-	@TokenAuthenticator
+	//@TokenAuthenticator
 	@LogAction(value = "api", logLevel = LogLevel.DEBUG)	
 	public static Result orders(final String id, final String datetime) {
 		return getItems(id, datetime, Cart.class);
