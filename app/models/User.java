@@ -8,7 +8,6 @@ import com.avaje.ebean.annotation.UpdatedTimestamp;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import play.db.ebean.*;
-import play.data.format.*;
 import play.data.validation.*;
 
 @Entity

@@ -7,10 +7,10 @@
     <h1>Kundenliste</h1>
     @form(action = routes.User.search()) {
         <div class="form-group">
-            <input type="text" class="form-control" name="search" id="search" placeholder="Suchen nach id, Name, Vorname, oder E-Mailadresse" />
+            <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Suchen nach id, Name, Vorname, oder E-Mailadresse" />
         </div>
         <div class="form-group">
-            <button type="submit" id="signin" class="btn btn-default">Suchen</button>
+            <button type="submit" id="search" class="btn btn-default">Suchen</button>
             <a href="@routes.Account.registerIndex()">Neuer User erfassen</a>
         </div>
     }

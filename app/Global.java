@@ -15,10 +15,10 @@ public class Global extends GlobalSettings {
 	 */
 	public void  onStart(Application app){
 		// Load initial data to the database
-		loadInitData(app);
+		//loadInitData(app);
 
         // Load test data to the database
-        loadTestData(app);
+        //loadTestData(app);
 	}
 
 	private void loadInitData(Application app) {

@@ -200,7 +200,7 @@ public class User extends UserData {
         if (isLoggedIn() && isAdminUser()) {
             List<models.User> users = null;
             DynamicForm bindedForm  = form().bindFromRequest();
-            String searchString = bindedForm.get("search");
+            String searchString = bindedForm.get("keyword");
             StringBuilder strB  = new StringBuilder();
             strB.append("%");
             strB.append(searchString);
@@ -215,7 +215,7 @@ public class User extends UserData {
             
             
             if (addresses.size() > 0) {
-                users = new ArrayList();
+                users = new ArrayList<models.User>();
                 Iterator<Address> itrAddress = addresses.iterator();
                 while (itrAddress.hasNext()) {
                     Address address  = itrAddress.next();

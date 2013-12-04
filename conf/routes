@@ -22,7 +22,7 @@ GET     /user/data                  controllers.User.showData(userid: Integer)
 POST    /user/data/update           controllers.User.updateData(userid: Integer)
 GET     /user/transactions          controllers.User.showTransactions(userid: Integer)
 GET     /user/list                  controllers.User.list
-GET     /user/search                controllers.User.search
+POST    /user/search                controllers.User.search
 GET     /user/delete                controllers.User.delete(userid: Integer)
 GET     /user/changeUserType        controllers.User.changeUserType(userid: Integer)
 GET     /user/changeStatus          controllers.User.changeStatus(userid: Integer)
