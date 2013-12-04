@@ -82,7 +82,14 @@ public class Product extends Model {
         this.ean = ean;
     }
 
-    public Date getUpdatedAt() {
+    /**
+	 * @return the attributes
+	 */
+	public List<Attribute> getAttributes() {
+		return attributes;
+	}
+
+	public Date getUpdatedAt() {
         return updatedAt;
     }
 
