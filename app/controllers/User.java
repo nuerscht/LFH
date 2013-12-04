@@ -169,18 +169,18 @@ public class User extends UserData {
 
             user.setIsActive(!user.isActive());
             
-            //if the changed user is the current user
-            if (getLoggedInUserId().equals(userid)) {
-                userLogout();
-                return Application.index();
-            }
-            
             Ebean.beginTransaction();
             try {
                 Ebean.save(user);
                 Ebean.commitTransaction();
             } finally {
                 Ebean.endTransaction();
+            }
+            
+            //if the changed user is the current user
+            if (getLoggedInUserId().equals(userid)) {
+                userLogout();
+                return Application.index();
             }
             
             return list();
