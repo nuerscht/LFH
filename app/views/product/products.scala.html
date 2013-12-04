@@ -1,0 +1,7 @@
+@(products: List[models.Product], login: Html) 
+
+@main("Welcome to the LFH Shop", login) {
+    <div class="products">
+        @productlist(products)
+    </div>
+}

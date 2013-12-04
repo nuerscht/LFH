@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Product extends Model {
@@ -120,6 +121,14 @@ public class Product extends Model {
         }
 
         return false;
+    }
+    
+    public List<Rating> getRatings(){
+    	return Rating.find.where().eq("product_id", this.getId()).orderBy("updatedAt desc").findList();
+    }
+    
+    public List<Image> getImages(){
+    	return Image.find.where().eq("product_id", this.getId()).findList();
     }
     
     /**

@@ -6,13 +6,8 @@ import com.avaje.ebean.Ebean;
 
 import models.*;
 import play.data.Form;
-import play.data.validation.Constraints.Max;
-import play.data.validation.Constraints.Min;
-import play.data.validation.Constraints.Required;
 import play.mvc.Result;
-import views.html.details;
-import views.html.products;
-import views.html.search;
+import views.html.product.*;
 
 public class Product extends Eshomo {
 	
@@ -34,8 +29,9 @@ public class Product extends Eshomo {
     public static Result productDetails(Integer id) {
     	Form<Rating> form = Form.form(Rating.class);
     	models.Product product = models.Product.find.byId(id);
+    	
     	if (product != null) {
-            return ok(details.render(product, Rating.find.where().eq("product", product).findList(), form, getLoginContent()));
+            return ok(details.render(product, product.getImages(), product.getRatings(), form, getLoginContent()));
         } else {
             return notFound("Product with id " + id + " not found");
         }
@@ -64,14 +60,22 @@ public class Product extends Eshomo {
     	
     	Form<Rating> form = Form.form(Rating.class).bindFromRequest();
     	
-    	
     	if(form.hasErrors()) {
-            return badRequest(details.render(product, Rating.find.where().eq("product", product).findList(), form, getLoginContent()));
+            return badRequest(details.render(product, product.getImages(), product.getRatings(), form, getLoginContent()));
         } else {
         	Rating rating = form.get();
-        	//Map data = form.get(); Ebean.find(Rating.class), Rating.find.where().eq("Product", product).findList()
+        	rating.setProduct(product);
+        	//@TODO Get User from session
+        	rating.setUser(null);
+        	try{
+        		Ebean.beginTransaction();
+        		Ebean.save(rating);
+        		Ebean.commitTransaction();
+        	}finally{
+        		Ebean.endTransaction();
+        	}
             return ok(
-            		details.render(product, Rating.find.where().eq("product", product).findList(), ratingForm, getLoginContent())
+            		details.render(product, product.getImages(), product.getRatings(), ratingForm, getLoginContent())
             );
         }
     }

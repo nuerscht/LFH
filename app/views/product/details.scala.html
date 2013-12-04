@@ -1,0 +1,76 @@
+@(product: models.Product, images: List[Image], ratings: List[Rating], ratingForm: Form[Rating], login: Html)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Welcome to the LFH Shop", login) {
+	<h1>@product.getTitle()</h1>
+	
+    <ul class="pagination">
+       <li><a href="#">&laquo;</a></li>
+       @for((image, index) <- images.zipWithIndex){
+           <li><a href="#">@{index + 1}</a></li>
+       }
+
+       <li><a href="#">&raquo;</a></li>
+    </ul>
+    <div class="panel panel-default">
+    <div class="panel-body">
+	<ul>
+		<div><strong>ID</strong> @product.getId()</div>
+		<div><strong>Price</strong> @product.getPrice()</div>
+		<div><strong>EAN:</strong> @product.getEan()</div>
+	</ul>
+		@product.getDescription()
+	</div>
+    </div>
+
+	@if(ratingForm.hasGlobalErrors) {
+    	<div class="error">
+        	@ratingForm.globalError.message
+    	</div>
+	}
+
+    <div>
+    @form(routes.Product.submitRating(product.getId)) {
+   		<fieldset>
+            <h2>Bewertungen</h2>
+            
+            @inputRadioGroup(
+                ratingForm("rate"), 
+                options = options("1" -> "1" ,"2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"),
+                '_label -> "Rating",
+                'required -> "required"
+            )
+            
+            @textarea(
+                ratingForm("comment"), 
+                '_label -> "Comment"
+            )
+
+        </fieldset>
+
+        <div class="actions">
+            <input type="submit" class="btn primary" value="Rate">
+            <a href="@routes.Product.productDetails(product.getId)" class="btn">Cancel</a>
+        </div>
+        
+    }
+    @for(rating <- ratings) {
+        <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div><strong>Benutzer:</strong> @rating.getUser()</div>
+                <div><strong>Datum:</strong> @rating.getCreatedAt()</div>
+            </div>
+            <div>@rating.getRate()</div>
+            <strong>Kommentar</strong><br>
+            @rating.getComment()
+        </div>
+        </div>
+	}
+    </div>
+}
+
+    
+
