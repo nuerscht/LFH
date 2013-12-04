@@ -1,7 +1,6 @@
 package models;
 
 import play.db.ebean.*;
-import play.data.format.*;
 import play.data.validation.*;
 import com.avaje.ebean.annotation.*;
 
@@ -9,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.util.*;
-import javax.persistence.*;
 
 @Entity
 public class Address extends Model {
@@ -45,7 +43,8 @@ public class Address extends Model {
     @Constraints.Required
     private Boolean isActive;
 
-    @UpdatedTimestamp
+
+	@UpdatedTimestamp
     private Date updatedAt;
 
     @CreatedTimestamp
@@ -125,7 +124,7 @@ public class Address extends Model {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
+    public void setIsActive(Boolean active) {
         isActive = active;
     }
 

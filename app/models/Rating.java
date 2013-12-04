@@ -2,8 +2,6 @@ package models;
 
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 

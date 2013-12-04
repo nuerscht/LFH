@@ -10,10 +10,20 @@ import models.UserType;
 import play.data.DynamicForm;
 import play.mvc.*;
 import static play.data.Form.*;
-import views.html.index;
 import views.html.account.*;
 
-public class Account extends Eshomo {
+/**
+ * controller for user actions
+ * @author boe
+ *
+ */
+public class Account extends UserData {
+	
+	/**
+	 * handles user login
+	 * @author boe
+	 * @return
+	 */
 	public static Result login() {
 		DynamicForm bindedForm = form().bindFromRequest();
 
@@ -21,25 +31,26 @@ public class Account extends Eshomo {
 		if (users.size() == 1) {
 			User user = users.get(0);
 			if (user.isPasswordCorrect(bindedForm.get("password"))) {
-				session("userid",    user.getId().toString());
-				session("loggedin",  "1");
-				long unixTime = System.currentTimeMillis() / 1000L;
-				session("logintime", Long.toString(unixTime));
+				userLogin(user);
 			} else {
-				session().clear();
+				userLogout();
+				setLoginMessage("Login nicht erfolgreich");
 			}
+		} else {
+            setLoginMessage("Login nicht erfolgreich");
 		}
-		
-		return ok(
-			index.render("", getLoginContent())
-		);
+
+        return Application.index();
 	}
 	
+	/**
+	 * handles user logout
+	 * @author boe
+	 * @return
+	 */
 	public static Result logout() {
-		session().clear();
-		return ok(
-			index.render("", getLoginContent())
-		);
+		userLogout();
+        return Application.index();
 	}
 	
     /**
@@ -87,6 +98,13 @@ public class Account extends Eshomo {
     	}
     }
     
+    /**
+     * check if the filled in data is valid for an user registration
+     * @param address
+     * @param user
+     * @param bindedForm
+     * @return null if all is ok or an object if an validate error occured
+     */
     private static Result validateRegister(Address address, User user, DynamicForm bindedForm) {
     	String message = "";
 	
@@ -119,6 +137,12 @@ public class Account extends Eshomo {
 		);
     }
 
+    /**
+     * fills the entered form data into the model objects
+     * @param bindedForm
+     * @param address
+     * @param user
+     */
 	protected static void fillModels(DynamicForm bindedForm, Address address, User user) {
 			
 		user.setEmail(bindedForm.get("email"));
@@ -129,7 +153,7 @@ public class Account extends Eshomo {
 		address.setPlace(bindedForm.get("place"));
 		address.setStreet(bindedForm.get("street"));
 		address.setZip(bindedForm.get("zip"));
-		address.setActive(true);
+		address.setIsActive(true);
     	
 		//save to database
 		user.setEmail(bindedForm.get("email"));

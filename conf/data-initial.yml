@@ -1,0 +1,88 @@
+cartstatus:
+  - !!models.CartStatus
+    &open
+    id: open
+    description: The cart is open and the products in it have not already been ordered.
+  - !!models.CartStatus
+    &ordered
+    id: ordered
+    description: The products inside the cart have been ordered.
+usertypes:
+  - !!models.UserType
+    &admin
+    id: admin
+    description: The user is an admin and has all the privileges to access the admin interface.
+  - !!models.UserType
+    &customer
+    id: customer
+    description: The user is a customer and has no privileges to access the admin interface.
+users:
+  - !!models.User
+    &boe
+    email: patrick.boesch@students.ffhs.ch
+    password: ffhs2011
+    isActive: true
+    type: *admin
+  - !!models.User
+    &vil
+    email: andy.villiger@students.ffhs.ch
+    password: ffhs2011
+    isActive: true
+    type: *admin
+  - !!models.User
+    &ald
+    email: jonas.alder@students.ffhs.ch
+    password: ffhs2011
+    isActive: true
+    type: *admin
+  - !!models.User
+    &dal
+    email: sandro.dallo@students.ffhs.ch
+    password: ffhs2011
+    isActive: true
+    type: *admin
+addresses:
+  - !!models.Address
+    &ad1
+    user: *boe
+    firstname: Patrick
+    lastname: Bösch
+    street: Musterstrasse 1
+    zip: 8000
+    place: Zürich
+    phone: 099 999 99 99
+    email: patrick.boesch@students.ffhs.ch
+    isActive: true
+  - !!models.Address
+    &ad2
+    user: *vil
+    firstname: Andy
+    lastname: Villiger
+    street: Tödistrasse 20
+    zip: 8002
+    place: Zürich
+    phone: 079 777 91 26
+    email: andy.villiger@students.ffhs.ch
+    isActive: true
+  - !!models.Address
+    &ad3
+    user: *ald
+    firstname: Jonas
+    lastname: Alder
+    street: Musterstrasse 1
+    zip: 8000
+    place: Zürich
+    phone: 099 999 99 99
+    email: jonas.alder@students.ffhs.ch
+    isActive: true
+  - !!models.Address
+    &ad4
+    user: *dal
+    firstname: Sandro
+    lastname: Dallo
+    street: Musterstrasse 1
+    zip: 8000
+    place: Zürich
+    phone: 099 999 99 99
+    email: sandro.dallo@students.ffhs.ch
+    isActive: true

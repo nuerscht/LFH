@@ -17,7 +17,8 @@ public class Tag extends Model {
 
     private String description;
 
-    @CreatedTimestamp
+
+	@CreatedTimestamp
     private Date createdAt;
 
     public static Finder<String, Tag> find = new Finder<String, Tag>(String.class, Tag.class);
@@ -26,9 +27,23 @@ public class Tag extends Model {
         return id;
     }
 
-    public String getDescription() {
+    /**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getDescription() {
         return description;
     }
+    /**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 
     public Date getCreatedAt() {
         return createdAt;
