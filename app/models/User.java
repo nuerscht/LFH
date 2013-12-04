@@ -41,8 +41,9 @@ public class User extends Model {
 
 	@Constraints.Required
     private Boolean isActive = true;
-
-
+	
+	@OneToMany
+	private List<Address> addresses;
 
 	@UpdatedTimestamp
     private Date updatedAt;
@@ -80,7 +81,14 @@ public class User extends Model {
         isActive = active;
     }
 
-    public Date getUpdatedAt() {
+    /**
+	 * @return the addresses
+	 */
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+
+	public Date getUpdatedAt() {
         return updatedAt;
     }
 

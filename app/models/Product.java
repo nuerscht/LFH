@@ -1,18 +1,19 @@
 package models;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.annotation.CreatedTimestamp;
-import com.avaje.ebean.annotation.UpdatedTimestamp;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.RandomStringUtils;
-import play.data.validation.Constraints;
-import play.db.ebean.Model;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import java.util.Date;
+import javax.persistence.OneToMany;
+
+import play.data.validation.Constraints;
+import play.db.ebean.Model;
+
+import com.avaje.ebean.annotation.CreatedTimestamp;
+import com.avaje.ebean.annotation.UpdatedTimestamp;
+
 
 @Entity
 public class Product extends Model {
@@ -24,16 +25,21 @@ public class Product extends Model {
     private String title;
 
     @Constraints.Required
-    private Double price;
-
+    private Double price;   
+    
     @Column
     private String description;
 
     @Constraints.Required
     private Long ean;
+    
 
+    @OneToMany
+    private List<Attribute> attributes;
+    
     @UpdatedTimestamp
     private Date updatedAt;
+
 
     @CreatedTimestamp
     private Date createdAt;

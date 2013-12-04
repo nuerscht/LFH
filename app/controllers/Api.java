@@ -1,12 +1,14 @@
 package controllers;
 
+import play.i18n.Messages;
+import play.mvc.Controller;
+import play.mvc.Result;
+import views.xml.xml.products;
 import customactions.CustomLogger;
 import customactions.LogAction;
 import customactions.LogLevel;
 import customactions.TokenAuthenticator;
-import play.i18n.Messages;
-import play.mvc.Controller;
-import play.mvc.Result;
+
 
 public class Api extends Controller {
 
@@ -70,10 +72,12 @@ public class Api extends Controller {
 		return getItems(id, datetime, ORDERS);
 	}
 	
-	@TokenAuthenticator
+	//@TokenAuthenticator
 	@LogAction(value = "api", logLevel = LogLevel.DEBUG)
 	public static Result version() {
-		return ok(VERSION);
+		//return ok(VERSION);
+		response().setHeader(CONTENT_TYPE, "text/xml");
+		return ok(products.render("test").toString().replaceFirst("\\s+\\n", ""));
 	}
 	
 	private static Result getArticlesResult(String etag, int getId, long dt,
