@@ -102,8 +102,10 @@ public class Eshomo extends Controller {
 			ByteArrayInputStream bi = new ByteArrayInputStream(b);
 			ObjectInputStream    si = new ObjectInputStream(bi);
 			return (models.User)si.readObject();
-		} catch (ClassNotFoundException |IOException e) {
+		} catch (ClassNotFoundException e) {
 			System.out.println(e);
+		} catch (IOException e){
+			System.out.println(e);	
 		}
 		
 		return null;

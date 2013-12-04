@@ -1,4 +1,4 @@
-@(product: models.Product, images: List[Image], ratings: List[Rating], ratingForm: Form[Rating], login: Html)
+@(product: models.Product, images: List[Image], ratings: List[Rating], ratingForm: Form[Rating], login: Html, loggedin: Boolean)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -32,6 +32,7 @@
 	}
 
     <div>
+    @if(loggedin){
     @form(routes.Product.submitRating(product.getId)) {
    		<fieldset>
             <h2>Bewertungen</h2>
@@ -52,10 +53,10 @@
 
         <div class="actions">
             <input type="submit" class="btn primary" value="Rate">
-            <a href="@routes.Product.productDetails(product.getId)" class="btn">Cancel</a>
+            <a href="@routes.Product.details(product.getId)" class="btn">Cancel</a>
         </div>
         
-    }
+    }}
     @for(rating <- ratings) {
         <div class="panel panel-default">
         <div class="panel-body">

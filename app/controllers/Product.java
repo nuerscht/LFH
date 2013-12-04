@@ -26,12 +26,12 @@ public class Product extends Eshomo {
      * @param id Id of Produt to show
      * @return Product detail page or error
      */
-    public static Result productDetails(Integer id) {
+    public static Result details(Integer id) {
     	Form<Rating> form = Form.form(Rating.class);
     	models.Product product = models.Product.find.byId(id);
     	
     	if (product != null) {
-            return ok(details.render(product, product.getImages(), product.getRatings(), form, getLoginContent()));
+            return ok(details.render(product, product.getImages(), product.getRatings(), form, getLoginContent(), isLoggedIn()));
         } else {
             return notFound("Product with id " + id + " not found");
         }
@@ -60,13 +60,12 @@ public class Product extends Eshomo {
     	
     	Form<Rating> form = Form.form(Rating.class).bindFromRequest();
     	
-    	if(form.hasErrors()) {
-            return badRequest(details.render(product, product.getImages(), product.getRatings(), form, getLoginContent()));
+    	if(form.hasErrors() || !isLoggedIn()) {
+            return badRequest(details.render(product, product.getImages(), product.getRatings(), form, getLoginContent(), isLoggedIn()));
         } else {
         	Rating rating = form.get();
         	rating.setProduct(product);
-        	//@TODO Get User from session
-        	rating.setUser(null);
+        	rating.setUser(getUserObj());
         	try{
         		Ebean.beginTransaction();
         		Ebean.save(rating);
@@ -75,7 +74,7 @@ public class Product extends Eshomo {
         		Ebean.endTransaction();
         	}
             return ok(
-            		details.render(product, product.getImages(), product.getRatings(), ratingForm, getLoginContent())
+            		details.render(product, product.getImages(), product.getRatings(), ratingForm, getLoginContent(), isLoggedIn())
             );
         }
     }

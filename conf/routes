@@ -7,7 +7,7 @@ GET     /                           controllers.Application.index()
 
 # Products
 GET     /products                   controllers.Product.products()
-GET     /details/:id                controllers.Product.productDetails(id: Integer)
+GET     /details/:id                controllers.Product.details(id: Integer)
 GET     /search            			controllers.Product.search(p:Int ?= 0, s ?= "Title", o ?= "asc", q ?= "")
 
 POST 	/rate/:id					controllers.Product.submitRating(id: Integer)

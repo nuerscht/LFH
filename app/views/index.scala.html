@@ -1,13 +1,5 @@
 @(products: List[models.Product], login: Html)
 
 @main("Welcome to the LFH shop", login) {
-    <div class="products">
-        @for(product <- products) {
-            <div class="product">
-                <img src="http://placehold.it/100x100" class="img-thumbnail" alt="Product image">
-                <a href="#">@product.getTitle</a>
-                <p>@product.getDescription</p>
-            </div>
-        }
-    </div>
+    @product.productlist(products)
 }

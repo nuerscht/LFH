@@ -1,20 +1,12 @@
 @(products: List[models.Product]) 
 
-@for(product <- products){
-
-<div class="media">
-	<a class="pull-left"
-		href="@routes.Product.productDetails(product.getId)"> <img
-		class="media-object" src="http://placehold.it/100x100" alt="">
-	</a>
-	<div class="media-body">
-		<h4 class="media-heading">
-			<a href="@routes.Product.productDetails(product.getId)">@product.getTitle()</a>
-		</h4>
-		@product.getDescription()
-	</div>
-</div>
-
-}
-
+<div class="products">
+    @for(product <- products){
+    <div class="product">
+	   <img src="http://placehold.it/100x100" class="img-thumbnail"
+		alt="Product image"> <a href="@routes.Product.details(product.getId)">@product.getTitle</a>
+	   <p>@product.getDescription</p>
+    </div>
+    }
+<div class="products">
 
