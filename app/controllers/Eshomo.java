@@ -5,6 +5,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+import models.UserType;
+
 import org.apache.commons.codec.binary.Base64;
 
 import play.api.templates.Html;
@@ -17,6 +20,15 @@ import views.html.account.loggedin;
  * @author boe
  */
 public class Eshomo extends Controller {
+	/**
+	 * holds the message if a problem with the login exists
+	 */
+	private static String loginMessage = "";
+	
+	protected static void setLoginMessage(final String message) {
+		loginMessage = message;
+	}
+	
 	/**
 	 * stores user login in session
 	 * @author boe
@@ -40,22 +52,33 @@ public class Eshomo extends Controller {
 	 * @return returns the html for the @login box
 	 */
 	protected static Html getLoginContent() {
-		if ("1".equals(session("loggedin")))
-			return loggedin.render();
-		else 
-			return login.render();
+		if ("1".equals(session("loggedin"))) {
+			return loggedin.render(getUserObj());
+		} else 
+			return login.render(loginMessage);
 	}
-	
-	/**
-	 * checks if the user is logged in
-	 * @return
-	 */
-	protected static Boolean isLoggedIn() {
-		if ("1".equals(session("loggedin")))
-			return Boolean.TRUE;
-		else 
-			return Boolean.FALSE;
-	}
+    
+    /**
+     * checks if the user is logged in
+     * @return
+     */
+    protected static Boolean isLoggedIn() {
+        if ("1".equals(session("loggedin")))
+            return Boolean.TRUE;
+        else 
+            return Boolean.FALSE;
+    }
+    
+    /**
+     * checks if the user is admin
+     * @return
+     */
+    protected static Boolean isAdminUser() {
+        if (getUserObj().getType().getId().equals(UserType.ADMIN))
+            return Boolean.TRUE;
+        else 
+            return Boolean.FALSE;
+    }
 	
 	/**
 	 * returns the id of the current logged in user
@@ -90,7 +113,7 @@ public class Eshomo extends Controller {
 	 * serialize user object and save it into session
 	 * @param user
 	 */
-	private static void setUserObj(final models.User user) {
+	protected static void setUserObj(final models.User user) {
 		try {
 			ByteArrayOutputStream bo = new ByteArrayOutputStream();
 			ObjectOutputStream out = new ObjectOutputStream(bo);

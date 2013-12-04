@@ -1,8 +1,15 @@
+@(message: String)
+
 @import helper._
 @import helper.twitterBootstrap._
 
 @form(action = routes.Account.login(), 'role ->"form") {
-	
+	@if(!message.isEmpty()) {
+		<div class="alert alert-info">
+			<a class="close" data-dismiss="alert">x</a> 
+			@message 
+		</div>
+	}
     <div class="form-group">
         <label for="email">Benutzername</label>
         <input type="email" class="form-control" name="email" id="email" placeholder="E-Mailadresse eingeben">

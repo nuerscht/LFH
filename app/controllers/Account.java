@@ -10,7 +10,6 @@ import models.UserType;
 import play.data.DynamicForm;
 import play.mvc.*;
 import static play.data.Form.*;
-import views.html.index;
 import views.html.account.*;
 
 /**
@@ -35,7 +34,10 @@ public class Account extends UserData {
 				userLogin(user);
 			} else {
 				userLogout();
+				setLoginMessage("Login nicht erfolgreich");
 			}
+		} else {
+            setLoginMessage("Login nicht erfolgreich");
 		}
 
         return Application.index();

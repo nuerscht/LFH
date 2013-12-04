@@ -4,7 +4,7 @@
 @import helper.twitterBootstrap._
 
 @main("LFH Shop - Pers&ouml;nliche Daten", login) {
-	@form(action = routes.User.updateData()) {
+	@form(action = routes.User.updateData(userForm("id").value().toInt)) {
 		@if(!message.isEmpty()) {
 			<div class="alert alert-@messageType">
 				<a class="close" data-dismiss="alert">x</a> 

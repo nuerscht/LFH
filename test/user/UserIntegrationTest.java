@@ -42,8 +42,8 @@ public class UserIntegrationTest {
 	 * @author boe
 	 */
 	@Test
-	public void showDataWithoutLoginHttpStatus() {
-		withoutLoginHttpStatus("http://localhost:3333" + routes.User.showData());
+	public void showDataWithoutLoginHttpStatus(final int userid) {
+		withoutLoginHttpStatus("http://localhost:3333" + routes.User.showData(userid));
 	}
 	
 	/**
@@ -51,8 +51,8 @@ public class UserIntegrationTest {
 	 * @author boe
 	 */
 	@Test
-	public void showDataWithoutLoginContent() {
-		withoutLoginContent("http://localhost:3333" + routes.User.showData());
+	public void showDataWithoutLoginContent(final int userid) {
+		withoutLoginContent("http://localhost:3333" + routes.User.showData(userid));
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class UserIntegrationTest {
 	 */
 	@Test
 	public void showDataWithLoginCustomerHttpContent() {
-        showDataWithLoginContent("user1@students.ffhs.ch", "ffhs2011");
+        showDataWithLoginContent("user1@students.ffhs.ch", "ffhs2011", 5);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class UserIntegrationTest {
 	 */
 	@Test
 	public void showDataWithLoginAdminHttpContent() {
-		showDataWithLoginContent("patrick.boesch@students.ffhs.ch", "ffhs2011");
+		showDataWithLoginContent("patrick.boesch@students.ffhs.ch", "ffhs2011", 1);
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class UserIntegrationTest {
 	 * @param user 
 	 * @param password
 	 */
-	private void showDataWithLoginContent(final String user, final String password) {
+	private void showDataWithLoginContent(final String user, final String password, final int userid) {
 		running(testServer(3333), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo("http://localhost:3333");
@@ -89,7 +89,7 @@ public class UserIntegrationTest {
                 
                 assertThat(browser.pageSource()).contains("Ausloggen");
 
-                browser.goTo("http://localhost:3333" + routes.User.showData());
+                browser.goTo("http://localhost:3333" + routes.User.showData(userid));
 
                 assertThat(browser.pageSource()).contains("Benutzerdaten");
                 assertThat(browser.pageSource()).contains("Adresse");
@@ -105,7 +105,7 @@ public class UserIntegrationTest {
 	 */
 	@Test
 	public void updateDataWithLoginCustomerHttpContent() {
-		updateDataWithLoginContent("user1@students.ffhs.ch", "ffhs2011");
+		updateDataWithLoginContent("user1@students.ffhs.ch", "ffhs2011", 5);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class UserIntegrationTest {
 	 */
 	@Test
 	public void updateDataWithLoginAdminHttpContent() {
-		updateDataWithLoginContent("patrick.boesch@students.ffhs.ch", "ffhs2011");
+		updateDataWithLoginContent("patrick.boesch@students.ffhs.ch", "ffhs2011", 1);
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class UserIntegrationTest {
 	 * @param user 
 	 * @param password
 	 */
-	private void updateDataWithLoginContent(final String user, final String password) {
+	private void updateDataWithLoginContent(final String user, final String password, final int userid) {
 		running(testServer(3333), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo("http://localhost:3333");
@@ -133,7 +133,7 @@ public class UserIntegrationTest {
                 
                 assertThat(browser.pageSource()).contains("Ausloggen");
 
-                browser.goTo("http://localhost:3333" + routes.User.showData());
+                browser.goTo("http://localhost:3333" + routes.User.showData(userid));
                 
                 String plz = Integer.toString(new Random().nextInt(9000)+1000);
                 
@@ -154,8 +154,8 @@ public class UserIntegrationTest {
 	 * @author boe
 	 */
 	@Test
-	public void showTransactionsWithoutLoginHttpStatus() {
-		withoutLoginHttpStatus("http://localhost:3333" + routes.User.showTransactions());
+	public void showTransactionsWithoutLoginHttpStatus(final int userid) {
+		withoutLoginHttpStatus("http://localhost:3333" + routes.User.showTransactions(userid));
 	}
 	
 	/**
@@ -163,8 +163,8 @@ public class UserIntegrationTest {
 	 * @author boe
 	 */
 	@Test
-	public void showTransactionsWithoutLoginContent() {
-		withoutLoginContent("http://localhost:3333" + routes.User.showTransactions());
+	public void showTransactionsWithoutLoginContent(final int userid) {
+		withoutLoginContent("http://localhost:3333" + routes.User.showTransactions(userid));
 	}
 	
 	/**
@@ -173,7 +173,7 @@ public class UserIntegrationTest {
 	 */
 	@Test
 	public void showTransactionsWithLoginCustomerHttpContent() {
-		showTransactionsWithLoginContent("user1@students.ffhs.ch", "ffhs2011");
+		showTransactionsWithLoginContent("user1@students.ffhs.ch", "ffhs2011", 5);
 	}
 
 	/**
@@ -182,7 +182,7 @@ public class UserIntegrationTest {
 	 */
 	@Test
 	public void showTransactionsWithLoginAdminHttpContent() {
-		showTransactionsWithLoginContent("patrick.boesch@students.ffhs.ch", "ffhs2011");
+		showTransactionsWithLoginContent("patrick.boesch@students.ffhs.ch", "ffhs2011", 1);
 	}
 	
 	/**
@@ -190,7 +190,7 @@ public class UserIntegrationTest {
 	 * @param user 
 	 * @param password
 	 */
-	private void showTransactionsWithLoginContent(final String user, final String password) {
+	private void showTransactionsWithLoginContent(final String user, final String password, final int userid) {
 		running(testServer(3333), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo("http://localhost:3333");
@@ -201,7 +201,7 @@ public class UserIntegrationTest {
                 
                 assertThat(browser.pageSource()).contains("Ausloggen");
 
-                browser.goTo("http://localhost:3333" + routes.User.showTransactions());
+                browser.goTo("http://localhost:3333" + routes.User.showTransactions(userid));
 
                 assertThat(browser.pageSource()).contains("Bestellungen");
                 assertThat(browser.pageSource()).contains("Status");
