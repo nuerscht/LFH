@@ -41,6 +41,13 @@ users:
     password: ffhs2011
     isActive: true
     type: *admin
+countries:
+  - !!models.Country
+    &ch
+    name: Schweiz
+  - !!models.Country
+    &de
+    name: Deutschland
 addresses:
   - !!models.Address
     &ad1
@@ -53,6 +60,8 @@ addresses:
     phone: 099 999 99 99
     email: patrick.boesch@students.ffhs.ch
     isActive: true
+    country: *ch
+    birthday: "1981-03-19 00:00:00"
   - !!models.Address
     &ad2
     user: *vil
@@ -64,6 +73,8 @@ addresses:
     phone: 079 777 91 26
     email: andy.villiger@students.ffhs.ch
     isActive: true
+    country: *ch
+    birthday: "1984-02-12 00:00:00"
   - !!models.Address
     &ad3
     user: *ald
@@ -75,6 +86,8 @@ addresses:
     phone: 099 999 99 99
     email: jonas.alder@students.ffhs.ch
     isActive: true
+    country: *ch
+    birthday: "1979-06-13 00:00:00"
   - !!models.Address
     &ad4
     user: *dal
@@ -86,3 +99,5 @@ addresses:
     phone: 099 999 99 99
     email: sandro.dallo@students.ffhs.ch
     isActive: true
+    country: *ch
+    birthday: "1978-10-14 00:00:00"

@@ -1,10 +1,13 @@
 package controllers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.avaje.ebean.Ebean;
 
 import models.Address;
+import models.Country;
 import models.User;
 import models.UserType;
 import play.data.DynamicForm;
@@ -81,11 +84,11 @@ public class Account extends UserData {
 		    	}
 		
 		    	return ok(
-		    			register.render(form(User.class).fill(user), form(Address.class).fill(address), "Ihr Konto wurde erfolgreich angelegt.", "success", getLoginContent())
+		    			register.render(form(User.class).fill(user), form(Address.class).fill(address), getCountries(), "Ihr Konto wurde erfolgreich angelegt.", "success", getLoginContent())
 		    			);
     		} else {
     			return ok (
-    					register.render(form(User.class).fill(user), form(Address.class).fill(address), "Bitte AGB's aktzeptieren.", "info", getLoginContent())
+    					register.render(form(User.class).fill(user), form(Address.class).fill(address), getCountries(), "Bitte AGB's aktzeptieren.", "info", getLoginContent())
     			);
     		}
     	} catch (Exception e) {
@@ -93,9 +96,13 @@ public class Account extends UserData {
     		if (errorMessage == null)
     			errorMessage = e.toString();
     		return ok(
-	    		register.render(form(User.class).fill(user), form(Address.class).fill(address), errorMessage, "error", getLoginContent())
+	    		register.render(form(User.class).fill(user), form(Address.class).fill(address), getCountries(), errorMessage, "error", getLoginContent())
 	    	);
     	}
+    }
+    
+    private static List<Country> getCountries() {
+        return Country.find.findList();
     }
     
     /**
@@ -119,7 +126,7 @@ public class Account extends UserData {
 		
 		if (!message.isEmpty()) {
 			return ok(
-				register.render(form(User.class).fill(user), form(Address.class).fill(address), message, "info", getLoginContent())
+				register.render(form(User.class).fill(user), form(Address.class).fill(address), getCountries(), message, "info", getLoginContent())
 			);
 		}
 				
@@ -133,7 +140,7 @@ public class Account extends UserData {
 	 */
     public static Result registerIndex() {
 		return ok(
-				register.render(form(User.class), form(Address.class), "", "", getLoginContent())
+				register.render(form(User.class), form(Address.class), getCountries(), "", "", getLoginContent())
 		);
     }
 
@@ -153,9 +160,20 @@ public class Account extends UserData {
 		address.setPlace(bindedForm.get("place"));
 		address.setStreet(bindedForm.get("street"));
 		address.setZip(bindedForm.get("zip"));
+
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            address.setBirthday(dateFormat.parse(bindedForm.get("birthday")));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        Country country = Country.find.byId(Integer.decode(bindedForm.get("country")));
+        address.setCountry(country);
+		
 		address.setIsActive(true);
     	
-		//save to database
 		user.setEmail(bindedForm.get("email"));
 		user.setPassword(bindedForm.get("password"));
 		

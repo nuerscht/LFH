@@ -346,6 +346,13 @@ users:
    isActive: true
    type: *customer
 # addresses
+countries:
+  - !!models.Country
+    &ch
+    name: Schweiz
+  - !!models.Country
+    &de
+    name: Deutschland
 addresses:
  - !!models.Address
     &ad1
@@ -358,6 +365,8 @@ addresses:
     phone: 099 999 99 99
     email: user1@students.ffhs.ch
     isActive: true
+    country: *ch
+    birthday: "1993-11-04 00:00:00"
  - !!models.Address
     &ad2
     user: *user2
@@ -369,6 +378,8 @@ addresses:
     phone: 099 888 88 88
     email: user2@students.ffhs.ch
     isActive: true
+    country: *ch
+    birthday: "1964-10-15 00:00:00"
  - !!models.Address
     &ad3
     user: *user3
@@ -380,3 +391,5 @@ addresses:
     phone: 099 777 77 77
     email: user3@students.ffhs.ch
     isActive: true
+    country: *ch
+    birthday: "1954-08-30 00:00:00"

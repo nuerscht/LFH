@@ -39,7 +39,7 @@ public class User extends Model {
     @Constraints.Required
     private Boolean isActive = true;
 
-	@UpdatedTimestamp
+    @UpdatedTimestamp
     private Date updatedAt;
 
     @CreatedTimestamp
