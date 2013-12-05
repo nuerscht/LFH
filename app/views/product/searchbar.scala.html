@@ -1,0 +1,13 @@
+@import helper._
+@import helper.twitterBootstrap._
+
+@form(action = routes.Product.search()) {
+    <div class="row">
+            <div class="input-group">
+                <input type="text" name="q" id="search" placeholder="Suche" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Suche</button>
+                </span>
+            </div><!-- /input-group -->
+    </div>
+}

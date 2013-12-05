@@ -1,0 +1,5 @@
+@(currentPage: com.avaje.ebean.Page[models.Product], login: Html)
+
+@main("Welcome to the LFH Shop", login) { 
+    @productlist(currentPage.getList)
+}

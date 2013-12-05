@@ -3,11 +3,6 @@ package models;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.annotation.*;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.RandomStringUtils;
-
-import play.data.format.Formats;
-import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 import javax.persistence.Entity;
@@ -19,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@UpdateMode(updateChangesOnly=false)
 public class Cart extends Model {
 
     @Id

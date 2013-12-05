@@ -1,12 +1,21 @@
 package models;
 
-import java.util.Date;
-import java.util.List;
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.Page;
+import com.avaje.ebean.annotation.CreatedTimestamp;
+import com.avaje.ebean.annotation.UpdateMode;
+import com.avaje.ebean.annotation.UpdatedTimestamp;
+
+import play.data.validation.Constraints;
+import play.db.ebean.Model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import java.util.Date;
+import java.util.List;
 
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -16,6 +25,7 @@ import com.avaje.ebean.annotation.UpdatedTimestamp;
 
 
 @Entity
+@UpdateMode(updateChangesOnly=false)
 public class Product extends Model {
 
     @Id
@@ -27,7 +37,7 @@ public class Product extends Model {
     @Constraints.Required
     private Double price;   
     
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Constraints.Required
@@ -128,5 +138,33 @@ public class Product extends Model {
         }
 
         return false;
+    }
+    
+    public List<Rating> getRatings(){
+    	return Rating.find.where().eq("product_id", this.getId()).orderBy("updatedAt desc").findList();
+    }
+    
+    public List<Image> getImages(){
+    	return Image.find.where().eq("product_id", this.getId()).findList();
+    }
+    
+    /**
+     * Return a page of computer
+     *
+     * @param page Page to display
+     * @param pageSize Number of products per page
+     * @param sortBy Product property used for sorting
+     * @param order Sort order (either or asc or desc)
+     * @param filter Filter applied on the products
+     */
+    public static Page<Product> page(int page, int pageSize, String sortBy, String order, String filter) {
+        return 
+            find.where()
+                .or(Expr.like("Title", "%" + filter + "%"),
+                		Expr.like("Description", "%" + filter + "%"))
+                .orderBy(sortBy + " " + order)
+                .findPagingList(pageSize)
+                .setFetchAhead(false)
+                .getPage(page);
     }
 }
