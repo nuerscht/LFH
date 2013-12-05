@@ -1,9 +1,9 @@
-@(userForm: Form[models.User], addressForm: Form[Address], message: String, messageType: String, login: Html)
+@(userForm: Form[models.User], addressForm: Form[Address], country: String, message: String, messageType: String, login: Html)
 
 @import helper._
 @import helper.twitterBootstrap._
 
-@main("LFH Shop - Pers&ouml;nliche Daten", login) {
+@main("LFH Shop - Persönliche Daten", login) {
 	@form(action = routes.User.updateData(userForm("id").value().toInt)) {
 		@if(!message.isEmpty()) {
 			<div class="alert alert-@messageType">
@@ -88,8 +88,32 @@
 		           'maxlength -> "45",
 		           '_help -> ""
                    )
+               
+        <label for="country">Land</label>
+        <div class="input">
+	        <select id="country" name="country" class="form-control" required="required">
+	        @for((key, value) <- Country.countries) {
+	            @if(key == country) {
+	                <option value="@key" selected>@value</option>   
+	            } else {
+	                <option value="@key">@value</option>      
+	            }
+	        }
+	        </select>
+	        <span class="help-inline"></span>
+	        <span class="help-block"></span> 
+        </div>
+        
+        @inputDate(addressForm("birthday"), 
+                   '_label -> "Geburtsdatum", 
+                   'class -> "form-control", 
+                   'placeholder -> "Ort eingeben", 
+                   'required -> "required",  
+                   'maxlength -> "45",
+                   '_help -> ""
+                   )
  		
-        <button type="submit" id="update-user-data" class="btn btn-default">Aktualisieren</button>
+        <button type="submit" id="update-user-data" class="btn btn-default">Aktualisieren </button>
         
 	}
 }

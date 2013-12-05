@@ -21,6 +21,9 @@ public class Address extends Model {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private Country country;
+
     @Constraints.MaxLength(45)
     private String firstname;
 
@@ -45,7 +48,8 @@ public class Address extends Model {
 
     @Constraints.Required
     private Boolean isActive;
-
+    
+    private Date birthday;
 
 	@UpdatedTimestamp
     private Date updatedAt;
@@ -129,6 +133,22 @@ public class Address extends Model {
 
     public void setIsActive(Boolean active) {
         isActive = active;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public Date getUpdatedAt() {

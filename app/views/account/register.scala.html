@@ -1,4 +1,4 @@
-@(userForm: Form[models.User], addressForm: Form[Address], message: String, messageType: String, login: Html)
+@(userForm: Form[models.User], addressForm: Form[Address], country: List[Country], message: String, messageType: String, login: Html)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -82,14 +82,30 @@
 		           'maxlength -> "20",
 		           '_help -> ""
                    )
-		
-		@inputText(addressForm("place"), 
-		           '_label -> "Ort", 
-		           'class -> "form-control", 
-		           'placeholder -> "Ort eingeben", 
-		           'required -> "required",  
-		           'maxlength -> "45",
-		           '_help -> ""
+        
+        @inputText(addressForm("place"), 
+                   '_label -> "Ort", 
+                   'class -> "form-control", 
+                   'placeholder -> "Ort eingeben", 
+                   'required -> "required",  
+                   'maxlength -> "45",
+                   '_help -> ""
+                   )
+                
+        @select(addressForm("country"), 
+                options(Country.countries),             
+                'class -> "form-control",
+                'required -> "required",
+                '_label -> "Land")
+        
+        
+        @inputDate(addressForm("birthday"), 
+                   '_label -> "Geburtsdatum", 
+                   'class -> "form-control", 
+                   'placeholder -> "Ort eingeben", 
+                   'required -> "required",  
+                   'maxlength -> "45",
+                   '_help -> ""
                    )
         
         <div class="checkbox">

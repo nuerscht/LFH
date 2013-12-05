@@ -2,6 +2,7 @@ package controllers;
 
 import static play.data.Form.form;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,6 +15,7 @@ import models.Address;
 import models.Cart;
 import models.CartHasProduct;
 import models.CartStatus;
+import models.Country;
 import models.UserType;
 import play.data.DynamicForm;
 import play.mvc.Result;
@@ -250,15 +252,25 @@ public class User extends UserData {
 			models.User user = getUserByUserId(userid);
 			
 			Address address = getAddressByUserId(user.getId());
-
+			
+			String strCountry = getCountry(address);
 
 			return ok (
-					userdata.render(form(models.User.class).fill(user), form(Address.class).fill(address), "", "", getLoginContent())
+					userdata.render(form(models.User.class).fill(user), form(Address.class).fill(address), strCountry, "", "", getLoginContent())
 					);
 		} else {
 			return forbidden();
 		}
 	}
+
+    protected static String getCountry(Address address) {
+        Country country = address.getCountry();
+        
+        String strCountry = "1";
+        if (country != null)
+            strCountry = country.getId().toString();
+        return strCountry;
+    }
 	
 	private static Address getAddressByUserId(final int userid) {
 		List<Address> addresses = Ebean.find(Address.class).where().eq("user_id", userid).where().eq("is_active", 1).findList();
@@ -301,10 +313,12 @@ public class User extends UserData {
 			//has Password changed
 			if (bindedForm.get("password") != null && !bindedForm.get("password").isEmpty()) {
 		    	message = validatePassword(address, user, bindedForm);
-				
+
+                String strCountry = getCountry(address);
+		    	
 				if (!message.isEmpty()) {
 					return ok(
-						userdata.render(form(models.User.class).fill(user), form(Address.class).fill(address), message, "info", getLoginContent())
+						userdata.render(form(models.User.class).fill(user), form(Address.class).fill(address), strCountry, message, "info", getLoginContent())
 					);
 				}
 				
@@ -317,6 +331,20 @@ public class User extends UserData {
 			address.setStreet(bindedForm.get("street"));
 			address.setZip(bindedForm.get("zip"));
 			address.setIsActive(true);
+
+	        try {
+	            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	            address.setBirthday(dateFormat.parse(bindedForm.get("birthday")));
+	        } catch (ParseException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	        
+	        Country country = Country.find.byId(Integer.decode(bindedForm.get("country")));
+	        address.setCountry(country);
+			
+
+            String strCountry = getCountry(address);
 	    	
 	    	Ebean.beginTransaction();
 	    	try {
@@ -328,7 +356,7 @@ public class User extends UserData {
 	    	}
 			
 	    	return ok(
-	    			userdata.render(form(models.User.class).fill(user), form(Address.class).fill(address), "Ihr Daten wurde erfolgreich aktualisiert.", "success", getLoginContent())
+	    			userdata.render(form(models.User.class).fill(user), form(Address.class).fill(address), strCountry, "Ihr Daten wurde erfolgreich aktualisiert.", "success", getLoginContent())
 	    	);
 		} else {
 			return forbidden();

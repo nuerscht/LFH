@@ -46,7 +46,7 @@ public class User extends Model {
 	@OneToMany
 	private List<Address> addresses;
 
-	@UpdatedTimestamp
+    @UpdatedTimestamp
     private Date updatedAt;
 
     @CreatedTimestamp

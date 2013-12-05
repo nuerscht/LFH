@@ -28,7 +28,8 @@ public class Global extends GlobalSettings {
 			Map<String,List<Object>> data = (Map<String,List<Object>>)Yaml.load("data-initial.yml");
             Ebean.save(data.get("cartstatus"));
 			Ebean.save(data.get("usertypes"));
-			Ebean.save(data.get("users"));
+            Ebean.save(data.get("users"));
+            Ebean.save(data.get("countries"));
 			Ebean.save(data.get("addresses"));
 		}
 		
