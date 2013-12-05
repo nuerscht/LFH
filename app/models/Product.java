@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Expr;
 import com.avaje.ebean.Page;
 import com.avaje.ebean.annotation.CreatedTimestamp;
+import com.avaje.ebean.annotation.UpdateMode;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
 
 import play.data.validation.Constraints;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@UpdateMode(updateChangesOnly=false)
 public class Product extends Model {
 
     @Id

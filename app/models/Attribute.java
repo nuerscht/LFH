@@ -1,16 +1,20 @@
 package models;
 
 import com.avaje.ebean.annotation.CreatedTimestamp;
+import com.avaje.ebean.annotation.UpdateMode;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
 import java.util.Date;
 
 @Entity
+@UpdateMode(updateChangesOnly=false)
 public class Attribute extends Model {
 
     @Id

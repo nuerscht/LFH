@@ -1,14 +1,18 @@
 package models;
 
 import com.avaje.ebean.annotation.CreatedTimestamp;
+import com.avaje.ebean.annotation.UpdateMode;
+
 import play.db.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
 import java.util.Date;
 
 @Entity
+@UpdateMode(updateChangesOnly=false)
 public class LogLogin extends Model {
 
     @Id

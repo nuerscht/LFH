@@ -6,7 +6,10 @@ import play.db.ebean.Model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.avaje.ebean.annotation.UpdateMode;
+
 @Entity
+@UpdateMode(updateChangesOnly=false)
 public class UserType extends Model {
 
     public static final String CUSTOMER = "customer";

@@ -1,16 +1,21 @@
 package models;
 
 import java.util.*;
+
 import javax.persistence.*;
 
 import com.avaje.ebean.annotation.CreatedTimestamp;
+import com.avaje.ebean.annotation.UpdateMode;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+
 import play.db.ebean.*;
 import play.data.validation.*;
 
 @Entity
+@UpdateMode(updateChangesOnly=false)
 public class User extends Model {
 
     @Id
@@ -33,8 +38,6 @@ public class User extends Model {
 
     @Constraints.Required
     private Boolean isActive = true;
-
-
 
 	@UpdatedTimestamp
     private Date updatedAt;

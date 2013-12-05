@@ -2,14 +2,17 @@ package models;
 
 import play.db.ebean.*;
 import play.data.validation.*;
+
 import com.avaje.ebean.annotation.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
 import java.util.*;
 
 @Entity
+@UpdateMode(updateChangesOnly=false)
 public class Address extends Model {
 
     @Id
