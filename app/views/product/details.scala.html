@@ -25,6 +25,10 @@
 	</div>
     </div>
 
+    <form action="/product/addtocart/@product.getId" method="post">
+        <button type="submit" class="btn btn-primary">In den Warenkorb</button>
+    </form>
+
 	@if(ratingForm.hasGlobalErrors) {
     	<div class="error">
         	@ratingForm.globalError.message

@@ -101,6 +101,7 @@ public class Product extends Model {
         if (rel == null) {
             rel = new CartHasProduct();
             rel.setProduct(this);
+            rel.setPrice(this.getPrice());
             rel.setCart(cart);
         } else {
             rel.setAmount(rel.getAmount() + 1);

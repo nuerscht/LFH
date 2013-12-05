@@ -78,4 +78,15 @@ public class Product extends Eshomo {
             );
         }
     }
+
+    public static Result addToCart(Integer id) {
+        models.Product product = models.Product.find.byId(id);
+
+        if (product != null) {
+            models.Cart cart = models.Cart.fetchOrCreateOpenCart(getUserObj());
+            product.addToCart(cart);
+        }
+
+        return redirect(controllers.routes.Product.details(id));
+    }
 }
