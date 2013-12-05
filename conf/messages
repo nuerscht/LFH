@@ -2,3 +2,5 @@ api.request.unsupported = Ungültige Anfrage. Prüfen Sie die API der Schnittste
 api.request.invalid = Kein gültiges Token gefunden.
 api.request.authenticated = Benutzer erfolgreich identifiziert
 api.request.parseerror = Ungültige Parameter 'id' -> %s oder 'datetime' -> %s übergeben.
+api.request.resourcenotfound = Angeforderte Ressource nicht gefunden.
+api.request.notmodifiedfound = Ressourcen sind unverändert.

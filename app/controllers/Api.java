@@ -1,8 +1,12 @@
 package controllers;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.ExpressionList;
@@ -62,43 +66,80 @@ public class Api extends Controller {
 			 getId = id.equalsIgnoreCase("all") ? ALL_ITEMS : Integer.parseInt(id);
 			 dt = datetime == null ? null : new Date(1000*Long.parseLong(datetime));
 			 
+			 // Get items from the database
 			 List items = getItemsFromDb(getId,dt,exType);
+			 if(items.size() == 0)
+				 return notFound(Messages.get("api.request.resourcenotfound"));
 			 
-			 long currentTag = getEtagOfItems(items,exType);			 
+			 // Get etag and set headers
+			 String currentTag = getEtagOfItems(items,exType);
+			 response().setHeader(ETAG, currentTag);
+			 if(etag != null && etag.equals(currentTag))
+				 return status(304,Messages.get("api.request.notmodifiedfound"));
 			 
-			 return ok(String.valueOf(currentTag));
+			 // Return the appropriate result 
+			 if(type.equals("json"))
+				 return jsonResult(items,exType);
+			 else
+				 return xmlResult(items,exType);
 			 
 		} catch (Exception e) {
 			logger.logToApiDb(Controller.ctx() , String.format(Messages.get("api.request.unsupported"),id,datetime));
 			logger.logToFile(e.getMessage(), LogLevel.ERROR, "api");
-			return badRequest( String.format(Messages.get("api.request.unsupported"),id,datetime));
+			return internalServerError(String.format(Messages.get("api.request.unsupported"),id,datetime));
 		}	
 			
 	}
 
 
 
-	private static int getEtagOfItems(List items,Class exType)
+	private static Result xmlResult(List items, Class exType) {
+		// Set headers
+		response().setHeader(CONTENT_TYPE, "text/xml");
+		String result;
+		if(exType == Product.class)
+			result = products.render((List<Product>) items).toString();
+		
+		
+		return null;
+	}
+
+	private static Result jsonResult(List items, Class exType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private static String getEtagOfItems(List items, Class exType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		String eTag = exType.getSimpleName(); 
+		eTag = getNewestDateOfItems(items, exType).toString() + eTag;		 
+		return DigestUtils.shaHex(eTag);
+	}
+
+	private static Date getNewestDateOfItems(List items,Class exType)
 	throws NoSuchMethodException, InvocationTargetException, IllegalAccessException{
-		int tag = Integer.MAX_VALUE;
+		Date tag = new Date(0);
 		for (Object item : items) {
-			int id = (int) exType.getMethod("getId").invoke(item);
+			
 			Date cDate = (Date) exType.getMethod("getCreatedAt").invoke(item);
 			Date uDate = (Date) exType.getMethod("getUpdatedAt").invoke(item);
-			tag = tag + id;
-			if(cDate != null)
-				tag = tag + cDate.hashCode();
-			if(uDate != null)
-				tag = tag + uDate.hashCode();
 			
+			if( cDate != null && cDate.after(tag))
+				tag = cDate;
+			if( uDate != null && uDate.after(tag))
+				tag = uDate;
+			
+			Date childDate;
 			if(exType == Product.class){
-				tag = tag + 17 * getEtagOfItems(((Product)item).getAttributes(), Attribute.class);
+				childDate = getNewestDateOfItems(((Product)item).getAttributes(), Attribute.class);
+				tag = childDate.after(tag) ? childDate : tag;
 			}
 			if(exType == User.class){
-				tag = tag + 17 * getEtagOfItems(((User)item).getAddresses(), Address.class);
+				childDate = getNewestDateOfItems(((User)item).getAddresses(), Address.class);
+				tag = childDate.after(tag) ? childDate : tag;
 			}
 			if(exType == Cart.class){
-				tag = tag + 17 * getEtagOfItems(((Cart)item).getCartHasProduct(), CartHasProduct.class);
+				childDate = getNewestDateOfItems(((Cart)item).getCartHasProduct(), CartHasProduct.class);
+				tag = childDate.after(tag) ? childDate : tag;
 			}				
 		}
 		return tag;
@@ -114,9 +155,7 @@ public class Api extends Controller {
 	//@TokenAuthenticator
 	@LogAction(value = "api", logLevel = LogLevel.DEBUG)
 	public static Result version() {
-		//return ok(VERSION);
-		response().setHeader(CONTENT_TYPE, "text/xml");
-		return ok(products.render("test").toString().replaceFirst("\\s+\\n", ""));
+		return ok(VERSION);
 	}
 	
 

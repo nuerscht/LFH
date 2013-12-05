@@ -1,4 +1,5 @@
-@(msg: String)
+@(products: List[Product])
+@import models._
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <articles>
     <article id="1">

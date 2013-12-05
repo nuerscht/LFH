@@ -10,7 +10,7 @@ import play.mvc.SimpleResult;
 
 import com.avaje.ebean.Ebean;
 /**
- * Validates user token returns with 403 if no valid user is found.
+ * Validates user token returns with 401 if no valid user is found.
  * @author Sandro Dallo
  *
  */
@@ -31,7 +31,7 @@ public class TokenAuthenticatorImpl extends Action<TokenAuthenticator> {
 				.findUnique();
 		// Break if no user has been found
 		if (user == null)
-			return F.Promise.pure((SimpleResult) forbidden((Messages
+			return F.Promise.pure((SimpleResult) unauthorized((Messages
 					.get("api.request.invalid"))));
 
 		ctx.args.put("token_user", user);
