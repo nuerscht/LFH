@@ -1,19 +1,19 @@
-@(products: List[Product])
+@(products: List[models.Product])
 @import models._
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <articles>
-    <article id="1">
-        <title>Shuttle XH61V (USB 3.0, LGA 1155, HDMI)</title>
-        <description>6-Kanal HD Audio, Dual LAN, HDMI und DVI-I out, Heatpipe Kühltechnik, vormontierte Kabel, Aluminium Gehäuse</description>
-        <ean>1234567890123</ean>
+	@for(product <- products){
+    <article id="@product.getId()">
+        <title>@product.getTitle()</title>
+        <description>@product.getDescription()</description>
+        <ean>@product.getEan()</ean>
         <attributes>
-            <attribute>
-                <value>16 Gb DDR3 Ram</value>
-            </attribute>
-            <attribute>
-                <value>Intel Core i5</value>
-            </attribute>
+        @for(attr <- product.getAttributes()){
+            <attribute>@attr.getValue()</attribute>
+         }
         </attributes>
-        <price>189.0</price>
+        <price>@product.getPrice()</price>
+        <currency>Chf</currency>
     </article>
+    }
 </articles>

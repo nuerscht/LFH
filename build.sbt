@@ -11,4 +11,6 @@ libraryDependencies ++= Seq(
   "commons-codec" % "commons-codec" % "1.8"
 )     
 
+javacOptions ++= Seq("-Xlint:deprecation","-Xlint:unchecked") 
+
 play.Project.playJavaSettings

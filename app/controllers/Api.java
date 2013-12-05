@@ -1,8 +1,6 @@
 package controllers;
 
 import java.lang.reflect.InvocationTargetException;
-import java.text.DateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +8,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.ExpressionList;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.Address;
 import models.Attribute;
@@ -18,9 +18,10 @@ import models.CartHasProduct;
 import models.Product;
 import models.User;
 import play.i18n.Messages;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.xml.xml.products;
+import views.xml.xml.*;
 import customactions.CustomLogger;
 import customactions.LogAction;
 import customactions.LogLevel;
@@ -37,22 +38,23 @@ public class Api extends Controller {
 	/**
 	 * Returns a list of articles or only one article.
 	 * @param id Id of the article or string 'all'
-	 * @param datetime Get all articles since the passed date (unix timestamp)
+	 * @param since Get all articles since the passed date (unix timestamp)
 	 * @return XML or Json list of articles (depends on query parameter type)
 	 */	
 	//@TokenAuthenticator
 	@LogAction(value = "api", logLevel = LogLevel.DEBUG)
-	public static Result articles(final String id, final String datetime) {
-		return getItems(id, datetime, Product.class);
+	public static Result articles(final String id, final String since) {
+		return getItems(id, since, Product.class);
 	}
 
 	//@TokenAuthenticator
 	@LogAction(value = "api", logLevel = LogLevel.DEBUG)
-	public static Result customers(final String id, final String datetime) {
-		return getItems(id, datetime, User.class);
+	public static Result customers(final String id, final String since) {
+		return getItems(id, since, User.class);
 	}
 
-	private static Result getItems(final String id, final String datetime,
+	@SuppressWarnings("rawtypes")
+	private static Result getItems(final String id, final String since,
 			final Class exType) {
 		// Is necessary because type is valid scala type and hence the route definition causes a compilation error
 		String type = request().getQueryString("type") == null ? "xml" : request().getQueryString("type") ;
@@ -64,7 +66,7 @@ public class Api extends Controller {
 		int getId;
 		try {
 			 getId = id.equalsIgnoreCase("all") ? ALL_ITEMS : Integer.parseInt(id);
-			 dt = datetime == null ? null : new Date(1000*Long.parseLong(datetime));
+			 dt = since == null ? null : new Date(1000*Long.parseLong(since));
 			 
 			 // Get items from the database
 			 List items = getItemsFromDb(getId,dt,exType);
@@ -84,42 +86,50 @@ public class Api extends Controller {
 				 return xmlResult(items,exType);
 			 
 		} catch (Exception e) {
-			logger.logToApiDb(Controller.ctx() , String.format(Messages.get("api.request.unsupported"),id,datetime));
+			logger.logToApiDb(Controller.ctx() , String.format(Messages.get("api.request.unsupported"),id,since));
 			logger.logToFile(e.getMessage(), LogLevel.ERROR, "api");
-			return internalServerError(String.format(Messages.get("api.request.unsupported"),id,datetime));
+			return internalServerError(String.format(Messages.get("api.request.unsupported"),id,since));
 		}	
 			
 	}
 
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static Result xmlResult(List items, Class exType) {
 		// Set headers
 		response().setHeader(CONTENT_TYPE, "text/xml");
-		String result;
+		String result = "";
 		if(exType == Product.class)
 			result = products.render((List<Product>) items).toString();
-		
-		
-		return null;
+		if(exType == User.class)
+			result = customers.render((List<User>) items).toString();
+		if(exType == Cart.class)
+			result = orders.render((List<Cart>) items).toString();
+				
+		return ok(result.replaceFirst("\\s+\\n", ""));
 	}
 
+	@SuppressWarnings("rawtypes")
 	private static Result jsonResult(List items, Class exType) {
-		// TODO Auto-generated method stub
+		ObjectNode root = Json.newObject();
 		return null;
 	}
 
+
+	@SuppressWarnings({ "deprecation", "rawtypes" })
 	private static String getEtagOfItems(List items, Class exType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		String eTag = exType.getSimpleName(); 
 		eTag = getNewestDateOfItems(items, exType).toString() + eTag;		 
 		return DigestUtils.shaHex(eTag);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static Date getNewestDateOfItems(List items,Class exType)
 	throws NoSuchMethodException, InvocationTargetException, IllegalAccessException{
 		Date tag = new Date(0);
 		for (Object item : items) {
-			
+
 			Date cDate = (Date) exType.getMethod("getCreatedAt").invoke(item);
 			Date uDate = (Date) exType.getMethod("getUpdatedAt").invoke(item);
 			
@@ -128,6 +138,7 @@ public class Api extends Controller {
 			if( uDate != null && uDate.after(tag))
 				tag = uDate;
 			
+			// Poor performance, must be optimized. Maybe update parent date in db 
 			Date childDate;
 			if(exType == Product.class){
 				childDate = getNewestDateOfItems(((Product)item).getAttributes(), Attribute.class);
@@ -148,8 +159,8 @@ public class Api extends Controller {
 
 	//@TokenAuthenticator
 	@LogAction(value = "api", logLevel = LogLevel.DEBUG)	
-	public static Result orders(final String id, final String datetime) {
-		return getItems(id, datetime, Cart.class);
+	public static Result orders(final String id, final String since) {
+		return getItems(id, since, Cart.class);
 	}
 	
 	//@TokenAuthenticator

@@ -6,9 +6,9 @@
 GET     /                           controllers.Application.index()
 
 # API
-GET		/customers					controllers.Api.customers(id: String, datetime: String ?= null)
-GET		/orders						controllers.Api.orders(id: String, datetime: String ?= null)
-GET		/articles					controllers.Api.articles(id: String, datetime: String ?= null)
+GET		/customers					controllers.Api.customers(id: String, since: String ?= null)
+GET		/orders						controllers.Api.orders(id: String, since: String ?= null)
+GET		/articles					controllers.Api.articles(id: String, since: String ?= null)
 GET		/version					controllers.Api.version()
 
 #Account
