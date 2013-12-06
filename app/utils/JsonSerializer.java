@@ -68,8 +68,15 @@ public class JsonSerializer {
 		node.put(listNode, aNode);
 		return node;
 	}
-	
-	private <T> JsonNode convert(T element) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	/**
+	 * Serialize database entities to the corresponding API json object
+	 * @param element A database entity
+	 * @return A corresponding json object
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
+	public <T> JsonNode convert(T element) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		try
 		{
 			Method m = JsonSerializer.class.getDeclaredMethod("convert", element.getClass());
