@@ -1,9 +1,9 @@
-@(product: models.Product, images: List[Image], ratings: List[Rating], ratingForm: Form[Rating], login: Html, loggedin: Boolean)
+@(product: models.Product, images: List[Image], ratings: List[Rating], ratingForm: Form[Rating])
 
 @import helper._
 @import helper.twitterBootstrap._
 
-@main("Welcome to the LFH Shop", login) {
+@main("Welcome to the LFH Shop") {
 	<h1>@product.getTitle()</h1>
 	
     <ul class="pagination">
@@ -25,9 +25,11 @@
 	</div>
     </div>
 
+    @if(Eshomo.isLoggedIn()){
     <form action="/product/addtocart/@product.getId" method="post">
         <button type="submit" class="btn btn-primary">In den Warenkorb</button>
     </form>
+    }
 
 	@if(ratingForm.hasGlobalErrors) {
     	<div class="error">
@@ -36,7 +38,7 @@
 	}
 
     <div>
-    @if(loggedin){
+    @if(Eshomo.isLoggedIn()){
     @form(routes.Product.submitRating(product.getId)) {
    		<fieldset>
             <h2>Bewertungen</h2>

@@ -1,6 +1,6 @@
-@(products: List[models.Product], login: Html) 
+@(products: List[models.Product]) 
 
-@main("Welcome to the LFH Shop", login) {
+@main("Welcome to the LFH Shop") {
     <div class="products">
         @productlist(products)
     </div>

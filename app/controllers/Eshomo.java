@@ -23,7 +23,7 @@ public class Eshomo extends Controller {
 	/**
 	 * holds the message if a problem with the login exists
 	 */
-	private static String loginMessage = "";
+	protected static String loginMessage = "";
 	
 	protected static void setLoginMessage(final String message) {
 		loginMessage = message;
@@ -45,24 +45,12 @@ public class Eshomo extends Controller {
 	protected static void userLogout() {
 		session().clear();
 	}
-	
-	/**
-	 * generates the html for the login box
-	 * @author boe
-	 * @return returns the html for the @login box
-	 */
-	protected static Html getLoginContent() {
-		if ("1".equals(session("loggedin"))) {
-			return loggedin.render(getUserObj());
-		} else 
-			return login.render(loginMessage);
-	}
     
     /**
      * checks if the user is logged in
      * @return
      */
-    protected static Boolean isLoggedIn() {
+    public static Boolean isLoggedIn() {
         if ("1".equals(session("loggedin")))
             return Boolean.TRUE;
         else 

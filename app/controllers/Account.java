@@ -10,6 +10,7 @@ import models.Address;
 import models.Country;
 import models.User;
 import models.UserType;
+import play.api.templates.Html;
 import play.data.DynamicForm;
 import play.mvc.*;
 import static play.data.Form.*;
@@ -21,6 +22,18 @@ import views.html.account.*;
  *
  */
 public class Account extends UserData {
+    
+    /**
+     * generates the html for the login box
+     * @author boe
+     * @return returns the html for the @login box
+     */
+    public static Html getLoginHtml() {
+        if ("1".equals(session("loggedin"))) {
+            return loggedin.render(getUserObj());
+        } else 
+            return login.render(loginMessage);
+    }
 	
 	/**
 	 * handles user login
@@ -84,11 +97,11 @@ public class Account extends UserData {
 		    	}
 		
 		    	return ok(
-		    			register.render(form(User.class).fill(user), form(Address.class).fill(address), getCountries(), "Ihr Konto wurde erfolgreich angelegt.", "success", getLoginContent())
+		    			register.render(form(User.class).fill(user), form(Address.class).fill(address), getCountries(), "Ihr Konto wurde erfolgreich angelegt.", "success")
 		    			);
     		} else {
     			return ok (
-    					register.render(form(User.class).fill(user), form(Address.class).fill(address), getCountries(), "Bitte AGB's aktzeptieren.", "info", getLoginContent())
+    					register.render(form(User.class).fill(user), form(Address.class).fill(address), getCountries(), "Bitte AGB's aktzeptieren.", "info")
     			);
     		}
     	} catch (Exception e) {
@@ -96,7 +109,7 @@ public class Account extends UserData {
     		if (errorMessage == null)
     			errorMessage = e.toString();
     		return ok(
-	    		register.render(form(User.class).fill(user), form(Address.class).fill(address), getCountries(), errorMessage, "error", getLoginContent())
+	    		register.render(form(User.class).fill(user), form(Address.class).fill(address), getCountries(), errorMessage, "error")
 	    	);
     	}
     }
@@ -126,7 +139,7 @@ public class Account extends UserData {
 		
 		if (!message.isEmpty()) {
 			return ok(
-				register.render(form(User.class).fill(user), form(Address.class).fill(address), getCountries(), message, "info", getLoginContent())
+				register.render(form(User.class).fill(user), form(Address.class).fill(address), getCountries(), message, "info")
 			);
 		}
 				
@@ -140,7 +153,7 @@ public class Account extends UserData {
 	 */
     public static Result registerIndex() {
 		return ok(
-				register.render(form(User.class), form(Address.class), getCountries(), "", "", getLoginContent())
+				register.render(form(User.class), form(Address.class), getCountries(), "", "")
 		);
     }
 

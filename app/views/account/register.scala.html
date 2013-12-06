@@ -1,9 +1,9 @@
-@(userForm: Form[models.User], addressForm: Form[Address], country: List[models.Country], message: String, messageType: String, login: Html)
+@(userForm: Form[models.User], addressForm: Form[Address], country: List[models.Country], message: String, messageType: String)
 
 @import helper._
 @import helper.twitterBootstrap._
 
-@main("LFH Shop - Registration", login) {
+@main("LFH Shop - Registration") {
 	@form(action = routes.Account.register()) {
 		@if(!message.isEmpty()) {
 			<div class="alert alert-@messageType">

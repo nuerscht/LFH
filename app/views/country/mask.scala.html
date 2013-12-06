@@ -1,9 +1,9 @@
-@(countryForm: Form[models.Country], countryid: Integer, message: String, messageType: String, login: Html)
+@(countryForm: Form[models.Country], countryid: Integer, message: String, messageType: String)
 
 @import helper._
 @import helper.twitterBootstrap._
 
-@main("LFH Shop - Persönliche Daten", login) {
+@main("LFH Shop - Persönliche Daten") {
     @form(action = routes.Country.modify(countryid)) {
         @if(!message.isEmpty()) {
             <div class="alert alert-@messageType">

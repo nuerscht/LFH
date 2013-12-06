@@ -1,4 +1,4 @@
-@(title: String, login: Html)(content: Html)
+@(title: String)(content: Html)
 
 <!DOCTYPE html>
 
@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-sm-3 col-right sidebar">
                     <div>@product.searchbar()</div>
-                    <div>@login</div>
+                    <div>@Account.getLoginHtml()</div>
                 </div>
             </div>
         </div>

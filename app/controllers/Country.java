@@ -17,7 +17,7 @@ public class Country extends Eshomo {
     public static Result list() {
         if (isLoggedIn() && isAdminUser()) {
             return ok(
-                    list.render(getCountries(), "", "", getLoginContent())
+                    list.render(getCountries(), "", "")
             );
         } else {
             return forbidden();
@@ -49,9 +49,9 @@ public class Country extends Eshomo {
             
             Html html = null;
             if (id.equals(0)) {
-                html = list.render(getCountries(), message, "info", getLoginContent());
+                html = list.render(getCountries(), message, "info");
             } else {
-                html = mask.render(form(models.Country.class).fill(country), country.getId(), message, "info", getLoginContent());
+                html = mask.render(form(models.Country.class).fill(country), country.getId(), message, "info");
             }
             
             return ok(
@@ -87,7 +87,7 @@ public class Country extends Eshomo {
             }
             
             return ok(
-                    list.render(getCountries(), message, messageType, getLoginContent())
+                    list.render(getCountries(), message, messageType)
             );
         } else {
             return forbidden();
@@ -107,7 +107,7 @@ public class Country extends Eshomo {
             }
             
             return ok(
-                mask.render(form(models.Country.class).fill(country), countryId, "", "", getLoginContent())
+                mask.render(form(models.Country.class).fill(country), countryId, "", "")
                 );        
         } else {
             return forbidden();

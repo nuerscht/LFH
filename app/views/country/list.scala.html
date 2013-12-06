@@ -1,9 +1,9 @@
-@(countries: List[models.Country], message: String, messageType: String, login: Html)
+@(countries: List[models.Country], message: String, messageType: String)
 
 @import helper._
 @import helper.twitterBootstrap._
 
-@main("LFH Shop - Länder bearbeiten", login) {
+@main("LFH Shop - Länder bearbeiten") {
     <h1>L&auml;nder bearbeiten</h1>
     @if(!message.isEmpty()) {
         <div class="alert alert-@messageType">

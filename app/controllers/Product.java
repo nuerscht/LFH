@@ -19,7 +19,7 @@ public class Product extends Eshomo {
      */
     public static Result products() {
     	List<models.Product> productList = models.Product.find.all();
-    	return ok(products.render(productList, getLoginContent()));
+    	return ok(products.render(productList));
     }
     
     /**
@@ -31,7 +31,7 @@ public class Product extends Eshomo {
     	models.Product product = models.Product.find.byId(id);
     	
     	if (product != null) {
-            return ok(details.render(product, product.getImages(), product.getRatings(), form, getLoginContent(), isLoggedIn()));
+            return ok(details.render(product, product.getImages(), product.getRatings(), form));
         } else {
             return notFound("Product with id " + id + " not found");
         }
@@ -45,7 +45,7 @@ public class Product extends Eshomo {
      * @return A page with a list of products found
      */
     public static Result search(int page, String sortBy, String order, String query){
-    	return ok(search.render(models.Product.page(page, NUM_PRODUCTS_PER_PAGE, sortBy, order, query), getLoginContent()));
+    	return ok(search.render(models.Product.page(page, NUM_PRODUCTS_PER_PAGE, sortBy, order, query)));
     }
     
     /**
@@ -61,7 +61,7 @@ public class Product extends Eshomo {
     	Form<Rating> form = Form.form(Rating.class).bindFromRequest();
     	
     	if(form.hasErrors() || !isLoggedIn()) {
-            return badRequest(details.render(product, product.getImages(), product.getRatings(), form, getLoginContent(), isLoggedIn()));
+            return badRequest(details.render(product, product.getImages(), product.getRatings(), form));
         } else {
         	Rating rating = form.get();
         	rating.setProduct(product);
@@ -74,7 +74,7 @@ public class Product extends Eshomo {
         		Ebean.endTransaction();
         	}
             return ok(
-            		details.render(product, product.getImages(), product.getRatings(), ratingForm, getLoginContent(), isLoggedIn())
+            		details.render(product, product.getImages(), product.getRatings(), ratingForm)
             );
         }
     }

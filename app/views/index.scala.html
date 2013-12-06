@@ -1,5 +1,5 @@
-@(products: List[models.Product], login: Html)
+@(products: List[models.Product])
 
-@main("Welcome to the LFH shop", login) {
+@main("Welcome to the LFH shop") {
     @product.productlist(products)
 }

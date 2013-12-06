@@ -1,9 +1,9 @@
-@(users: List[controllers.User.UserHelper], login: Html)
+@(users: List[controllers.User.UserHelper])
 
 @import helper._
 @import helper.twitterBootstrap._
 
-@main("LFH Shop - Transaktionsübersicht", login) {
+@main("LFH Shop - Transaktionsübersicht") {
     <h1>Kundenliste</h1>
     @form(action = routes.User.search()) {
         <div class="form-group">
