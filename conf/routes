@@ -34,5 +34,11 @@ GET     /user/delete                controllers.User.delete(userid: Integer)
 GET     /user/changeUserType        controllers.User.changeUserType(userid: Integer)
 GET     /user/changeStatus          controllers.User.changeStatus(userid: Integer)
 
+#Country
+GET     /country/list               controllers.Country.list()
+GET     /country/edit               controllers.Country.edit(id: Integer)
+GET     /country/delete             controllers.Country.delete(id: Integer)
+POST    /country/modify             controllers.Country.modify(id: Integer)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

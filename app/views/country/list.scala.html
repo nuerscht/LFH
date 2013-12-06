@@ -1,0 +1,29 @@
+@(countries: List[models.Country], message: String, messageType: String, login: Html)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("LFH Shop - Länder bearbeiten", login) {
+    <h1>L&auml;nder bearbeiten</h1>
+    @if(!message.isEmpty()) {
+        <div class="alert alert-@messageType">
+            <a class="close" data-dismiss="alert">x</a> 
+            <strong>Meldung: </strong>@message.  
+        </div>
+    }
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Delete</th>
+        </tr>
+    @for(country <- countries) {
+        <tr>
+            <td><a href="@routes.Country.edit(country.getId())">@country.getId()</a></td>
+            <td>@country.getName()</td>
+            <td><a href="@routes.Country.delete(country.getId())"><img src="@routes.Assets.at("images/delete.png")" alt="Delete" /></a></td>
+        <tr>
+    } 
+    </table>
+    <a href="@routes.Country.edit(0)">Land hinzuf&uuml;gen</a>
+}

@@ -3,9 +3,16 @@ import java.util.Map;
 
 import models.*;
 import play.*;
+import play.libs.F.Promise;
 import play.libs.Yaml;
+import play.mvc.*;
+import play.mvc.Http.*;
+import views.html.error.message;
+import views.html.error.notFound;
 
 import com.avaje.ebean.*;
+
+import static play.mvc.Results.*;
 
 public class Global extends GlobalSettings {
 	/**
@@ -20,6 +27,26 @@ public class Global extends GlobalSettings {
         // Load test data to the database
         loadTestData(app);
 	}
+	
+	@Override
+	public Promise<SimpleResult> onError(RequestHeader request, Throwable t) {
+        return Promise.<SimpleResult>pure(internalServerError(
+            message.render(t)
+        ));
+    }
+	
+	@Override
+	public Promise<SimpleResult> onHandlerNotFound(RequestHeader request) {
+        return Promise.<SimpleResult>pure(notFound(
+            notFound.render(request)
+        ));
+    }
+	
+	@Override
+    public Promise<SimpleResult> onBadRequest(RequestHeader request, String error) {
+        return Promise.<SimpleResult>pure(badRequest(notFound.render(request)));
+    }
+
 
 	private void loadInitData(Application app) {
 		if(Ebean.find(CartStatus.class).findRowCount() == 0){

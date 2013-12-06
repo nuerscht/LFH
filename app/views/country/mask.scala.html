@@ -1,0 +1,35 @@
+@(countryForm: Form[models.Country], countryid: Integer, message: String, messageType: String, login: Html)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("LFH Shop - Persönliche Daten", login) {
+    @form(action = routes.Country.modify(countryid)) {
+        @if(!message.isEmpty()) {
+            <div class="alert alert-@messageType">
+                <a class="close" data-dismiss="alert">x</a> 
+                <strong>Meldung: </strong>@message.  
+            </div>
+        }
+            
+        @if(countryid == 0) {
+            <h1>Land hinzuf&uuml;gen</h1>
+        } else {
+            <h1>Land aktualisieren</h1>
+        }     
+        @inputText(countryForm("name"), 
+                   '_label -> "Name", 
+                   'class -> "form-control", 
+                   'placeholder -> "Bitte den Namen des Landes eingeben...", 
+                   'required -> "required", 
+                   'maxlength -> "255",
+                   '_help -> ""
+                   )
+        @if(countryid == 0) {
+            <button type="submit" id="modify-country-data" class="btn btn-default">Speichern </button>
+        } else {
+            <button type="submit" id="modify-country-data" class="btn btn-default">Aktualisieren </button>
+            <a href="@routes.Country.edit(0)">Land hinzuf&uuml;gen</a>
+        }        
+    }
+}
