@@ -48,6 +48,7 @@ public class Global extends GlobalSettings {
     }
 
 
+
 	private void loadInitData(Application app) {
 		if(Ebean.find(CartStatus.class).findRowCount() == 0){
 			@SuppressWarnings("unchecked")

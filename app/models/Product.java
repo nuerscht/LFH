@@ -12,9 +12,17 @@ import play.db.ebean.Model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import java.util.Date;
 import java.util.List;
+
+import play.data.validation.Constraints;
+import play.db.ebean.Model;
+
+import com.avaje.ebean.annotation.CreatedTimestamp;
+import com.avaje.ebean.annotation.UpdatedTimestamp;
+
 
 @Entity
 @UpdateMode(updateChangesOnly=false)
@@ -27,16 +35,21 @@ public class Product extends Model {
     private String title;
 
     @Constraints.Required
-    private Double price;
-
+    private Double price;   
+    
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @Constraints.Required
     private Long ean;
+    
 
+    @OneToMany
+    private List<Attribute> attributes;
+    
     @UpdatedTimestamp
     private Date updatedAt;
+
 
     @CreatedTimestamp
     private Date createdAt;
@@ -79,7 +92,14 @@ public class Product extends Model {
         this.ean = ean;
     }
 
-    public Date getUpdatedAt() {
+    /**
+	 * @return the attributes
+	 */
+	public List<Attribute> getAttributes() {
+		return attributes;
+	}
+
+	public Date getUpdatedAt() {
         return updatedAt;
     }
 

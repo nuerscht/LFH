@@ -1,0 +1,20 @@
+@(products: List[models.Product])
+@import models._
+@import play.i18n.Messages
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<articles>
+	@for(product <- products){
+    <article id="@product.getId()">
+        <title>@product.getTitle()</title>
+        <description>@product.getDescription()</description>
+        <ean>@product.getEan()</ean>
+        <attributes>
+        @for(attr <- product.getAttributes()){
+            <attribute>@attr.getValue()</attribute>
+         }
+        </attributes>
+        <price>@product.getPrice()</price>
+        <currency>@Messages.get("api.request.currency")</currency>
+    </article>
+    }
+</articles>

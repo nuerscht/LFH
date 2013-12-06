@@ -1,0 +1,14 @@
+@(orders: List[models.Cart])
+@import models._
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<orders>
+	@for(order <- orders){
+	<order id="@order.getId()" customer="@order.getUser().getId()" billaddress="@if(order.getAddress() != null){ order.getAddress().getId() }" shippingaddress="@if(order.getAddress() != null){ order.getAddress().getId() }" status="@order.getStatus()">
+		<positions>
+			@for(pos <- order.getCartHasProduct()){
+			<position article="@pos.getProduct().getId()" amount="@pos.getAmount()" discount="@pos.getDiscount()" />
+			}
+		</positions>
+	</order>
+    }
+</orders>

@@ -8,8 +8,10 @@ import play.db.ebean.Model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @UpdateMode(updateChangesOnly=false)
@@ -29,7 +31,10 @@ public class Cart extends Model {
 
     @UpdatedTimestamp
     private Date updatedAt;
-
+    
+    @OneToMany
+    private List<CartHasProduct> cartHasProduct;
+    
     @CreatedTimestamp
     private Date createdAt;
 
@@ -63,7 +68,14 @@ public class Cart extends Model {
         this.address = address;
     }
 
-    public Date getUpdatedAt() {
+    /**
+	 * @return the cartHasProduct
+	 */
+	public List<CartHasProduct> getCartHasProduct() {
+		return cartHasProduct;
+	}
+
+	public Date getUpdatedAt() {
         return updatedAt;
     }
 

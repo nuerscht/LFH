@@ -13,6 +13,13 @@ import javax.persistence.ManyToOne;
 
 import java.util.Date;
 
+import play.data.validation.Constraints;
+import play.db.ebean.Model;
+
+import com.avaje.ebean.annotation.CreatedTimestamp;
+import com.avaje.ebean.annotation.UpdatedTimestamp;
+
+
 @Entity
 @UpdateMode(updateChangesOnly=false)
 public class Attribute extends Model {
@@ -22,6 +29,7 @@ public class Attribute extends Model {
 
     @ManyToOne
     private Product product;
+
 
     @Constraints.Required
     private String value;

@@ -14,16 +14,16 @@ GET     /search            			controllers.Product.search(p:Int ?= 0, s ?= "Title
 POST 	/rate/:id					controllers.Product.submitRating(id: Integer)
 
 # API
-GET     /customers                  controllers.Api.customers(id: String, datetime: String ?= null)
-GET     /orders                     controllers.Api.orders(id: String, datetime: String ?= null)
-GET     /articles                   controllers.Api.articles(id: String, datetime: String ?= null)
-GET     /version                    controllers.Api.version()
+GET		/customers					controllers.Api.customers(id: String, since: String ?= null)
+GET		/orders						controllers.Api.orders(id: String, since: String ?= null)
+GET		/articles					controllers.Api.articles(id: String, since: String ?= null)
+GET		/version					controllers.Api.version()
 
 #Account
-GET     /account					controllers.Account.registerIndex()
-POST    /account/register			controllers.Account.register()
-POST    /account/login				controllers.Account.login()
-GET     /account/logout				controllers.Account.logout()
+GET		/account					controllers.Account.registerIndex()
+POST	/account/register			controllers.Account.register()
+POST	/account/login				controllers.Account.login()
+GET 	/account/logout				controllers.Account.logout()
 
 #User
 GET     /user/data                  controllers.User.showData(userid: Integer)
