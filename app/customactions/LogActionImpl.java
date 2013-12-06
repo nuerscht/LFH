@@ -9,6 +9,7 @@ import play.mvc.Http.Context;
 import play.mvc.SimpleResult;
 
 /**
+ * Custom Action to log Controller calls.
  * @author Sandro Dallo
  * 
  */

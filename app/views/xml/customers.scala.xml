@@ -13,12 +13,12 @@
            <city>@add.getPlace()</city>
            <street>@add.getStreet()</street>
            <postcode>@add.getZip()</postcode>
-           <country>@add.getCountry()</country>
+           <country>@if(add.getCountry()!= null){@add.getCountry().getName()}</country>
            </address>
          }
         </addresses>
         <email>@first.getEmail()</email>
-        <birthdate>@first.getBirthday()</birthdate>
+        <birthdate>@if(first.getBirthday()!=null){ @{first.getBirthday().getTime() / 1000L} }</birthdate>
       </customer>
      }
     }
