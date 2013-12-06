@@ -1,4 +1,4 @@
-@(userForm: Form[models.User], addressForm: Form[Address], country: List[Country], message: String, messageType: String, login: Html)
+@(userForm: Form[models.User], addressForm: Form[Address], country: List[models.Country], message: String, messageType: String, login: Html)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -93,7 +93,7 @@
                    )
                 
         @select(addressForm("country"), 
-                options(Country.countries),             
+                options(models.Country.countries),             
                 'class -> "form-control",
                 'required -> "required",
                 '_label -> "Land")

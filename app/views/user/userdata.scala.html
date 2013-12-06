@@ -92,7 +92,7 @@
         <label for="country">Land</label>
         <div class="input">
 	        <select id="country" name="country" class="form-control" required="required">
-	        @for((key, value) <- Country.countries) {
+	        @for((key, value) <- models.Country.countries) {
 	            @if(key == country) {
 	                <option value="@key" selected>@value</option>   
 	            } else {
