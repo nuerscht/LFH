@@ -256,7 +256,11 @@ public class User extends UserData {
 			String strCountry = getCountry(address);
 
 			return ok (
-					userdata.render(form(models.User.class).fill(user), form(Address.class).fill(address), strCountry, "", "", getLoginContent())
+					userdata.render(form(models.User.class).fill(user)
+							, form(Address.class).fill(address), strCountry
+							, "", ""
+							, getLoginContent()
+							,userid == getLoggedInUserId())
 					);
 		} else {
 			return forbidden();
@@ -318,7 +322,11 @@ public class User extends UserData {
 		    	
 				if (!message.isEmpty()) {
 					return ok(
-						userdata.render(form(models.User.class).fill(user), form(Address.class).fill(address), strCountry, message, "info", getLoginContent())
+						userdata.render(form(models.User.class).fill(user)
+								, form(Address.class).fill(address)
+								, strCountry, message, "info"
+								, getLoginContent()
+								, userid == getLoggedInUserId())
 					);
 				}
 				
@@ -356,7 +364,13 @@ public class User extends UserData {
 	    	}
 			
 	    	return ok(
-	    			userdata.render(form(models.User.class).fill(user), form(Address.class).fill(address), strCountry, "Ihr Daten wurde erfolgreich aktualisiert.", "success", getLoginContent())
+	    			userdata.render(form(models.User.class).fill(user)
+	    					, form(Address.class).fill(address)
+	    					, strCountry
+	    					, "Ihr Daten wurde erfolgreich aktualisiert."
+	    					, "success"
+	    					, getLoginContent()
+	    					, userid == getLoggedInUserId())
 	    	);
 		} else {
 			return forbidden();

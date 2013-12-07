@@ -4,6 +4,8 @@ import java.util.Map;
 import models.*;
 import play.*;
 import play.libs.Yaml;
+import play.api.mvc.EssentialFilter;
+import play.filters.gzip.GzipFilter;
 
 import com.avaje.ebean.*;
 
@@ -21,6 +23,10 @@ public class Global extends GlobalSettings {
         loadTestData(app);
 	}
 
+    @SuppressWarnings("unchecked")
+	public <T extends EssentialFilter> Class<T>[] filters() {
+        return new Class[]{GzipFilter.class};
+    }
 
 	private void loadInitData(Application app) {
 		if(Ebean.find(CartStatus.class).findRowCount() == 0){
