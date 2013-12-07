@@ -312,7 +312,7 @@ public class UserIntegrationTest extends EshomoTest {
     }
 
     /**
-     * the procedure to check user status change
+     * the procedure to check user search
      * @param user 
      * @param password
      */
@@ -322,7 +322,7 @@ public class UserIntegrationTest extends EshomoTest {
         running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo("http://localhost:3333");
-                
+
                 browser.fill("#email").with("patrick.boesch@students.ffhs.ch");
                 browser.fill("#password").with("ffhs2011");
                 browser.submit("#signin");
@@ -330,26 +330,25 @@ public class UserIntegrationTest extends EshomoTest {
                 assertThat(browser.pageSource()).contains("Ausloggen");
                 
                 browser.goTo("http://localhost:3333" + routes.User.list());
-                
-                assertThat(browser.pageSource()).contains("user1@students.ffhs.ch");
 
+                assertThat(browser.pageSource()).contains("user1@students.ffhs.ch");
                 browser.fill("#keyword").with("patrick.boesch");
-                browser.submit("#search");
+                browser.submit("#search-user");
                 assertThat(browser.pageSource()).contains("patrick.boesch@students.ffhs.ch");
                 assertThat(browser.pageSource()).doesNotContain("user1@students.ffhs.ch");
 
                 browser.fill("#keyword").with("2");
-                browser.submit("#search");
+                browser.submit("#search-user");
                 assertThat(browser.pageSource()).contains("andy.villiger@students.ffhs.ch");
                 assertThat(browser.pageSource()).doesNotContain("user1@students.ffhs.ch");
 
                 browser.fill("#keyword").with("Alder");
-                browser.submit("#search");
+                browser.submit("#search-user");
                 assertThat(browser.pageSource()).contains("jonas.alder@students.ffhs.ch");
                 assertThat(browser.pageSource()).doesNotContain("user1@students.ffhs.ch");
 
                 browser.fill("#keyword").with("Sandro");
-                browser.submit("#search");
+                browser.submit("#search-user");
                 assertThat(browser.pageSource()).contains("sandro.dallo@students.ffhs.ch");
                 assertThat(browser.pageSource()).doesNotContain("user1@students.ffhs.ch");
                 
