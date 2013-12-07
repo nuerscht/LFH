@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.avaje.ebean.Ebean;
 
+import customactions.LogAction;
+import customactions.LogLevel;
 import models.Address;
 import models.Country;
 import models.User;
@@ -40,6 +42,7 @@ public class Account extends UserData {
 	 * @author boe
 	 * @return
 	 */
+    @LogAction(value = "login", logLevel = LogLevel.DEBUG)
 	public static Result login() {
 		DynamicForm bindedForm = form().bindFromRequest();
 
@@ -64,6 +67,7 @@ public class Account extends UserData {
 	 * @author boe
 	 * @return
 	 */
+    @LogAction(value = "login", logLevel = LogLevel.DEBUG)
 	public static Result logout() {
 		userLogout();
         return Application.index();
@@ -74,6 +78,7 @@ public class Account extends UserData {
      * @author boe
      * @return page for success or error message
      */
+    @LogAction(value = "login", logLevel = LogLevel.DEBUG)
     public static Result register() {
     	Address  address  = new Address();
     	User     user     = new User();
