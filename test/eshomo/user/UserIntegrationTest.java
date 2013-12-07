@@ -56,7 +56,7 @@ public class UserIntegrationTest extends EshomoTest {
 	 * @param password
 	 */
 	private void showDataWithLoginContent(final String user, final String password, final int userid) {
-        FakeApplication fakeApp = Helpers.fakeApplication(Helpers.inMemoryDatabase("test"));
+        FakeApplication fakeApp = Helpers.fakeApplication();
 		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo("http://localhost:3333");
@@ -101,7 +101,7 @@ public class UserIntegrationTest extends EshomoTest {
 	 * @param password
 	 */
 	private void updateDataWithLoginContent(final String user, final String password, final int userid) {
-	    FakeApplication fakeApp = Helpers.fakeApplication(Helpers.inMemoryDatabase("test"));
+	    FakeApplication fakeApp = Helpers.fakeApplication();
 		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo("http://localhost:3333");
@@ -162,7 +162,7 @@ public class UserIntegrationTest extends EshomoTest {
 	 * @param password
 	 */
 	private void showTransactionsWithLoginContent(final String user, final String password, final int userid) {
-        FakeApplication fakeApp = Helpers.fakeApplication(Helpers.inMemoryDatabase("test"));
+        FakeApplication fakeApp = Helpers.fakeApplication();
 		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo("http://localhost:3333");
@@ -188,7 +188,7 @@ public class UserIntegrationTest extends EshomoTest {
 	 * @param url
 	 */
 	private void withoutLoginContent(final String url) {
-        FakeApplication fakeApp = Helpers.fakeApplication(Helpers.inMemoryDatabase("test"));
+        FakeApplication fakeApp = Helpers.fakeApplication();
 		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo(url);
@@ -205,7 +205,7 @@ public class UserIntegrationTest extends EshomoTest {
      */
     @Test
     public void checkUserDelete() {
-        FakeApplication fakeApp = Helpers.fakeApplication(Helpers.inMemoryDatabase("test"));
+        FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo("http://localhost:3333");
@@ -234,7 +234,7 @@ public class UserIntegrationTest extends EshomoTest {
      */
     @Test
     public void checkUserTypeChange() {
-        FakeApplication fakeApp = Helpers.fakeApplication(Helpers.inMemoryDatabase("test"));
+        FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo("http://localhost:3333");
@@ -276,7 +276,7 @@ public class UserIntegrationTest extends EshomoTest {
      */
     @Test
     public void checkUserStatusChange() {
-        FakeApplication fakeApp = Helpers.fakeApplication(Helpers.inMemoryDatabase("test"));
+        FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo("http://localhost:3333");
@@ -318,7 +318,7 @@ public class UserIntegrationTest extends EshomoTest {
      */
     @Test
     public void checkUserSearch() {
-        FakeApplication fakeApp = Helpers.fakeApplication(Helpers.inMemoryDatabase("test"));
+        FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
                 browser.goTo("http://localhost:3333");

@@ -1,15 +1,8 @@
 package eshomo;
 
-import java.util.List;
-import java.util.Map;
-
-import models.CartStatus;
-import models.Product;
-
 import org.junit.After;
 import org.junit.Before;
 
-import play.libs.Yaml;
 import play.test.FakeApplication;
 import play.test.Helpers;
 
@@ -31,7 +24,7 @@ public class EshomoTest {
 
     @Before
     public void  onStart() {
-        app = Helpers.fakeApplication(Helpers.inMemoryDatabase("test"));
+        app = Helpers.fakeApplication();
         Helpers.start(app);
         
         ServerConfig config = new ServerConfig();
