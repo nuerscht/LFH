@@ -12,6 +12,7 @@ import views.html.product.*;
 public class Product extends Eshomo {
 	
 	public static final int NUM_PRODUCTS_PER_PAGE = 20;
+	// An unbound rating form
 	final static Form<Rating> ratingForm = Form.form(Rating.class);
 	
 	/**
@@ -79,6 +80,12 @@ public class Product extends Eshomo {
         }
     }
 
+    /**
+     * Adds a product to a existing or new cart
+     * 
+     * @param id of the product
+     * @return redirect to product details
+     */
     public static Result addToCart(Integer id) {
         models.Product product = models.Product.find.byId(id);
 
