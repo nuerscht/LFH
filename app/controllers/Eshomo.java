@@ -42,6 +42,9 @@ public class Eshomo extends Controller {
 		session("logintime", Long.toString(unixTime));
 	}
 	
+	/**
+	 * clears the session if an user log out
+	 */
 	protected static void userLogout() {
 		session().clear();
 	}

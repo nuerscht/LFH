@@ -13,7 +13,16 @@ import play.data.DynamicForm;
 import play.mvc.Result;
 import views.html.country.*;
 
+/**
+ * implements functionality for edit/add/remove/update country
+ * @author boe
+ */
 public class Country extends Eshomo {
+    /**
+     * renders the html of a list of all countries 
+     * @author boe
+     * @return
+     */
     public static Result list() {
         if (isLoggedIn() && isAdminUser()) {
             return ok(
@@ -24,6 +33,12 @@ public class Country extends Eshomo {
         }
     }
     
+    /**
+     * update the data of a country
+     * @author boe
+     * @param id country id
+     * @return
+     */
     public static Result modify(final Integer id) {
         if (isLoggedIn() && isAdminUser()) {
             String message = "";
@@ -62,6 +77,12 @@ public class Country extends Eshomo {
         }
     }
     
+    /**
+     * deletes a country
+     * @author boe
+     * @param id country id
+     * @return
+     */
     public static Result delete(final Integer id) {
         if (isLoggedIn() && isAdminUser()) {
             String message    = "";
@@ -94,6 +115,12 @@ public class Country extends Eshomo {
         }
     }
     
+    /**
+     * renders form to edit an country
+     * @author boe
+     * @param id
+     * @return
+     */
     public static Result edit(final Integer id) {
         if (isLoggedIn() && isAdminUser()) {
             models.Country country   = null;
@@ -114,6 +141,10 @@ public class Country extends Eshomo {
         }
     }
     
+    /**
+     * selects all countries
+     * @return
+     */
     private static List<models.Country> getCountries() {
         return models.Country.find.findList();
     }
