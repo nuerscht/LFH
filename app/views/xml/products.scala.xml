@@ -1,8 +1,13 @@
 @(products: List[models.Product])
 @import models._
 @import play.i18n.Messages
+@import java.text.DecimalFormat
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <articles>
+	@formatPrice(price: Double) = @{
+		val df = new DecimalFormat("0.00");
+		df.format(price)
+	}
 	@for(product <- products){
     <article id="@product.getId()">
         <title>@product.getTitle()</title>
@@ -13,7 +18,7 @@
             <attribute>@attr.getValue()</attribute>
          }
         </attributes>
-        <price>@product.getPrice()</price>
+        <price>@formatPrice(product.getPrice())</price>
         <currency>@Messages.get("api.request.currency")</currency>
     </article>
     }
