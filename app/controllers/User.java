@@ -260,7 +260,7 @@ public class User extends UserData {
 							, form(Address.class).fill(address), strCountry
 							, "", ""
 							, getLoginContent()
-							,userid == getLoggedInUserId())
+							,userid == getLoggedInUserId() && isAdminUser())
 					);
 		} else {
 			return forbidden();
@@ -326,7 +326,7 @@ public class User extends UserData {
 								, form(Address.class).fill(address)
 								, strCountry, message, "info"
 								, getLoginContent()
-								, userid == getLoggedInUserId())
+								, userid == getLoggedInUserId() && isAdminUser())
 					);
 				}
 				
@@ -370,7 +370,7 @@ public class User extends UserData {
 	    					, "Ihr Daten wurde erfolgreich aktualisiert."
 	    					, "success"
 	    					, getLoginContent()
-	    					, userid == getLoggedInUserId())
+	    					, userid == getLoggedInUserId() && isAdminUser())
 	    	);
 		} else {
 			return forbidden();

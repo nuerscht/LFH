@@ -27,7 +27,10 @@ public class TokenAuthenticatorImpl extends Action<TokenAuthenticator> {
 			return F.Promise.pure((SimpleResult) badRequest(Messages
 					.get("api.request.invalid")));
 		}
-		final User user = Ebean.find(User.class).where().eq("token", token)
+		final User user = Ebean.find(User.class)
+				.where()
+				.eq("token", token)
+				.eq("type_id", "admin")
 				.findUnique();
 		// Break if no user has been found
 		if (user == null)
