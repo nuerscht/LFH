@@ -18,7 +18,7 @@
     <div class="panel-body">
 	<ul>
 		<div><strong>ID</strong> @product.getId()</div>
-		<div><strong>Price</strong> @product.getPrice()</div>
+		<div><strong>Preis</strong> @product.getPrice()</div>
 		<div><strong>EAN:</strong> @product.getEan()</div>
 	</ul>
 		@product.getDescription()
@@ -38,10 +38,11 @@
 	}
 
     <div>
+    <h2>Bewertungen</h2>
     @if(Eshomo.isLoggedIn()){
     @form(routes.Product.submitRating(product.getId)) {
    		<fieldset>
-            <h2>Bewertungen</h2>
+            
             
             @inputRadioGroup(
                 ratingForm("rate"), 
@@ -58,7 +59,7 @@
         </fieldset>
 
         <div class="actions">
-            <input type="submit" class="btn primary" value="Rate">
+            <input id="submit-rating" type="submit" class="btn primary" value="Rate">
             <a href="@routes.Product.details(product.getId)" class="btn">Cancel</a>
         </div>
         
@@ -67,7 +68,7 @@
         <div class="panel panel-default">
         <div class="panel-body">
             <div class="row">
-                <div><strong>Benutzer:</strong> @rating.getUser()</div>
+                <div><strong>Benutzer:</strong> @rating.getUser().getEmail()</div>
                 <div><strong>Datum:</strong> @rating.getCreatedAt()</div>
             </div>
             <div>@rating.getRate()</div>
