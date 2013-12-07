@@ -5,6 +5,8 @@ import models.*;
 import play.*;
 import play.libs.F.Promise;
 import play.libs.Yaml;
+import play.api.mvc.EssentialFilter;
+import play.filters.gzip.GzipFilter;
 import play.mvc.*;
 import play.mvc.Http.*;
 import views.html.error.message;
@@ -47,6 +49,10 @@ public class Global extends GlobalSettings {
         return Promise.<SimpleResult>pure(badRequest(notFound.render(request)));
     }
 
+    @SuppressWarnings("unchecked")
+	public <T extends EssentialFilter> Class<T>[] filters() {
+        return new Class[]{GzipFilter.class};
+    }
 
 
 	private void loadInitData(Application app) {
