@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 import com.avaje.ebean.Page;
 import com.avaje.ebean.annotation.CreatedTimestamp;
@@ -40,9 +41,8 @@ public class Product extends Model {
 
     @Constraints.Required
     private Long ean;
-    
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Attribute> attributes;
     
     @UpdatedTimestamp
@@ -118,14 +118,22 @@ public class Product extends Model {
 
         if (rel == null) {
             rel = new CartHasProduct();
-            rel.setProduct(this);
             rel.setPrice(this.getPrice());
-            rel.setCart(cart);
         } else {
             rel.setAmount(rel.getAmount() + 1);
         }
 
-        rel.save();
+        rel.setProduct(this);
+        rel.setCart(cart);
+
+        try{
+            Ebean.beginTransaction();
+            Ebean.save(rel);
+            Ebean.commitTransaction();
+        }finally{
+            Ebean.endTransaction();
+        }
+
     }
 
     public Boolean removeFromCart(Cart cart) {

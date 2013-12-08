@@ -8,19 +8,49 @@ import com.avaje.ebean.annotation.UpdatedTimestamp;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @UpdateMode(updateChangesOnly=false)
 public class CartHasProduct extends Model {
 
-    @ManyToOne
+    @Embeddable
+    public class CartHasProductPK implements Serializable {
+
+        @Basic
+        public Integer productId;
+
+        @Basic
+        public Integer cartId;
+
+        @Override
+        public int hashCode() {
+            return productId + cartId * 100000;
+        }
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null) return false;
+            if (! (obj instanceof CartHasProductPK)) return false;
+            CartHasProductPK pk = (CartHasProductPK) obj;
+            return pk.productId == productId && pk.cartId == cartId;
+        }
+    }
+
+    @EmbeddedId
+    private CartHasProductPK cartHasProductPK;
+
+    @MapsId(value="cartHasProductPK.productId")
+    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="product_id", referencedColumnName="id")
     private Product product;
 
-    @ManyToOne
+    @MapsId(value="cartHasProductPK.cartId")
+    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="cart_id", referencedColumnName="id")
     private Cart cart;
 
     @Constraints.Required
