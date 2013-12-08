@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.avaje.ebean.Ebean;
 
+import com.avaje.ebean.FetchConfig;
 import models.*;
 import play.data.Form;
 import play.mvc.Result;
@@ -20,7 +21,16 @@ public class Product extends Eshomo {
      */
     public static Result products() {
     	List<models.Product> productList = models.Product.find.all();
-    	return ok(products.render(productList));
+    	return ok(views.html.product.products.render(productList));
+    }
+
+    /**
+     * @return Product overview by tag
+     */
+    public static Result productsByTag(String tagId) {
+        models.Tag tag = models.Tag.find.byId(tagId);
+        List<models.Product> products = tag.getProducts();
+        return ok(views.html.product.products.render(products));
     }
     
     /**
