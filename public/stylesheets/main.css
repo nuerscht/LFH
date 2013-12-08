@@ -60,3 +60,24 @@
     margin-top: 5px;
     font-size: 0.8em;
 }
+
+/*
+ * Forms
+ */
+.description {
+	min-height: 150px;
+	resize:vertical;
+}
+
+.attribute:first-child > .danger {
+    display: none;
+}
+
+.manage {
+    margin-left: 32px;
+    margin-bottom: 20px;
+}
+
+.attribute_template {
+    display: none;
+}

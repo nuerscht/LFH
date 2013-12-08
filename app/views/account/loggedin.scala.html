@@ -12,7 +12,8 @@
 @if(user.getType().getId() == "admin") {
 <h2>Admin</h2>
 	<ul class="nav">
-        <li><a href="@routes.User.list()">Kunden bearbeiten</a></li>  
+        <li><a href="@routes.User.list()">Kunden bearbeiten</a></li>
+        <li><a href="@routes.Product.list()">Produkte bearbeiten</a></li>    
         <li><a href="@routes.Country.list()">L&auml;nder bearbeiten</a></li>    
 	</ul>
 }

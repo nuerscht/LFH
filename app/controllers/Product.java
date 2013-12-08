@@ -14,6 +14,7 @@ public class Product extends Eshomo {
 	public static final int NUM_PRODUCTS_PER_PAGE = 20;
 	// An unbound rating form
 	final static Form<Rating> ratingForm = Form.form(Rating.class);
+	final static Form<models.Product> productForm = Form.form(models.Product.class);
 	
 	/**
      * @return Product overview
@@ -78,6 +79,26 @@ public class Product extends Eshomo {
             		details.render(product, product.getImages(), product.getRatings(), ratingForm)
             );
         }
+    }
+    
+    public static Result list(){
+    	return ok(adminlist.render(models.Product.find.all()));
+    }
+    
+    public static Result add(){
+    	Form<models.Product> productForm = Form.form(models.Product.class);
+    	return ok(productform.render(productForm, "Produkt erfassen", ""));
+    }
+    
+    public static Result edit(Integer id){
+    	models.Product product = models.Product.find.byId(id);
+    	Form<models.Product> productForm = Form.form(models.Product.class).fill(product);
+    	return ok(productform.render(productForm, "Produkt editieren", ""));
+    }
+    
+    public static Result save(Integer id){
+    	Form<models.Product> form = Form.form(models.Product.class).bindFromRequest();
+    	return ok(productform.render(form, "Produkt editieren", ""));
     }
 
     /**
