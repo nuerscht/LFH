@@ -28,17 +28,18 @@
         )
         
         @inputText(
-            field("description"), 
+            field("description"),
             '_label -> "Beschreibung",
             'class -> "form-control" 
         )
         
-        
-        
         @if(field("name").value.isEmpty){
             <input type="file">
         }else{
-            <div>@routes.Assets.at("images/upload/" + field("id").value.get)</div>
+            <div>
+                @routes.Assets.at("images/upload/" + field("id").value.get + field("extension").value.get)
+                <img src="@routes.Assets.at("images/upload/" + field("id").value.get + field("extension").value.get)">
+            </div>
         }
     </div>
 }
@@ -124,7 +125,7 @@
             **@
             @imageGroup(
                 productForm("images[x]"),
-                className = "images_template"
+                className = "image_template"
             )
             <div class="manage">
                 <a class="addImage btn btn-default">Neues Bild</a>
@@ -149,8 +150,20 @@
             cleanLabel()
         })
         
+        $('.images').on('click', 'a', function(e) {
+            $(this).parents('.image').remove()
+            renumber()
+        })
+        
+        $('.addImage').on('click', function(e) {
+            var template = $('.image_template')
+            template.before('<div class="image">' + template.html() + '</div>')
+            renumber()
+        })
+        
         $('#form').submit(function() {
             $('.attribute_template').remove()
+            $('.image_template').remove()
         })
         
         $(document).ready(function() {
@@ -173,11 +186,20 @@
         // This is probably not the easiest way to do it. A jQuery plugin would help.
         
         var renumber = function() {
+        	alert("Trying")
             $('.attribute').each(function(i) {
                 $('input', this).each(function() {
                     $(this).attr('name', $(this).attr('name').replace(/attributes\[.+?\]/g, 'attributes[' + i + ']'))
                 })
             })
+            alert("Here!")
+            $('.image').each(function(i) {
+                $('input', this).each(function() {
+                    $(this).attr('name', $(this).attr('name').replace(/images\[.+?\]/g, 'images[' + i + ']'))
+                    alert(i)
+                })
+            })
+            alert("Did it!")
         }
         
     </script>

@@ -29,8 +29,12 @@ public class Image extends Model {
 
     @Column
     private String description;
+    
+    @Constraints.Required
+    @Constraints.MaxLength(255)
+    private String extension;
 
-    @CreatedTimestamp
+	@CreatedTimestamp
     private Date createdAt;
 
     public static Finder<Integer, Image> find = new Finder<Integer, Image>(Integer.class, Image.class);
@@ -63,6 +67,14 @@ public class Image extends Model {
         this.description = description;
     }
 
+    public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+    
     public Date getCreatedAt() {
         return createdAt;
     }
