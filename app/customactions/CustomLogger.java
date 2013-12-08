@@ -241,6 +241,11 @@ public class CustomLogger {
 		}
 	}
 
+	/**
+	 * Write an entry to the login log
+	 * @param ctx Http context
+	 * @param msg The message to write to the db
+	 */
 	public void logToLoginDb(final Context ctx, String msg) {
 		try {
 			final User user = extractUser(ctx);

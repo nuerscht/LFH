@@ -47,7 +47,7 @@ public class Api extends Controller {
 	 * Returns a list of articles or only one article.
 	 * 
 	 * @param id
-	 *            Id of the article or string 'all'
+	 *            The id of the article or string <i>all</i>
 	 * @param since
 	 *            Get all articles since the passed date (unix timestamp)
 	 * @return XML or Json list of articles (depends on query parameter type)
@@ -57,7 +57,12 @@ public class Api extends Controller {
 	public static Result articles(final String id, final String since) {
 		return getItems(id, since, Product.class);
 	}
-
+	/**
+	 * Returns a list of customers or only one customer.
+	 * @param id The id of the customer
+	 * @param since Get all customer since the passed date (unix timestamp)
+	 * @return XML or Json list of customers (depends on query parameter type)
+	 */
 	@TokenAuthenticator
 	@LogAction(value = "api", logLevel = LogLevel.DEBUG)
 	public static Result customers(final String id, final String since) {
@@ -190,13 +195,21 @@ public class Api extends Controller {
 					.getJsonObject(items, "orders");
 		return ok(result);
 	}
-
+	/**
+	 * Returns a list of orders or only one order.
+	 * @param id The id of the order
+	 * @param since Get all order since the passed date (unix timestamp)
+	 * @return XML or Json list of orders (depends on query parameter type)
+	 */
 	@TokenAuthenticator
 	@LogAction(value = "api", logLevel = LogLevel.DEBUG)
 	public static Result orders(final String id, final String since) {
 		return getItems(id, since, Cart.class);
 	}
-
+	/**
+	 * Gets the current version of the API.
+	 * @return The version of the interface
+	 */
 	@TokenAuthenticator
 	@LogAction(value = "api", logLevel = LogLevel.DEBUG)
 	public static Result version() {
