@@ -87,18 +87,43 @@ public class Product extends Eshomo {
     
     public static Result add(){
     	Form<models.Product> productForm = Form.form(models.Product.class);
-    	return ok(productform.render(productForm, "Produkt erfassen", ""));
+    	return ok(productform.render(productForm, 0, "Produkt erfassen", ""));
     }
     
     public static Result edit(Integer id){
     	models.Product product = models.Product.find.byId(id);
     	Form<models.Product> productForm = Form.form(models.Product.class).fill(product);
-    	return ok(productform.render(productForm, "Produkt editieren", ""));
+    	return ok(productform.render(productForm, product.getId(), "Produkt editieren", ""));
     }
     
     public static Result save(Integer id){
     	Form<models.Product> form = Form.form(models.Product.class).bindFromRequest();
-    	return ok(productform.render(form, "Produkt editieren", ""));
+    	
+    	if(!(isLoggedIn() && isAdminUser())){
+    		return forbidden();
+    	}
+    	
+    	if(form.hasErrors()){
+    		return badRequest(productform.render(form, id, "Produkt editieren", "Formular ungültig"));
+    	} else {
+    		models.Product product = form.get();
+
+    		Ebean.beginTransaction();
+    		try{
+    			if(!(id == 0)){
+    				product.setId(id);
+    				Ebean.update(product);
+        		}else{
+        			Ebean.save(product);
+        		}
+        		Ebean.commitTransaction();
+    		} catch (Exception e){
+    			System.out.println(e.toString());
+        	}finally{
+        		Ebean.endTransaction();
+        	}
+    	}
+    	return list();
     }
 
     /**

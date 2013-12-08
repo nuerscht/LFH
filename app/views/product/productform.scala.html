@@ -1,21 +1,24 @@
-@(productForm: Form[models.Product], title: String, message: String)
+@(productForm: Form[models.Product], productId: Integer, title: String, message: String)
 
 @import helper._
 @import helper.twitterBootstrap._
 
 @attributeGroup(field: Field, className: String = "attribute") = {
-    <div class="well @className">
-        <a class="removeAttribute btn danger pull-right">Remove this attribute</a>
+    <div class="@className">
+        
+        <a class="removeAttribute pull-right"><img src="@routes.Assets.at("images/delete.png")"></a>
+        
         @inputText(
             field("value"), 
-            '_label -> "Wert"
+            '_label -> "Wert",
+            'class -> "form-control" 
         )
     </div>
 }
 
 @main("LFH Shop - Produckt hinzufuegen") {
 
-    @form(action = routes.Product.save(1), 'id -> "form") {
+    @form(action = routes.Product.save(productId), 'id -> "form", 'enctype -> "multipart/form-data") {
         @if(!message.isEmpty()) {
             <div class="alert">
                 <a class="close" data-dismiss="alert">x</a> 
@@ -63,6 +66,9 @@
             )
 
         <div class="attributes">
+        
+            <h2>Attribute</h2>
+        
             @repeat(productForm("attributes"), min = 1) { attributeField =>
                 @attributeGroup(attributeField)
             }
@@ -74,42 +80,52 @@
                 className = "attribute_template"
             )
             <div class="manage">
-                    <a class="addAttribute btn success">Neues Attribut</a>
+                    <a class="addAttribute btn btn-default">Neues Attribut</a>
             </div>
     
         </div>
         
-    <button type="submit" id="save-product" class="btn btn-default">Speichern</button>
+    <button type="submit" id="save-product" class="btn btn-primary">Speichern</button>
     }
     
     <script type="text/javascript" charset="utf-8">
         
-        $('.removeAttribute').live('click', function(e) {
+        $('.attributes').on('click', 'a', function(e) {
             $(this).parents('.attribute').remove()
             renumber()
         })
         
-        $('.addAttribute').live('click', function(e) {
+        $('.addAttribute').on('click', function(e) {
             var template = $('.attribute_template')
-            template.before('<div class="well attribute">' + template.html() + '</div>')
+            template.before('<div class="attribute">' + template.html() + '</div>')
             renumber()
+            cleanLabel()
         })
         
         $('#form').submit(function() {
             $('.attribute_template').remove()
         })
         
+        $(document).ready(function() {
+        	cleanLabel()
+        })
+        
+        // Pretty nasty, but did not manage to create working inputs without lables
+        var cleanLabel = function(){
+        	$('label:contains("Wert")').remove()
+        	$('span:contains("Required")').remove()
+        }
+        
         // -- renumber fields
         
         // Rename fields to have a coherent payload like:
         //
-        // attributes[0].label
-        // attributes[0].email
+        // attributes[0].value
         // ...
         //
         // This is probably not the easiest way to do it. A jQuery plugin would help.
         
-        var renumber = function(phones) {
+        var renumber = function() {
             $('.attribute').each(function(i) {
                 $('input', this).each(function() {
                     $(this).attr('name', $(this).attr('name').replace(/attributes\[.+?\]/g, 'attributes[' + i + ']'))

@@ -9,6 +9,7 @@ import com.avaje.ebean.annotation.UpdatedTimestamp;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -43,13 +44,11 @@ public class Product extends Model {
     @Constraints.Required
     private Long ean;
     
-
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Attribute> attributes;
     
-    @UpdatedTimestamp
+	@UpdatedTimestamp
     private Date updatedAt;
-
 
     @CreatedTimestamp
     private Date createdAt;
@@ -59,6 +58,10 @@ public class Product extends Model {
     public Integer getId() {
         return id;
     }
+    
+    public void setId(Integer id) {
+		this.id = id;
+	}
 
     public String getTitle() {
         return title;

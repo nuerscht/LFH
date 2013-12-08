@@ -69,13 +69,9 @@
 	resize:vertical;
 }
 
-.attribute:first-child > .danger {
-    display: none;
-}
-
 .manage {
-    margin-left: 32px;
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .attribute_template {
