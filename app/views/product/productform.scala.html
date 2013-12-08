@@ -16,13 +16,40 @@
     </div>
 }
 
+@imageGroup(field: Field, className: String = "image") = {
+    <div class="@className">
+        
+        <a class="removeImage pull-right"><img src="@routes.Assets.at("images/delete.png")"></a>
+        
+        @inputText(
+            field("name"), 
+            '_label -> "Name",
+            'class -> "form-control" 
+        )
+        
+        @inputText(
+            field("description"), 
+            '_label -> "Beschreibung",
+            'class -> "form-control" 
+        )
+        
+        
+        
+        @if(field("name").value.isEmpty){
+            <input type="file">
+        }else{
+            <div>@routes.Assets.at("images/upload/" + field("id").value.get)</div>
+        }
+    </div>
+}
+
 @main("LFH Shop - Produckt hinzufuegen") {
 
     @form(action = routes.Product.save(productId), 'id -> "form", 'enctype -> "multipart/form-data") {
         @if(!message.isEmpty()) {
             <div class="alert">
-                <a class="close" data-dismiss="alert">x</a> 
-                <strong>Meldung: </strong>@message.  
+                <a class="close" data-dismiss="alert">x</a>
+                <strong>Meldung:</strong> @message.
             </div>
         }
             
@@ -80,7 +107,27 @@
                 className = "attribute_template"
             )
             <div class="manage">
-                    <a class="addAttribute btn btn-default">Neues Attribut</a>
+                <a class="addAttribute btn btn-default">Neues Attribut</a>
+            </div>
+    
+        </div>
+        
+        <div class="images">
+        
+            <h2>Bilder</h2>
+        
+            @repeat(productForm("images"), min = 1) { imageField =>
+                @imageGroup(imageField)
+            }
+            @**
+            * Keep an hidden block that will be used as template for Javascript copy code
+            **@
+            @imageGroup(
+                productForm("images[x]"),
+                className = "images_template"
+            )
+            <div class="manage">
+                <a class="addImage btn btn-default">Neues Bild</a>
             </div>
     
         </div>

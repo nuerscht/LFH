@@ -47,6 +47,9 @@ public class Product extends Model {
     @OneToMany(cascade=CascadeType.ALL)
     private List<Attribute> attributes;
     
+    @OneToMany(cascade=CascadeType.ALL)
+    private List<Image> images;
+    
 	@UpdatedTimestamp
     private Date updatedAt;
 
