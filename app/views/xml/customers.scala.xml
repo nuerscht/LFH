@@ -18,7 +18,7 @@
          }
         </addresses>
         <email>@first.getEmail()</email>
-        <birthdate>@if(first.getBirthday()!=null){ @{first.getBirthday().getTime() / 1000L} }</birthdate>
+        <birthdate>@if(first.getBirthday()!=null){@{first.getBirthday().getTime() / 1000L}}</birthdate>
       </customer>
      }
     }

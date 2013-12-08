@@ -12,6 +12,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import play.api.templates.Html;
 import play.mvc.Controller;
+import utils.SessionSerializer;
 import views.html.account.login;
 import views.html.account.loggedin;
 
@@ -88,18 +89,7 @@ public class Eshomo extends Controller {
 	 * @return
 	 */
 	protected static models.User getUserObj() {
-		try {
-			byte[] b                = Base64.decodeBase64(session("user").getBytes());
-			ByteArrayInputStream bi = new ByteArrayInputStream(b);
-			ObjectInputStream    si = new ObjectInputStream(bi);
-			return (models.User)si.readObject();
-		} catch (ClassNotFoundException e) {
-			System.out.println(e);
-		} catch (IOException e){
-			System.out.println(e);	
-		}
-		
-		return null;
+		return SessionSerializer.<models.User>deserialize(session("user").getBytes());
 	}
 	
 	/**
@@ -107,15 +97,6 @@ public class Eshomo extends Controller {
 	 * @param user
 	 */
 	protected static void setUserObj(final models.User user) {
-		try {
-			ByteArrayOutputStream bo = new ByteArrayOutputStream();
-			ObjectOutputStream out = new ObjectOutputStream(bo);
-			out.writeObject(user);
-			out.flush();
-			session("user",    Base64.encodeBase64String(bo.toByteArray()));
-		} catch (IOException e) {
-			//this exception should never occur
-			System.out.println(e);
-		}		
+			session("user",    SessionSerializer.serialize(user));		
 	}
 }

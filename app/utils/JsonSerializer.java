@@ -2,6 +2,7 @@ package utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import models.Address;
@@ -10,7 +11,6 @@ import models.Cart;
 import models.CartHasProduct;
 import models.Product;
 import models.User;
-
 import play.i18n.Messages;
 import play.libs.Json;
 
@@ -105,7 +105,8 @@ public class JsonSerializer {
 			aNode.add(ad.getValue());	
 		}
 		node.put("attributes", aNode);
-		node.put("price", element.getPrice());
+		DecimalFormat df = new DecimalFormat("0.00");
+		node.put("price", df.format(element.getPrice()));
 		node.put("currency", Messages.get("api.request.currency"));
 		return node;
 	}
