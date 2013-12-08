@@ -43,13 +43,13 @@ public class CartHasProduct extends Model {
     @EmbeddedId
     private CartHasProductPK cartHasProductPK;
 
-    @MapsId(value="cartHasProductPK.productId")
-    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @MapsId(value="productId")
+    @ManyToOne
     @JoinColumn(name="product_id", referencedColumnName="id")
     private Product product;
 
-    @MapsId(value="cartHasProductPK.cartId")
-    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @MapsId(value="cartId")
+    @ManyToOne
     @JoinColumn(name="cart_id", referencedColumnName="id")
     private Cart cart;
 
