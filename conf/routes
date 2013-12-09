@@ -14,6 +14,10 @@ GET         /search                       controllers.Product.search(p:Int ?= 0,
 
 POST        /rate/:id                     controllers.Product.submitRating(id: Integer)
 
+# Cart
+GET         /cart                         controllers.Cart.index()
+GET         /cart/:id                     controllers.Cart.indexById(id: Integer)
+
 # API
 GET         /customers                    controllers.Api.customers(id: String, since: String ?= null)
 GET         /orders                       controllers.Api.orders(id: String, since: String ?= null)

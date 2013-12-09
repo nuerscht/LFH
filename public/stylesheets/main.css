@@ -60,3 +60,20 @@
     margin-top: 5px;
     font-size: 0.8em;
 }
+
+/*
+ * Cart
+ */
+
+.cart table {
+    font-size: 0.9em;
+}
+
+.cart table .price {
+    text-align: right;
+}
+
+.cart table .amount input {
+    width: 30px;
+    text-align: center;
+}

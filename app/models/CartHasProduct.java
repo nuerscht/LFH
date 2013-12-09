@@ -92,6 +92,10 @@ public class CartHasProduct extends Model {
         this.price = price;
     }
 
+    public Double getTotal() {
+        return amount * (price - price * discount);
+    }
+
     public Integer getAmount() {
         return amount;
     }
