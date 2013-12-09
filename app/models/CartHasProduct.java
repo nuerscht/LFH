@@ -30,6 +30,7 @@ public class CartHasProduct extends Model {
         public int hashCode() {
             return productId + cartId * 100000;
         }
+
         @Override
         public boolean equals(Object obj) {
             if (obj == this) return true;
@@ -41,16 +42,20 @@ public class CartHasProduct extends Model {
     }
 
     @EmbeddedId
-    private CartHasProductPK cartHasProductPK;
+    private CartHasProductPK cartHasProductPK = new CartHasProductPK();
 
-    @MapsId(value="productId")
     @ManyToOne
-    @JoinColumn(name="product_id", referencedColumnName="id")
+    @JoinTable(
+        name="product",
+        joinColumns=@JoinColumn(name="product_id", referencedColumnName="id", updatable=false, insertable=false)
+    )
     private Product product;
 
-    @MapsId(value="cartId")
     @ManyToOne
-    @JoinColumn(name="cart_id", referencedColumnName="id")
+    @JoinTable(
+        name="cart",
+        joinColumns=@JoinColumn(name="cart_id", referencedColumnName="id", updatable=false, insertable=false)
+    )
     private Cart cart;
 
     @Constraints.Required
@@ -73,6 +78,7 @@ public class CartHasProduct extends Model {
     }
 
     public void setProduct(Product product) {
+        this.cartHasProductPK.productId = product.getId();
         this.product = product;
     }
 
@@ -81,6 +87,7 @@ public class CartHasProduct extends Model {
     }
 
     public void setCart(Cart cart) {
+        this.cartHasProductPK.cartId = cart.getId();
         this.cart = cart;
     }
 
