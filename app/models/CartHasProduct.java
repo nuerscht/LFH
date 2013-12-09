@@ -10,52 +10,41 @@ import play.db.ebean.Model;
 
 import javax.persistence.*;
 
-import java.io.Serializable;
 import java.util.Date;
+
+
 
 @Entity
 @UpdateMode(updateChangesOnly=false)
 public class CartHasProduct extends Model {
 
     @Embeddable
-    public class CartHasProductPK implements Serializable {
-
-        @Basic
+    public class CartHasProductId {
         public Integer productId;
-
-        @Basic
         public Integer cartId;
 
-        @Override
         public int hashCode() {
             return productId + cartId * 100000;
         }
 
-        @Override
         public boolean equals(Object obj) {
             if (obj == this) return true;
             if (obj == null) return false;
-            if (! (obj instanceof CartHasProductPK)) return false;
-            CartHasProductPK pk = (CartHasProductPK) obj;
-            return pk.productId == productId && pk.cartId == cartId;
+            if (! (obj instanceof CartHasProductId)) return false;
+            CartHasProductId id = (CartHasProductId) obj;
+            return id.productId == productId && id.cartId == cartId;
         }
     }
 
     @EmbeddedId
-    private CartHasProductPK cartHasProductPK = new CartHasProductPK();
+    public CartHasProductId id;
 
     @ManyToOne
-    @JoinTable(
-        name="product",
-        joinColumns=@JoinColumn(name="product_id", referencedColumnName="id", updatable=false, insertable=false)
-    )
+    @JoinColumn(name="product_id", updatable=false, insertable=false)
     private Product product;
 
     @ManyToOne
-    @JoinTable(
-        name="cart",
-        joinColumns=@JoinColumn(name="cart_id", referencedColumnName="id", updatable=false, insertable=false)
-    )
+    @JoinColumn(name="cart_id", updatable=false, insertable=false)
     private Cart cart;
 
     @Constraints.Required
@@ -78,7 +67,6 @@ public class CartHasProduct extends Model {
     }
 
     public void setProduct(Product product) {
-        this.cartHasProductPK.productId = product.getId();
         this.product = product;
     }
 
@@ -87,7 +75,6 @@ public class CartHasProduct extends Model {
     }
 
     public void setCart(Cart cart) {
-        this.cartHasProductPK.cartId = cart.getId();
         this.cart = cart;
     }
 
@@ -141,5 +128,14 @@ public class CartHasProduct extends Model {
                 .eq("product_id", product.getId())
                 .eq("cart_id", cart.getId())
                 .findUnique();
+    }
+
+    @Override
+    public void save() {
+        id = new CartHasProductId();
+        id.cartId = cart.getId();
+        id.productId = product.getId();
+
+        super.save();
     }
 }

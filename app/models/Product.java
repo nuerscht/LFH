@@ -125,15 +125,7 @@ public class Product extends Model {
 
         rel.setProduct(this);
         rel.setCart(cart);
-
-        try{
-            Ebean.beginTransaction();
-            Ebean.save(rel);
-            Ebean.commitTransaction();
-        }finally{
-            Ebean.endTransaction();
-        }
-
+        rel.save();
     }
 
     public Boolean removeFromCart(Cart cart) {
