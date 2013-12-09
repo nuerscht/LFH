@@ -128,6 +128,20 @@ public class Product extends Model {
         rel.save();
     }
 
+    public void setToCart(Cart cart, Integer amount) {
+        CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(cart, this);
+
+        if (rel == null) {
+            rel = new CartHasProduct();
+            rel.setPrice(this.getPrice());
+        }
+
+        rel.setProduct(this);
+        rel.setCart(cart);
+        rel.setAmount(amount);
+        rel.save();
+    }
+
     public Boolean removeFromCart(Cart cart) {
         CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(cart, this);
 
