@@ -31,6 +31,7 @@ public class TokenAuthenticatorImpl extends Action<TokenAuthenticator> {
 				.where()
 				.eq("token", token)
 				.eq("type_id", "admin")
+				.eq("isActive", true)
 				.findUnique();
 		// Break if no user has been found
 		if (user == null)
