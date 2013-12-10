@@ -58,7 +58,7 @@ public class ProductIntegrationTest extends EshomoTest {
             	Integer productId = 1;
             	Product product = Product.find.byId(productId);
             	
-                browser.goTo("http://localhost:3333" + routes.Product.details(productId));
+                browser.goTo("http://localhost:3333" + routes.Product.details(productId, 0));
                 
                 assertThat(browser.pageSource()).contains("Preis");
                 assertThat(browser.pageSource()).contains(product.getPrice().toString());
@@ -89,7 +89,7 @@ public class ProductIntegrationTest extends EshomoTest {
             	
                 assertThat(browser.pageSource()).contains("Ausloggen");
                 
-                browser.goTo("http://localhost:3333" + routes.Product.details(productId));
+                browser.goTo("http://localhost:3333" + routes.Product.details(productId, 0));
                 
                 browser.click("#rate_5");
                 browser.fill("#comment").with(comment);
@@ -100,6 +100,93 @@ public class ProductIntegrationTest extends EshomoTest {
                 // As long as we don't have stars to rate we check the value
                 assertThat(browser.pageSource()).contains("5");
                 assertThat(browser.pageSource()).contains(user.getEmail());
+            }
+        });
+	}
+	
+	@Test
+	public void testProductAdd(){
+		FakeApplication fakeApp = Helpers.fakeApplication();
+		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
+            public void invoke(TestBrowser browser) {
+            	String title = "Test Product";
+            	String description = "This is my comment";
+            	String ean = "1231231231239";
+            	String price = "12.33";
+            	String attribute = "Very very long";
+            	User user = User.find.byId(1);
+            	
+            	browser.goTo("http://localhost:3333");
+            	
+            	if(!browser.pageSource().contains("Ausloggen")){
+            		browser.fill("#email").with(user.getEmail());
+            		browser.fill("#password").with("ffhs2011");
+            		browser.submit("#signin");
+				}
+            	
+                assertThat(browser.pageSource()).contains("Produkte bearbeiten");
+                
+                browser.goTo("http://localhost:3333" + routes.Product.add());
+                
+                browser.fill("#title").with(title);
+                browser.fill("#description").with(description);
+                browser.fill("#ean").with(ean);
+                browser.fill("#price").with(price);
+                browser.fill("#attributes_0__value").with(attribute);
+                browser.submit("#save-product");
+                
+                Product product = Product.find.orderBy("created_at desc").setMaxRows(1).findUnique();
+                
+                browser.goTo("http://localhost:3333" + routes.Product.details(product.getId(), 0));
+
+                assertThat(browser.pageSource()).contains(title);
+                assertThat(browser.pageSource()).contains(description);
+                assertThat(browser.pageSource()).contains(ean);
+                assertThat(browser.pageSource()).contains(price);
+                assertThat(browser.pageSource()).contains(attribute);
+            }
+        });
+	}
+	
+	@Test
+	public void testProductEdit(){
+		FakeApplication fakeApp = Helpers.fakeApplication();
+		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
+            public void invoke(TestBrowser browser) {
+            	Integer productId = 1;
+            	String title = "Test Product";
+            	String description = "This is my comment";
+            	String ean = "1231231231239";
+            	String price = "12.33";
+            	String attribute = "Very very long";
+            	User user = User.find.byId(1);
+            	
+            	browser.goTo("http://localhost:3333");
+            	
+            	if(!browser.pageSource().contains("Ausloggen")){
+            		browser.fill("#email").with(user.getEmail());
+            		browser.fill("#password").with("ffhs2011");
+            		browser.submit("#signin");
+				}
+            	
+                assertThat(browser.pageSource()).contains("Produkte bearbeiten");
+                
+                browser.goTo("http://localhost:3333" + routes.Product.edit(productId));
+                
+                browser.fill("#title").with(title);
+                browser.fill("#description").with(description);
+                browser.fill("#ean").with(ean);
+                browser.fill("#price").with(price);
+                browser.fill("#attributes_0__value").with(attribute);
+                browser.submit("#save-product");
+                
+                browser.goTo("http://localhost:3333" + routes.Product.details(productId, 0));
+
+                assertThat(browser.pageSource()).contains(title);
+                assertThat(browser.pageSource()).contains(description);
+                assertThat(browser.pageSource()).contains(ean);
+                assertThat(browser.pageSource()).contains(price);
+                assertThat(browser.pageSource()).contains(attribute);
             }
         });
 	}

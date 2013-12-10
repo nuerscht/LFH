@@ -25,6 +25,12 @@
 		<div><strong>Preis</strong> @product.getPrice()</div>
 		<div><strong>EAN:</strong> @product.getEan()</div>
 	</ul>
+	
+	<ul>
+	   @for(attribute <- product.getAttributes){
+	       <li>@attribute.getValue</li>
+	   }
+	</ul>
 		@product.getDescription()
 	</div>
     </div>

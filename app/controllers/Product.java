@@ -37,7 +37,7 @@ public class Product extends Eshomo {
     	Form<Rating> form = Form.form(Rating.class);
     	models.Product product = models.Product.find.byId(id);
     	
-    	if (product != null && product.getImages().size() > imageIndex) {
+    	if (product != null && (imageIndex == 0 || product.getImages().size() > imageIndex)) {
             return ok(details.render(product, imageIndex, product.getRatings(), form));
         } else {
             return badRequest();
