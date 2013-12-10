@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdateMode;
 
+import controllers.routes;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
@@ -81,5 +82,9 @@ public class Image extends Model {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+    
+    public String getAssetUrl(){
+    	return routes.Assets.at("images/upload/" + getId() + getExtension()).toString();
     }
 }

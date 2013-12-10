@@ -1,4 +1,4 @@
-@(productForm: Form[models.Product], productId: Integer, title: String, message: String)
+@(productForm: Form[models.Product], imageForm: Form[Image], productId: Integer, product: models.Product, title: String, message: String)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -13,34 +13,6 @@
             '_label -> "Wert",
             'class -> "form-control" 
         )
-    </div>
-}
-
-@imageGroup(field: Field, className: String = "image") = {
-    <div class="@className">
-        
-        <a class="removeImage pull-right"><img src="@routes.Assets.at("images/delete.png")"></a>
-        
-        @inputText(
-            field("name"), 
-            '_label -> "Name",
-            'class -> "form-control" 
-        )
-        
-        @inputText(
-            field("description"),
-            '_label -> "Beschreibung",
-            'class -> "form-control" 
-        )
-        
-        @if(field("name").value.isEmpty){
-            <input type="file">
-        }else{
-            <div>
-                @routes.Assets.at("images/upload/" + field("id").value.get + field("extension").value.get)
-                <img src="@routes.Assets.at("images/upload/" + field("id").value.get + field("extension").value.get)">
-            </div>
-        }
     </div>
 }
 
@@ -78,7 +50,7 @@
         @inputText(productForm("price"), 
                    '_label -> "Preis", 
                    'class -> "form-control", 
-                   'placeholder -> "Bitt Preis eingeben", 
+                   'placeholder -> "Bitte Preis eingeben", 
                    'required -> "required", 
                    'type -> "text", 
                    'maxlength -> "45",
@@ -117,20 +89,33 @@
         
             <h2>Bilder</h2>
         
-            @repeat(productForm("images"), min = 1) { imageField =>
-                @imageGroup(imageField)
+            @if(productId != 0 && product.hasImage){
+                <div class="well">
+                    <img class="image" src="@product.getImages.get(0).getAssetUrl">
+                </div>
             }
-            @**
-            * Keep an hidden block that will be used as template for Javascript copy code
-            **@
-            @imageGroup(
-                productForm("images[x]"),
-                className = "image_template"
+            
+            @inputText(imageForm("name"),
+                '_label -> "Name",
+                'class -> "form-control", 
+                'placeholder -> "Bitte Namen eingeben", 
+                'type -> "text"
             )
-            <div class="manage">
-                <a class="addImage btn btn-default">Neues Bild</a>
+            
+            @inputText(imageForm("description"),
+                '_label -> "Beschreibung",
+                'name -> "image-description",
+                'class -> "form-control", 
+                'type -> "text", 
+                'placeholder -> "Bitte Beschreibung eingeben"
+            )
+            
+            
+            
+            <h3>Neues Bild hochladen:</h3>
+            <div class="input">
+                <input type="file" name="image">
             </div>
-    
         </div>
         
     <button type="submit" id="save-product" class="btn btn-primary">Speichern</button>
@@ -150,30 +135,24 @@
             cleanLabel()
         })
         
-        $('.images').on('click', 'a', function(e) {
-            $(this).parents('.image').remove()
-            renumber()
-        })
-        
-        $('.addImage').on('click', function(e) {
-            var template = $('.image_template')
-            template.before('<div class="image">' + template.html() + '</div>')
-            renumber()
-        })
-        
         $('#form').submit(function() {
             $('.attribute_template').remove()
-            $('.image_template').remove()
         })
         
         $(document).ready(function() {
-        	cleanLabel()
+        	cleanLabel();
+        	renameDescription();
         })
         
         // Pretty nasty, but did not manage to create working inputs without lables
         var cleanLabel = function(){
         	$('label:contains("Wert")').remove()
         	$('span:contains("Required")').remove()
+        }
+        
+        // Another nasty part, 
+        var renameDescription = function(){
+            $('.images').find('#description').attr('name', 'image-description');
         }
         
         // -- renumber fields
@@ -186,20 +165,11 @@
         // This is probably not the easiest way to do it. A jQuery plugin would help.
         
         var renumber = function() {
-        	alert("Trying")
             $('.attribute').each(function(i) {
                 $('input', this).each(function() {
-                    $(this).attr('name', $(this).attr('name').replace(/attributes\[.+?\]/g, 'attributes[' + i + ']'))
+                    $(this).attr('name', $(this).attr('name').replace(/attributes\[.+?\]/g, 'attributes[' + i + ']'));
                 })
             })
-            alert("Here!")
-            $('.image').each(function(i) {
-                $('input', this).each(function() {
-                    $(this).attr('name', $(this).attr('name').replace(/images\[.+?\]/g, 'images[' + i + ']'))
-                    alert(i)
-                })
-            })
-            alert("Did it!")
         }
         
     </script>

@@ -78,6 +78,11 @@
     display: none;
 }
 
-.image_template {
-    display: none;
+.image {
+    width: 100%;
+    
+}
+
+.images {
+	margin-bottom: 20px;
 }

@@ -105,6 +105,10 @@ public class Product extends Model {
 		return attributes;
 	}
 
+	public void addImage(Image image){
+		this.images.add(image);
+	}
+	
 	public Date getUpdatedAt() {
         return updatedAt;
     }
@@ -152,7 +156,11 @@ public class Product extends Model {
     }
     
     public List<Image> getImages(){
-    	return Image.find.where().eq("product_id", this.getId()).findList();
+    	return images;
+    }
+    
+    public boolean hasImage(){
+    	return this.images.size() > 0;
     }
     
     /**

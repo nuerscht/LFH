@@ -3,8 +3,14 @@
 <div class="products">
     @for(product <- products){
     <div class="product">
-	   <img src="http://placehold.it/100x100" class="img-thumbnail"
-		alt="Product image"> <a href="@routes.Product.details(product.getId)">@product.getTitle</a>
+        @if(product.hasImage){
+            @defining(product.getImages.get(0)){ image =>
+                <img src="@image.getAssetUrl" class="img-thumbnail" alt="@image.getName">
+            }
+        }else{
+	        <img src="http://placehold.it/100x100" class="img-thumbnail" alt="Product image"> 
+		}
+		<a href="@routes.Product.details(product.getId)">@product.getTitle</a>
 	   <p>@product.getDescription</p>
     </div>
     }

@@ -1,4 +1,4 @@
-@(product: models.Product, images: List[Image], ratings: List[Rating], ratingForm: Form[Rating])
+@(product: models.Product, imageIndex: Integer, ratings: List[Rating], ratingForm: Form[Rating])
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -6,14 +6,18 @@
 @main("Welcome to the LFH Shop") {
 	<h1>@product.getTitle()</h1>
 	
-    <ul class="pagination">
-       <li><a href="#">&laquo;</a></li>
-       @for((image, index) <- images.zipWithIndex){
-           <li><a href="#">@{index + 1}</a></li>
-       }
-
-       <li><a href="#">&raquo;</a></li>
-    </ul>
+	@if(product.hasImage){
+	    <div class="well">
+            <img class="image" src="@product.getImages.get(imageIndex).getAssetUrl">
+            <ul class="pagination">
+            @for((image, index) <- product.getImages.zipWithIndex){
+                <li><a href="?image=@index">@{index + 1}</a></li>
+            }
+            </ul>
+        </div>
+	}
+	
+    
     <div class="panel panel-default">
     <div class="panel-body">
 	<ul>
