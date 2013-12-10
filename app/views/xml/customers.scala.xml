@@ -3,10 +3,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <customers>
 	@for(user <- users){
-	@defining(user.getAddresses()(0)){ first =>
+	@defining(user.getAddresses().size() > 0){ hasAddress =>	
     <customer id="@user.getId()">
-        <name>@first.getLastname()</name>
-        <firstname>@first.getFirstname()</firstname>
+        <name>@if(hasAddress){@user.getAddresses()(0).getLastname()}</name>
+        <firstname>@if(hasAddress){@user.getAddresses()(0).getFirstname()}</firstname>
         <addresses>
         @for(add <- user.getAddresses()){
            <address id="@add.getId()" type="1">
@@ -17,8 +17,8 @@
            </address>
          }
         </addresses>
-        <email>@first.getEmail()</email>
-        <birthdate>@if(first.getBirthday()!=null){@{first.getBirthday().getTime() / 1000L}}</birthdate>
+        <email>@if(hasAddress){@user.getAddresses()(0).getEmail()}</email>
+        <birthdate>@if(hasAddress){@if(user.getAddresses()(0).getBirthday()!=null){@{user.getAddresses()(0).getBirthday().getTime() / 1000L}}}</birthdate>
       </customer>
      }
     }

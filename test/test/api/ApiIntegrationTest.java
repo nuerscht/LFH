@@ -8,11 +8,11 @@ import models.UserType;
 
 import org.junit.Test;
 
-import eshomo.EshomoTest;
-import play.libs.F.Promise;
 import play.libs.WS;
+import play.libs.WS.WSRequestHolder;
 import play.test.FakeApplication;
 import play.test.Helpers;
+import eshomo.EshomoTest;
 
 public class ApiIntegrationTest extends EshomoTest{
 
@@ -26,31 +26,37 @@ public class ApiIntegrationTest extends EshomoTest{
     @Test
     public void checkTokenLoginValidUser_Customer() {
         User user = getNewUser(true, true);
-        checkTokenLogin(customers_url + "?id=all&token=" + user.getToken(),
+        String[] params = new String[]{"id","all","token",user.getToken()};
+        checkTokenLogin(customers_url,params,
                 200, "<customers>");
     }
     
     @Test
     public void checkTokenLoginValidUser_Articles() {
-        User user = getNewUser(true, true);
-        checkTokenLogin(articles_url + "?id=all&token=" + user.getToken(),
-                500, "<articles>");
+        User user = getNewUser(true, true);      
+        String[] params = new String[]{"id","all","token",user.getToken()};
+        checkTokenLogin(articles_url,params,
+                200, "<articles>");
     }
     
     @Test
     public void checkTokenLoginValidUser_Orders() {
-        User user = getNewUser(true, true);
-        checkTokenLogin(articles_url + "?id=all&token=" + user.getToken(),
+        User user = getNewUser(true, true);           
+        String[] params = new String[]{"id","all","token",user.getToken()};
+        checkTokenLogin(orders_url,params,
                 404, "Angeforderte Ressource nicht gefunden");
     }
 
-    private void checkTokenLogin(final String url, final int expectedStatus,
+    private void checkTokenLogin(final String url,final String[] queryParams, final int expectedStatus,
             final String expectedContent) {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
-            public void run() {
-                Promise<WS.Response> result = WS.url(server_url + url).get();
-                WS.Response response = result.get(5000);
+            public void run() {          	
+            	WSRequestHolder result = WS.url(server_url + url);
+            	for(int i = 0 ; i + 1 < queryParams.length ; i += 2){            		
+            		result.setQueryParameter(queryParams[i], queryParams[i+1]);
+            	}
+                WS.Response response = result.get().get(5000);
                 // Check if status is okay and content is correct
                 assertThat(response.getStatus()).isEqualTo(expectedStatus);
                 assertThat(response.getBody()).contains(expectedContent);                
