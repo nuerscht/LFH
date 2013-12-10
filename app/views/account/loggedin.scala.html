@@ -4,6 +4,7 @@
 @import helper.twitterBootstrap._
 
 <ul class="nav">
+    <li><a href="@routes.Cart.index()">Warenkorb</a></li>
     <li><a href="@routes.User.showTransactions(user.getId())">Bestellungen</a></li>
     <li><a href="@routes.User.showData(user.getId())">Pers&ouml;nliche Daten</a></li>
     <li><a href="@routes.Account.logout()">Ausloggen</a></li>

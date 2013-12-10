@@ -86,3 +86,18 @@
 .images {
 	margin-bottom: 20px;
 }
+/*
+ * Cart
+ */
+.cart table {
+    font-size: 0.9em;
+}
+
+.cart table .price {
+    text-align: right;
+}
+
+.cart table .amount input {
+    width: 30px;
+    text-align: center;
+}

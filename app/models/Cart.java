@@ -5,10 +5,7 @@ import com.avaje.ebean.annotation.*;
 
 import play.db.ebean.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import java.util.Date;
 import java.util.List;
@@ -32,7 +29,7 @@ public class Cart extends Model {
     @UpdatedTimestamp
     private Date updatedAt;
     
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<CartHasProduct> cartHasProduct;
     
     @CreatedTimestamp

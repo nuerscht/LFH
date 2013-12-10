@@ -19,13 +19,7 @@
             <div class="row">
                 <div class="col-sm-3 col-left sidebar">
                     <h1><a style="text-decoration:none;" href="@routes.Application.index">LFH Shop</a></h1>
-                    <ul class="nav">
-                        <li><a href="#">Shirts</a></li>
-                        <li><a href="#">Caps</a></li>
-                        <li><a href="#">Office</a></li>
-                        <li><a href="#">Paper</a></li>
-                        <li><a href="#">Cups</a></li>
-                    </ul>
+                    <div>@controllers.Tag.getSidebarHtml()</div>
                 </div>
                 <div class="col-sm-6 col-content">
                     @content
