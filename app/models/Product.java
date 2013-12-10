@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 import com.avaje.ebean.Page;
 import com.avaje.ebean.annotation.CreatedTimestamp;
@@ -9,11 +10,9 @@ import com.avaje.ebean.annotation.UpdatedTimestamp;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,14 +41,15 @@ public class Product extends Model {
 
     @Constraints.Required
     private Long ean;
-    
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Attribute> attributes;
     
-    @UpdatedTimestamp
+    @OneToMany(cascade=CascadeType.ALL)
+    private List<Image> images;
+    
+	@UpdatedTimestamp
     private Date updatedAt;
-
 
     @CreatedTimestamp
     private Date createdAt;
@@ -59,6 +59,10 @@ public class Product extends Model {
     public Integer getId() {
         return id;
     }
+    
+    public void setId(Integer id) {
+		this.id = id;
+	}
 
     public String getTitle() {
         return title;
@@ -99,6 +103,10 @@ public class Product extends Model {
 		return attributes;
 	}
 
+	public void addImage(Image image){
+		this.images.add(image);
+	}
+	
 	public Date getUpdatedAt() {
         return updatedAt;
     }
@@ -120,13 +128,27 @@ public class Product extends Model {
 
         if (rel == null) {
             rel = new CartHasProduct();
-            rel.setProduct(this);
             rel.setPrice(this.getPrice());
-            rel.setCart(cart);
         } else {
             rel.setAmount(rel.getAmount() + 1);
         }
 
+        rel.setProduct(this);
+        rel.setCart(cart);
+        rel.save();
+    }
+
+    public void setToCart(Cart cart, Integer amount) {
+        CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(cart, this);
+
+        if (rel == null) {
+            rel = new CartHasProduct();
+            rel.setPrice(this.getPrice());
+        }
+
+        rel.setProduct(this);
+        rel.setCart(cart);
+        rel.setAmount(amount);
         rel.save();
     }
 
@@ -146,7 +168,11 @@ public class Product extends Model {
     }
     
     public List<Image> getImages(){
-    	return Image.find.where().eq("product_id", this.getId()).findList();
+    	return images;
+    }
+    
+    public boolean hasImage(){
+    	return this.images.size() > 0;
     }
     
     /**

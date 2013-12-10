@@ -1,0 +1,35 @@
+@(products: List[models.Product])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("LFH Shop - Produkte") {
+    <h1>Produktliste</h1>
+    @form(action = routes.Product.list()) {
+        <div class="form-group">
+            <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Suchen nach XXX" />
+        </div>
+        <div class="form-group">
+            <button type="submit" id="search-product" class="btn btn-default">Suchen</button>
+            <a href="@routes.Product.add()">Neues Produkt erfassen</a>
+        </div>
+    }
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>EAN</th>
+            <th>Preis</th>
+            <th>Bearbeitet</th>
+        </tr>
+    @for(product <- products) {
+        <tr>
+            <td><a href="@routes.Product.edit(product.getId())">@product.getId()</a></td>
+            <td><a href="@routes.Product.edit(product.getId())">@product.getTitle()</a></td>
+            <td>@product.getEan()</td>
+            <td>@product.getPrice()</td>
+            <td>@product.getUpdatedAt().format("dd.MM.yyyy hh:mm")</td>
+        <tr>
+    } 
+    </table>
+}

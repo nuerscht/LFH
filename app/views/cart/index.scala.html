@@ -1,0 +1,23 @@
+@(cart: models.Cart)
+
+@main("Welcome to the LFH Shop") {
+    <div class="cart">
+        <h1>Warenkorb</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>Produkt</th>
+                <th>Anzahl</th>
+                <th>Preis</th>
+                <th></th>
+            </tr>
+            @for(item <- cart.getCartHasProduct) {
+                <tr>
+                    <td class="title"><a href="/details/@item.getProduct.getId">@item.getProduct.getTitle</a></td>
+                    <td class="amount"><input type="text" value="@item.getAmount"/></td>
+                    <td class="remove">@item.getTotal</td>
+                    <td class="delete"><a href="#">Entfernen</a></td>
+                <tr>
+            }
+        </table>
+    </div>
+}

@@ -1,0 +1,176 @@
+@(productForm: Form[models.Product], imageForm: Form[Image], productId: Integer, product: models.Product, title: String, message: String)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@attributeGroup(field: Field, className: String = "attribute") = {
+    <div class="@className">
+        
+        <a class="removeAttribute pull-right"><img src="@routes.Assets.at("images/delete.png")"></a>
+        
+        @inputText(
+            field("value"), 
+            '_label -> "Wert",
+            'class -> "form-control" 
+        )
+    </div>
+}
+
+@main("LFH Shop - Produckt hinzufuegen") {
+
+    @form(action = routes.Product.save(productId), 'id -> "form", 'enctype -> "multipart/form-data") {
+        @if(!message.isEmpty()) {
+            <div class="alert">
+                <a class="close" data-dismiss="alert">x</a>
+                <strong>Meldung:</strong> @message.
+            </div>
+        }
+            
+        <h1>@title</h1>
+        @inputText(productForm("title"), 
+                   '_label -> "Produkt Name", 
+                   'class -> "form-control", 
+                   'placeholder -> "Bitte Namen eingeben", 
+                   'required -> "required", 
+                   'type -> "text", 
+                   'maxlength -> "45",
+                   '_help -> ""
+                   )
+
+        @inputText(productForm("ean"), 
+                   '_label -> "EAN", 
+                   'class -> "form-control", 
+                   'placeholder -> "Bitte EAN eingeben", 
+                   'required -> "required", 
+                   'type -> "text", 
+                   'maxlength -> "13",
+                   '_help -> ""
+                   )
+                   
+        @inputText(productForm("price"), 
+                   '_label -> "Preis", 
+                   'class -> "form-control", 
+                   'placeholder -> "Bitte Preis eingeben", 
+                   'required -> "required", 
+                   'type -> "text", 
+                   'maxlength -> "45",
+                   '_help -> ""
+                   )
+
+        @textarea(productForm("description"), 
+                   '_label -> "Beschreibung",
+                   'class -> "form-control description", 
+                   'placeholder -> "Bitte Beschreibung eingeben", 
+                   'required -> "required",
+                   'height -> "200"
+            )
+
+        <div class="attributes">
+        
+            <h2>Attribute</h2>
+        
+            @repeat(productForm("attributes"), min = 1) { attributeField =>
+                @attributeGroup(attributeField)
+            }
+            @**
+            * Keep an hidden block that will be used as template for Javascript copy code
+            **@
+            @attributeGroup(
+                productForm("attributes[x]"),
+                className = "attribute_template"
+            )
+            <div class="manage">
+                <a class="addAttribute btn btn-default">Neues Attribut</a>
+            </div>
+    
+        </div>
+        
+        <div class="images">
+        
+            <h2>Bilder</h2>
+        
+            @if(productId != 0 && product.hasImage){
+                <div class="well">
+                    <img class="image" src="@product.getImages.get(0).getAssetUrl">
+                </div>
+            }
+            
+            @inputText(imageForm("name"),
+                '_label -> "Name",
+                'class -> "form-control", 
+                'placeholder -> "Bitte Namen eingeben", 
+                'type -> "text"
+            )
+            
+            @inputText(imageForm("description"),
+                '_label -> "Beschreibung",
+                'name -> "image-description",
+                'class -> "form-control", 
+                'type -> "text", 
+                'placeholder -> "Bitte Beschreibung eingeben"
+            )
+            
+            
+            
+            <h3>Neues Bild hochladen:</h3>
+            <div class="input">
+                <input type="file" name="image">
+            </div>
+        </div>
+        
+    <button type="submit" id="save-product" class="btn btn-primary">Speichern</button>
+    }
+    
+    <script type="text/javascript" charset="utf-8">
+        
+        $('.attributes').on('click', 'a', function(e) {
+            $(this).parents('.attribute').remove()
+            renumber()
+        })
+        
+        $('.addAttribute').on('click', function(e) {
+            var template = $('.attribute_template')
+            template.before('<div class="attribute">' + template.html() + '</div>')
+            renumber()
+            cleanLabel()
+        })
+        
+        $('#form').submit(function() {
+            $('.attribute_template').remove()
+        })
+        
+        $(document).ready(function() {
+        	cleanLabel();
+        	renameDescription();
+        })
+        
+        // Pretty nasty, but did not manage to create working inputs without lables
+        var cleanLabel = function(){
+        	$('label:contains("Wert")').remove()
+        	$('span:contains("Required")').remove()
+        }
+        
+        // Another nasty part, 
+        var renameDescription = function(){
+            $('.images').find('#description').attr('name', 'image-description');
+        }
+        
+        // -- renumber fields
+        
+        // Rename fields to have a coherent payload like:
+        //
+        // attributes[0].value
+        // ...
+        //
+        // This is probably not the easiest way to do it. A jQuery plugin would help.
+        
+        var renumber = function() {
+            $('.attribute').each(function(i) {
+                $('input', this).each(function() {
+                    $(this).attr('name', $(this).attr('name').replace(/attributes\[.+?\]/g, 'attributes[' + i + ']'));
+                })
+            })
+        }
+        
+    </script>
+}

@@ -8,19 +8,43 @@ import com.avaje.ebean.annotation.UpdatedTimestamp;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import java.util.Date;
+
+
 
 @Entity
 @UpdateMode(updateChangesOnly=false)
 public class CartHasProduct extends Model {
 
+    @Embeddable
+    public class CartHasProductId {
+        public Integer productId;
+        public Integer cartId;
+
+        public int hashCode() {
+            return productId + cartId * 100000;
+        }
+
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj == null) return false;
+            if (! (obj instanceof CartHasProductId)) return false;
+            CartHasProductId id = (CartHasProductId) obj;
+            return id.productId == productId && id.cartId == cartId;
+        }
+    }
+
+    @EmbeddedId
+    public CartHasProductId id;
+
     @ManyToOne
+    @JoinColumn(name="product_id", updatable=false, insertable=false)
     private Product product;
 
     @ManyToOne
+    @JoinColumn(name="cart_id", updatable=false, insertable=false)
     private Cart cart;
 
     @Constraints.Required
@@ -62,6 +86,10 @@ public class CartHasProduct extends Model {
         this.price = price;
     }
 
+    public Double getTotal() {
+        return amount * (price - price * discount);
+    }
+
     public Integer getAmount() {
         return amount;
     }
@@ -100,5 +128,14 @@ public class CartHasProduct extends Model {
                 .eq("product_id", product.getId())
                 .eq("cart_id", cart.getId())
                 .findUnique();
+    }
+
+    @Override
+    public void save() {
+        id = new CartHasProductId();
+        id.cartId = cart.getId();
+        id.productId = product.getId();
+
+        super.save();
     }
 }

@@ -1,0 +1,7 @@
+@(tags: List[models.Tag])
+
+<ul class="nav">
+    @for(tag <- tags) {
+        <li><a href="/products/@tag.getId">@tag.getId</a></li>
+    }
+</ul>

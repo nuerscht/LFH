@@ -29,7 +29,10 @@ public class Global extends GlobalSettings {
         // Load test data to the database
         loadTestData(app);
 	}
-	
+
+    /**
+     * global exception handler. renders error page
+     */
 	@Override
 	public Promise<SimpleResult> onError(RequestHeader request, Throwable t) {
         return Promise.<SimpleResult>pure(internalServerError(
@@ -37,6 +40,9 @@ public class Global extends GlobalSettings {
         ));
     }
 	
+	/**
+	 * global page not found handler. renders page not found page
+	 */
 	@Override
 	public Promise<SimpleResult> onHandlerNotFound(RequestHeader request) {
         return Promise.<SimpleResult>pure(notFound(
@@ -44,6 +50,9 @@ public class Global extends GlobalSettings {
         ));
     }
 	
+	/**
+	 * global bad request handler. 
+	 */
 	@Override
     public Promise<SimpleResult> onBadRequest(RequestHeader request, String error) {
         return Promise.<SimpleResult>pure(badRequest(notFound.render(request)));

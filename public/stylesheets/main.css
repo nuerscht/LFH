@@ -60,3 +60,44 @@
     margin-top: 5px;
     font-size: 0.8em;
 }
+
+/*
+ * Forms
+ */
+.description {
+	min-height: 150px;
+	resize:vertical;
+}
+
+.manage {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.attribute_template {
+    display: none;
+}
+
+.image {
+    width: 100%;
+    
+}
+
+.images {
+	margin-bottom: 20px;
+}
+/*
+ * Cart
+ */
+.cart table {
+    font-size: 0.9em;
+}
+
+.cart table .price {
+    text-align: right;
+}
+
+.cart table .amount input {
+    width: 30px;
+    text-align: center;
+}

@@ -3,43 +3,52 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET         /                             controllers.Application.index()
 
 # Products
-GET     /products                   controllers.Product.products()
-GET     /details/:id                controllers.Product.details(id: Integer)
-POST    /product/addtocart/:id      controllers.Product.addToCart(id: Integer)
-GET     /search            			controllers.Product.search(p:Int ?= 0, s ?= "Title", o ?= "asc", q ?= "")
+GET         /products                     controllers.Product.products()
+GET         /products/:tag                controllers.Product.productsByTag(tag: String)
+GET         /details/:id                  controllers.Product.details(id: Integer, image:Integer ?= 0)
+POST        /product/addtocart/:id        controllers.Product.addToCart(id: Integer)
+GET         /search                       controllers.Product.search(p:Int ?= 0, s ?= "Title", o ?= "asc", q ?= "")
+GET         /product/list                 controllers.Product.list()
+GET         /product/add                  controllers.Product.add()
+GET         /product/edit/:id             controllers.Product.edit(id: Integer)
+POST        /product/save/:id             controllers.Product.save(id: Integer)
 
-POST 	/rate/:id					controllers.Product.submitRating(id: Integer)
+POST        /rate/:id                     controllers.Product.submitRating(id: Integer)
+
+# Cart
+GET         /cart                         controllers.Cart.index()
+GET         /cart/:id                     controllers.Cart.indexById(id: Integer)
 
 # API
-GET		/customers					controllers.Api.customers(id: String, since: String ?= null)
-GET		/orders						controllers.Api.orders(id: String, since: String ?= null)
-GET		/articles					controllers.Api.articles(id: String, since: String ?= null)
-GET		/version					controllers.Api.version()
+GET         /customers                    controllers.Api.customers(id: String, since: String ?= null)
+GET         /orders                       controllers.Api.orders(id: String, since: String ?= null)
+GET         /articles                     controllers.Api.articles(id: String, since: String ?= null)
+GET         /version                      controllers.Api.version()
 
 #Account
-GET		/account					controllers.Account.registerIndex()
-POST	/account/register			controllers.Account.register()
-POST	/account/login				controllers.Account.login()
-GET 	/account/logout				controllers.Account.logout()
+GET         /account                      controllers.Account.registerIndex()
+POST        /account/register             controllers.Account.register()
+POST        /account/login                controllers.Account.login()
+GET         /account/logout               controllers.Account.logout()
 
 #User
-GET     /user/data                  controllers.User.showData(userid: Integer)
-POST    /user/data/update           controllers.User.updateData(userid: Integer)
-GET     /user/transactions          controllers.User.showTransactions(userid: Integer)
-GET     /user/list                  controllers.User.list
-POST    /user/search                controllers.User.search
-GET     /user/delete                controllers.User.delete(userid: Integer)
-GET     /user/changeUserType        controllers.User.changeUserType(userid: Integer)
-GET     /user/changeStatus          controllers.User.changeStatus(userid: Integer)
+GET         /user/data                    controllers.User.showData(userid: Integer)
+POST        /user/data/update             controllers.User.updateData(userid: Integer)
+GET         /user/transactions            controllers.User.showTransactions(userid: Integer)
+GET         /user/list                    controllers.User.list
+POST        /user/search                  controllers.User.search
+GET         /user/delete                  controllers.User.delete(userid: Integer)
+GET         /user/changeUserType          controllers.User.changeUserType(userid: Integer)
+GET         /user/changeStatus            controllers.User.changeStatus(userid: Integer)
 
 #Country
-GET     /country/list               controllers.Country.list()
-GET     /country/edit               controllers.Country.edit(id: Integer)
-GET     /country/delete             controllers.Country.delete(id: Integer)
-POST    /country/modify             controllers.Country.modify(id: Integer)
+GET         /country/list                 controllers.Country.list()
+GET         /country/edit                 controllers.Country.edit(id: Integer)
+GET         /country/delete               controllers.Country.delete(id: Integer)
+POST        /country/modify               controllers.Country.modify(id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET         /assets/*file                 controllers.Assets.at(path="/public", file)
