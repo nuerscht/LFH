@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import com.avaje.ebean.annotation.UpdateMode;
 
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class UserType extends Model {
 
     public static final String CUSTOMER = "customer";
@@ -19,10 +19,10 @@ public class UserType extends Model {
     @Constraints.MaxLength(45)
     private String id;
 
-	@Constraints.Required
+    @Constraints.Required
     private String description;
 
-	public static Finder<String, UserType> find = new Finder<String, UserType>(String.class, UserType.class);
+    public static Finder<String, UserType> find = new Finder<String, UserType>(String.class, UserType.class);
 
     public String getId() {
         return id;
@@ -38,10 +38,11 @@ public class UserType extends Model {
     public String getDescription() {
         return description;
     }
+
     /**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

@@ -11,11 +11,11 @@ import java.util.List;
 
 public class Tag extends Eshomo {
 
-	/**
+    /**
      * @return Tag sidebar
      */
     public static Html getSidebarHtml() {
-    	List<models.Tag> tags = models.Tag.find.all();
-    	return views.html.tag.sidebar.render(tags);
+        List<models.Tag> tags = models.Tag.find.all();
+        return views.html.tag.sidebar.render(tags);
     }
 }

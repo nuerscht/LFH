@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class Image extends Model {
 
     @Id
@@ -30,12 +30,12 @@ public class Image extends Model {
 
     @Column
     private String description;
-    
+
     @Constraints.Required
     @Constraints.MaxLength(255)
     private String extension;
 
-	@CreatedTimestamp
+    @CreatedTimestamp
     private Date createdAt;
 
     public static Finder<Integer, Image> find = new Finder<Integer, Image>(Integer.class, Image.class);
@@ -69,13 +69,13 @@ public class Image extends Model {
     }
 
     public String getExtension() {
-		return extension;
-	}
+        return extension;
+    }
 
-	public void setExtension(String extension) {
-		this.extension = extension;
-	}
-    
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -83,8 +83,8 @@ public class Image extends Model {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-    
-    public String getAssetUrl(){
-    	return routes.Assets.at(play.Play.application().configuration().getString("eshomo.upload.directory") + getId() + getExtension()).toString();
+
+    public String getAssetUrl() {
+        return routes.Assets.at(play.Play.application().configuration().getString("eshomo.upload.directory") + getId() + getExtension()).toString();
     }
 }

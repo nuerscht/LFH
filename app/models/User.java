@@ -15,7 +15,7 @@ import play.db.ebean.*;
 import play.data.validation.*;
 
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class User extends Model {
 
     @Id
@@ -35,16 +35,16 @@ public class User extends Model {
     @Constraints.MinLength(40)
     @Constraints.MaxLength(40)
     private String password;
-    
+
     @Constraints.MinLength(40)
     @Constraints.MaxLength(40)
     private String token;
 
-	@Constraints.Required
+    @Constraints.Required
     private Boolean isActive = true;
-	
-	@OneToMany
-	private List<Address> addresses;
+
+    @OneToMany
+    private List<Address> addresses;
 
     @UpdatedTimestamp
     private Date updatedAt;
@@ -83,13 +83,13 @@ public class User extends Model {
     }
 
     /**
-	 * @return the addresses
-	 */
-	public List<Address> getAddresses() {
-		return addresses;
-	}
+     * @return the addresses
+     */
+    public List<Address> getAddresses() {
+        return addresses;
+    }
 
-	public Date getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
@@ -106,18 +106,19 @@ public class User extends Model {
     }
 
     @SuppressWarnings("deprecation")
-	public void setPassword(String password) {
+    public void setPassword(String password) {
         this.salt = DigestUtils.shaHex(RandomStringUtils.randomAscii(40));
-        this.password = DigestUtils.shaHex(this.salt + password);        
+        this.password = DigestUtils.shaHex(this.salt + password);
         this.token = DigestUtils.shaHex(this.salt + password + this.email);
     }
 
     @SuppressWarnings("deprecation")
-	public boolean isPasswordCorrect(String password) {
+    public boolean isPasswordCorrect(String password) {
         return DigestUtils.shaHex(this.salt + password).equals(this.password);
     }
+
     public String getToken() {
-		return token;
-	}
+        return token;
+    }
 
 }

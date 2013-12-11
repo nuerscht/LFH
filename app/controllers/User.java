@@ -24,12 +24,14 @@ import views.html.user.userdata;
 
 /**
  * controller for user functionality
+ *
  * @author boe
  */
 public class User extends UserData {
-	
+
     /**
      * helper class to display the user list
+     *
      * @author boe
      */
     public static class UserHelper {
@@ -40,15 +42,16 @@ public class User extends UserData {
         public String usertype;
         public Boolean isActive;
     }
-    
+
     /**
      * show the full user list
-     * @author boe
+     *
      * @return
+     * @author boe
      */
     public static Result list() {
         if (isLoggedIn() && isAdminUser()) {
-            
+
             List<models.User> users = Ebean.find(models.User.class).findList();
 
             return listUsers(users);
@@ -59,46 +62,48 @@ public class User extends UserData {
 
     /**
      * merges the users into an List<UserHelper>
-     * @author boe
+     *
      * @param users
      * @return
+     * @author boe
      */
     protected static Result listUsers(List<models.User> users) {
         List<UserHelper> userHelpers = new ArrayList<UserHelper>();
-        Iterator<models.User> itrUsers= users.iterator();
+        Iterator<models.User> itrUsers = users.iterator();
         while (itrUsers.hasNext()) {
             models.User user = itrUsers.next();
-            
-            Address address  = getAddressByUserId(user.getId());
-            
+
+            Address address = getAddressByUserId(user.getId());
+
             UserHelper userHelper = new UserHelper();
-            userHelper.id         = user.getId();
-            userHelper.email      = user.getEmail();
-            userHelper.lastname   = address.getLastname();
-            userHelper.firstname  = address.getFirstname();
-            userHelper.usertype   = user.getType().getId();
-            userHelper.isActive   = user.isActive();
-            
+            userHelper.id = user.getId();
+            userHelper.email = user.getEmail();
+            userHelper.lastname = address.getLastname();
+            userHelper.firstname = address.getFirstname();
+            userHelper.usertype = user.getType().getId();
+            userHelper.isActive = user.isActive();
+
             userHelpers.add(userHelper);
         }
-        
-        
+
+
         return ok(
-                views.html.user.list.render(userHelpers)
+            views.html.user.list.render(userHelpers)
         );
     }
-    
+
     /**
      * deletes the user with the given userid
-     * @author boe
+     *
      * @param userid
      * @return
+     * @author boe
      */
     public static Result delete(final int userid) {
         if (isLoggedIn() && isAdminUser()) {
-            models.User user    = getUserByUserId(userid);
-            Address     address = getAddressByUserId(user.getId());
-            
+            models.User user = getUserByUserId(userid);
+            Address address = getAddressByUserId(user.getId());
+
             Ebean.beginTransaction();
             try {
                 Ebean.delete(address);
@@ -112,33 +117,34 @@ public class User extends UserData {
             if (getLoggedInUserId().equals(userid)) {
                 userLogout();
                 return Application.index();
-            }            
-            
+            }
+
             return list();
         } else {
             return forbidden();
         }
     }
 
-    
+
     /**
      * changes type of the user with the given userid
-     * @author boe
+     *
      * @param userid
      * @return
+     * @author boe
      */
     public static Result changeUserType(final int userid) {
         if (isLoggedIn() && isAdminUser()) {
-            models.User user    = getUserByUserId(userid);
+            models.User user = getUserByUserId(userid);
 
             UserType userType = null;
-            if (user.getType().getId().equals(UserType.ADMIN)) 
+            if (user.getType().getId().equals(UserType.ADMIN))
                 userType = UserType.find.byId(UserType.CUSTOMER);
-            else 
+            else
                 userType = UserType.find.byId(UserType.ADMIN);
-            
+
             user.setType(userType);
-            
+
             Ebean.beginTransaction();
             try {
                 Ebean.save(user);
@@ -152,7 +158,7 @@ public class User extends UserData {
                 setUserObj(user);
                 return Application.index();
             }
-            
+
             return list();
         } else {
             return forbidden();
@@ -161,16 +167,17 @@ public class User extends UserData {
 
     /**
      * changes status of the user with the given userid
-     * @author boe
+     *
      * @param userid
      * @return
+     * @author boe
      */
     public static Result changeStatus(final int userid) {
         if (isLoggedIn() && isAdminUser()) {
-            models.User user    = getUserByUserId(userid);
+            models.User user = getUserByUserId(userid);
 
             user.setIsActive(!user.isActive());
-            
+
             Ebean.beginTransaction();
             try {
                 Ebean.save(user);
@@ -178,254 +185,256 @@ public class User extends UserData {
             } finally {
                 Ebean.endTransaction();
             }
-            
+
             //if the changed user is the current user
             if (getLoggedInUserId().equals(userid)) {
                 userLogout();
                 return Application.index();
             }
-            
+
             return list();
         } else {
             return forbidden();
         }
     }
 
-    
+
     /**
      * handles search in user list
-     * @author boe
+     *
      * @param userid
      * @return
+     * @author boe
      */
     public static Result search() {
         if (isLoggedIn() && isAdminUser()) {
             List<models.User> users = null;
-            DynamicForm bindedForm  = form().bindFromRequest();
+            DynamicForm bindedForm = form().bindFromRequest();
             String searchString = bindedForm.get("keyword");
-            StringBuilder strB  = new StringBuilder();
+            StringBuilder strB = new StringBuilder();
             strB.append("%");
             strB.append(searchString);
             strB.append("%");
             String searchStringLike = strB.toString();
-            
+
             List<Address> addresses = Ebean.find(Address.class).where().or(
-                        Expr.like("firstname", searchStringLike),
-                        Expr.like("lastname", searchStringLike)
-                    ).findList();
-            
-            
-            
+                Expr.like("firstname", searchStringLike),
+                Expr.like("lastname", searchStringLike)
+            ).findList();
+
+
             if (addresses.size() > 0) {
                 users = new ArrayList<models.User>();
                 Iterator<Address> itrAddress = addresses.iterator();
                 while (itrAddress.hasNext()) {
-                    Address address  = itrAddress.next();
+                    Address address = itrAddress.next();
                     models.User user = getUserByUserId(address.getUser().getId());
-                    
+
                     users.add(user);
                 }
             } else {
                 users = Ebean.find(models.User.class).where().or(
-                            Expr.eq("id", searchString),
-                            Expr.like("email", searchStringLike)
-                        ).findList();
+                    Expr.eq("id", searchString),
+                    Expr.like("email", searchStringLike)
+                ).findList();
             }
-                    
-                    
-            
-            
+
+
             return listUsers(users);
         } else {
             return forbidden();
         }
     }
-    
-	/**
-	 * shows user data (login/address) in backend
-	 * @author boe
-	 * @return
-	 */
-	public static Result showData(final int userid) {
-        if ((isLoggedIn() && getLoggedInUserId().equals(userid)) ||
-                (isLoggedIn() && !getLoggedInUserId().equals(userid) && isAdminUser())) {
-			models.User user = getUserByUserId(userid);
-			
-			Address address = getAddressByUserId(user.getId());
-			
-			String strCountry = getCountry(address);
 
-			return ok (
-					userdata.render(form(models.User.class).fill(user)
-							, form(Address.class).fill(address), strCountry
-							, "", ""
-							,userid == getLoggedInUserId() && isAdminUser())
-					);
-		} else {
-			return forbidden();
-		}
-	}
+    /**
+     * shows user data (login/address) in backend
+     *
+     * @return
+     * @author boe
+     */
+    public static Result showData(final int userid) {
+        if ((isLoggedIn() && getLoggedInUserId().equals(userid)) ||
+            (isLoggedIn() && !getLoggedInUserId().equals(userid) && isAdminUser())) {
+            models.User user = getUserByUserId(userid);
+
+            Address address = getAddressByUserId(user.getId());
+
+            String strCountry = getCountry(address);
+
+            return ok(
+                userdata.render(form(models.User.class).fill(user)
+                    , form(Address.class).fill(address), strCountry
+                    , "", ""
+                    , userid == getLoggedInUserId() && isAdminUser())
+            );
+        } else {
+            return forbidden();
+        }
+    }
 
     protected static String getCountry(Address address) {
         Country country = address.getCountry();
-        
+
         String strCountry = "1";
         if (country != null)
             strCountry = country.getId().toString();
         return strCountry;
     }
-	
-	private static Address getAddressByUserId(final int userid) {
-		List<Address> addresses = Ebean.find(Address.class).where().eq("user_id", userid).where().eq("is_active", 1).findList();
-		
-		Address address = null;
-		if (addresses.size() > 0) {
-			address = addresses.get(0);
-		} else {
-			address = new Address();
-		}
-		
-		return address;
-	}
-    
+
+    private static Address getAddressByUserId(final int userid) {
+        List<Address> addresses = Ebean.find(Address.class).where().eq("user_id", userid).where().eq("is_active", 1).findList();
+
+        Address address = null;
+        if (addresses.size() > 0) {
+            address = addresses.get(0);
+        } else {
+            address = new Address();
+        }
+
+        return address;
+    }
+
     private static models.User getUserByUserId(final int userid) {
         models.User user = models.User.find.byId(userid);
-        
+
         return user;
     }
-	
-	/**
-	 * handles update requests for user data updates
-	 * @author boe
-	 * @return
-	 */
-	public static Result updateData(final int userid) {
+
+    /**
+     * handles update requests for user data updates
+     *
+     * @return
+     * @author boe
+     */
+    public static Result updateData(final int userid) {
         if ((isLoggedIn() && getLoggedInUserId().equals(userid)) ||
             (isLoggedIn() && !getLoggedInUserId().equals(userid) && isAdminUser())) {
-			String      message     = "";
-    		DynamicForm bindedForm  = form().bindFromRequest();
-    		    		
-			models.User user = getUserByUserId(userid);			
-			Address address = getAddressByUserId(user.getId());
-			
+            String message = "";
+            DynamicForm bindedForm = form().bindFromRequest();
 
-			//if new address
-			if (address.getUser() == null)
-				address.setUser(user);
-			
-			//has Password changed
-			if (bindedForm.get("password") != null && !bindedForm.get("password").isEmpty()) {
-		    	message = validatePassword(address, user, bindedForm);
+            models.User user = getUserByUserId(userid);
+            Address address = getAddressByUserId(user.getId());
+
+
+            //if new address
+            if (address.getUser() == null)
+                address.setUser(user);
+
+            //has Password changed
+            if (bindedForm.get("password") != null && !bindedForm.get("password").isEmpty()) {
+                message = validatePassword(address, user, bindedForm);
 
                 String strCountry = getCountry(address);
-		    	
-				if (!message.isEmpty()) {
-					return ok(
-						userdata.render(form(models.User.class).fill(user)
-								, form(Address.class).fill(address)
-								, strCountry, message, "info"
 
-								, userid == getLoggedInUserId() && isAdminUser())
-					);
-				}
-				
-				user.setPassword(bindedForm.get("password"));
-			}
-			
-			address.setFirstname(bindedForm.get("firstname"));
-			address.setLastname(bindedForm.get("lastname"));
-			address.setPlace(bindedForm.get("place"));
-			address.setStreet(bindedForm.get("street"));
-			address.setZip(bindedForm.get("zip"));
-			address.setIsActive(true);
+                if (!message.isEmpty()) {
+                    return ok(
+                        userdata.render(form(models.User.class).fill(user)
+                            , form(Address.class).fill(address)
+                            , strCountry, message, "info"
 
-	        try {
-	            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	            address.setBirthday(dateFormat.parse(bindedForm.get("birthday")));
-	        } catch (ParseException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	        }
-	        
-	        Country country = Country.find.byId(Integer.decode(bindedForm.get("country")));
-	        address.setCountry(country);
-			
+                            , userid == getLoggedInUserId() && isAdminUser())
+                    );
+                }
+
+                user.setPassword(bindedForm.get("password"));
+            }
+
+            address.setFirstname(bindedForm.get("firstname"));
+            address.setLastname(bindedForm.get("lastname"));
+            address.setPlace(bindedForm.get("place"));
+            address.setStreet(bindedForm.get("street"));
+            address.setZip(bindedForm.get("zip"));
+            address.setIsActive(true);
+
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                address.setBirthday(dateFormat.parse(bindedForm.get("birthday")));
+            } catch (ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            Country country = Country.find.byId(Integer.decode(bindedForm.get("country")));
+            address.setCountry(country);
+
 
             String strCountry = getCountry(address);
-	    	
-	    	Ebean.beginTransaction();
-	    	try {
-	    		Ebean.save(user);
-	    		Ebean.save(address);
-	    		Ebean.commitTransaction();
-	    	} finally {
-	    		Ebean.endTransaction();
-	    	}
-			
-	    	return ok(
-	    			userdata.render(form(models.User.class).fill(user)
-	    					, form(Address.class).fill(address)
-	    					, strCountry
-	    					, "Ihr Daten wurde erfolgreich aktualisiert."
-	    					, "success"
 
-	    					, userid == getLoggedInUserId() && isAdminUser())
-	    	);
-		} else {
-			return forbidden();
-		}
-	}
-	
-	/**
-	 * helper class to display transactions
-	 * @author boe
-	 */
-	public static class Order {
-		public Integer    id;
-		public String     date;
-		public String	  status;
-		public String     price;
-	}
-	
-	/**
-	 * shows the orders for the logged in user
-	 * @return
-	 */
-	public static Result showTransactions(final int userid) {
-		if ((isLoggedIn() && getLoggedInUserId().equals(userid)) ||
-		    (isLoggedIn() && !getLoggedInUserId().equals(userid) && isAdminUser())) {
-			List<Cart> carts = Ebean.find(Cart.class).where().eq("user_id", userid).where().eq("status_id", CartStatus.ORDERED).orderBy().asc("updated_at").findList();
-	
-			List<Order> orders = new ArrayList<Order>();
-			
-			Iterator<Cart> itrCarts= carts.iterator();
-			while (itrCarts.hasNext()) {
-				Cart cart = itrCarts.next();
-				
-				Order order  = new Order();
-				order.id     = cart.getId();
-				order.date   = new SimpleDateFormat("dd.MM.yyyy").format(cart.getUpdatedAt());
-				order.status = cart.getStatus().getDescription().toString();
-				
-				List<CartHasProduct> cartDetails = Ebean.find(CartHasProduct.class).where().eq("cart_id", cart.getId()).findList();
-				
-				Double price = 0.0;
-				Iterator<CartHasProduct> itrCartDetails = cartDetails.iterator();
-				while (itrCartDetails.hasNext()) {
-					CartHasProduct cartDetail = itrCartDetails.next();
-					
-					price += cartDetail.getPrice() * cartDetail.getAmount();
-				}
-				
-				order.price = String.format("%1$,.2f", price);
-				orders.add(order);
-			}
-			
-			return ok(
-				transaction.render(orders)
-			);
-		} else {
-			return forbidden();
-		}
-	}
+            Ebean.beginTransaction();
+            try {
+                Ebean.save(user);
+                Ebean.save(address);
+                Ebean.commitTransaction();
+            } finally {
+                Ebean.endTransaction();
+            }
+
+            return ok(
+                userdata.render(form(models.User.class).fill(user)
+                    , form(Address.class).fill(address)
+                    , strCountry
+                    , "Ihr Daten wurde erfolgreich aktualisiert."
+                    , "success"
+
+                    , userid == getLoggedInUserId() && isAdminUser())
+            );
+        } else {
+            return forbidden();
+        }
+    }
+
+    /**
+     * helper class to display transactions
+     *
+     * @author boe
+     */
+    public static class Order {
+        public Integer id;
+        public String date;
+        public String status;
+        public String price;
+    }
+
+    /**
+     * shows the orders for the logged in user
+     *
+     * @return
+     */
+    public static Result showTransactions(final int userid) {
+        if ((isLoggedIn() && getLoggedInUserId().equals(userid)) ||
+            (isLoggedIn() && !getLoggedInUserId().equals(userid) && isAdminUser())) {
+            List<Cart> carts = Ebean.find(Cart.class).where().eq("user_id", userid).where().eq("status_id", CartStatus.ORDERED).orderBy().asc("updated_at").findList();
+
+            List<Order> orders = new ArrayList<Order>();
+
+            Iterator<Cart> itrCarts = carts.iterator();
+            while (itrCarts.hasNext()) {
+                Cart cart = itrCarts.next();
+
+                Order order = new Order();
+                order.id = cart.getId();
+                order.date = new SimpleDateFormat("dd.MM.yyyy").format(cart.getUpdatedAt());
+                order.status = cart.getStatus().getDescription().toString();
+
+                List<CartHasProduct> cartDetails = Ebean.find(CartHasProduct.class).where().eq("cart_id", cart.getId()).findList();
+
+                Double price = 0.0;
+                Iterator<CartHasProduct> itrCartDetails = cartDetails.iterator();
+                while (itrCartDetails.hasNext()) {
+                    CartHasProduct cartDetail = itrCartDetails.next();
+
+                    price += cartDetail.getPrice() * cartDetail.getAmount();
+                }
+
+                order.price = String.format("%1$,.2f", price);
+                orders.add(order);
+            }
+
+            return ok(
+                transaction.render(orders)
+            );
+        } else {
+            return forbidden();
+        }
+    }
 }

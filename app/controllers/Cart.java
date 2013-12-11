@@ -16,7 +16,7 @@ public class Cart extends Eshomo {
 
     public static Result index() {
         models.User currentUser = getUserObj();
-    	models.Cart cart = models.Cart.fetchOrCreateOpenCart(currentUser);
+        models.Cart cart = models.Cart.fetchOrCreateOpenCart(currentUser);
 
         return ok(views.html.cart.index.render(cart));
     }
@@ -42,7 +42,7 @@ public class Cart extends Eshomo {
         CartUpdate update = form.bindFromRequest().get();
 
         // update the amount of every product in the cart
-        for(Map.Entry<Integer, Integer> entry : update.products.entrySet()) {
+        for (Map.Entry<Integer, Integer> entry : update.products.entrySet()) {
             Integer productId = entry.getKey();
             Integer amount = entry.getValue();
 

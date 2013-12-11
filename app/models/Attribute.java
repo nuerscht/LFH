@@ -21,7 +21,7 @@ import com.avaje.ebean.annotation.UpdatedTimestamp;
 
 
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class Attribute extends Model {
 
     @Id
