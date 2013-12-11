@@ -1,25 +1,19 @@
 @(users: List[models.User])
 @import models._
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<customers>
-	@for(user <- users){
-	@defining(user.getAddresses().size() > 0){ hasAddress =>	
-    <customer id="@user.getId()">
+<customers>	@for(user <- users){	
+    <customer id="@user.getId()">@defining(user.getAddresses().size() > 0){ hasAddress =>
         <name>@if(hasAddress){@user.getAddresses()(0).getLastname()}</name>
         <firstname>@if(hasAddress){@user.getAddresses()(0).getFirstname()}</firstname>
-        <addresses>
-        @for(add <- user.getAddresses()){
+        <addresses>@for(add <- user.getAddresses()){        
            <address id="@add.getId()" type="1">
            <city>@add.getPlace()</city>
            <street>@add.getStreet()</street>
            <postcode>@add.getZip()</postcode>
            <country>@if(add.getCountry()!= null){@add.getCountry().getName()}</country>
-           </address>
-         }
+           </address>}
         </addresses>
         <email>@if(hasAddress){@user.getAddresses()(0).getEmail()}</email>
         <birthdate>@if(hasAddress){@if(user.getAddresses()(0).getBirthday()!=null){@{user.getAddresses()(0).getBirthday().getTime() / 1000L}}}</birthdate>
-      </customer>
-     }
-    }
+      }</customer>}    
 </customers>
