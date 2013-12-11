@@ -5,11 +5,9 @@ import java.util.List;
 
 import com.avaje.ebean.Ebean;
 
-import com.avaje.ebean.FetchConfig;
 import models.*;
 import play.data.DynamicForm;
 import play.data.Form;
-import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import views.html.product.*;
@@ -184,7 +182,8 @@ public class Product extends Eshomo {
     			
     			//Finally move image as we know the id
     			if(image != null){
-    				imageFile.getFile().renameTo(new File("public/images/upload", image.getId() + image.getExtension()));
+    				imageFile.getFile().renameTo(new File("public/" + play.Play.application().configuration()
+    						.getString("eshomo.upload.directory"), image.getId() + image.getExtension()));
     			}
     				
         		Ebean.commitTransaction();
