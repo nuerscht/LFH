@@ -63,14 +63,15 @@
             
             @textarea(
                 ratingForm("comment"), 
+                'class -> "comment",
                 '_label -> "Kommentar"
             )
 
         </fieldset>
 
         <div class="actions">
-            <input id="submit-rating" type="submit" class="btn primary" value="Rate">
-            <a href="@routes.Product.details(product.getId)" class="btn">Cancel</a>
+            <input id="submit-rating" type="submit" class="btn primary" value="Bewerten">
+            <a href="@routes.Product.details(product.getId)" class="btn">L&ouml;schen</a>
         </div>
         
     }}
