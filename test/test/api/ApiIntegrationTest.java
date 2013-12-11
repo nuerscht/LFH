@@ -312,6 +312,25 @@ public class ApiIntegrationTest extends EshomoTest {
 			}
 		});
 	}
+	
+	@Test
+	public void checkGzipContent(){
+		FakeApplication fakeApp = Helpers.fakeApplication();
+		running(testServer(3333, fakeApp), new Runnable() {
+			public void run() {
+				String[] params = new String[] { "id", "all", "token",
+						getUserActiveAdminUser().getToken() };
+				String[] headers = new String[] { "Accept-Encoding", "gzip" };
+				WS.Response response = callApi(articles_url, params, headers);
+				// Check if status is okay and content is correct
+				String msg = unzipBody(response.getBodyAsStream());
+				assertThat(response.getStatus()).isEqualTo(200);
+				assertThat(response.getHeader("Content-Encoding")).isEqualTo(
+						"gzip");
+				
+			}
+		});
+	}
 
 	@Test
 	public void getAllArticelsXml() {
