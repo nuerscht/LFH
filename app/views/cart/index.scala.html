@@ -3,21 +3,28 @@
 @main("Welcome to the LFH Shop") {
     <div class="cart">
         <h1>Warenkorb</h1>
-        <table class="table table-striped">
-            <tr>
-                <th>Produkt</th>
-                <th>Anzahl</th>
-                <th>Preis</th>
-                <th></th>
-            </tr>
-            @for(item <- cart.getCartHasProduct) {
+        <form method="post" action="/cart">
+            <table class="table table-striped">
                 <tr>
-                    <td class="title"><a href="/details/@item.getProduct.getId">@item.getProduct.getTitle</a></td>
-                    <td class="amount"><input type="text" value="@item.getAmount"/></td>
-                    <td class="remove">@item.getTotal</td>
-                    <td class="delete"><a href="#">Entfernen</a></td>
-                <tr>
-            }
-        </table>
+                    <th>Produkt</th>
+                    <th>Anzahl</th>
+                    <th>Preis</th>
+                    <th></th>
+                </tr>
+                @for(item <- cart.getCartHasProduct) {
+                    <tr>
+                        <td class="title"><a href="/details/@item.getProduct.getId">@item.getProduct.getTitle</a></td>
+                        <td class="amount"><label><input type="text" value="@item.getAmount" name="products[@item.getProduct.getId]"/></label></td>
+                        <td class="price">@item.getTotal</td>
+                        <td class="remove">
+                            <button type="submit" name="remove" value="@item.getProduct.getId">Entfernen</button>
+                        </td>
+                    <tr>
+                }
+            </table>
+            <div class="buttons">
+                <button type="submit">Warenkorb aktualisieren</button>
+            </div>
+        </form>
     </div>
 }

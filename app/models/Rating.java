@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class Rating extends Model {
 
     @Id

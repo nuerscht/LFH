@@ -33,9 +33,8 @@ import customactions.TokenAuthenticator;
 
 /**
  * API interface to LFH Mave Project.
- * 
+ *
  * @author Sandro Dallo
- * 
  */
 public class Api extends Controller {
 
@@ -45,11 +44,9 @@ public class Api extends Controller {
 
 	/**
 	 * Returns a list of articles or only one article.
-	 * 
-	 * @param id
-	 *            The id of the article or string <i>all</i>
-	 * @param since
-	 *            Get all articles since the passed date (unix timestamp)
+     *
+     * @param id    Id of the article or string 'all'
+     * @param since Get all articles since the passed date (unix timestamp)
 	 * @return XML or Json list of articles (depends on query parameter type)
 	 */
 	@TokenAuthenticator
@@ -69,7 +66,7 @@ public class Api extends Controller {
 		return getItems(id, since, User.class);
 	}
 
-	@SuppressWarnings({ "deprecation", "rawtypes" })
+    @SuppressWarnings({"deprecation", "rawtypes"})
 	private static String getEtagOfItems(final List items, final Class exType)
 			throws NoSuchMethodException, InvocationTargetException,
 			IllegalAccessException {
@@ -78,7 +75,7 @@ public class Api extends Controller {
 		return DigestUtils.shaHex(eTag);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
 	private static Result getItems(final String id, final String since,
 			final Class exType) {
 		// Is necessary because type is valid scala type and hence the route definition causes a compilation error
@@ -126,7 +123,7 @@ public class Api extends Controller {
 
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
 	private static List getItemsFromDb(final int getId, final Date dt,
 			final Class exType) {
 		if (getId == ALL_ITEMS && dt == null)
@@ -140,7 +137,7 @@ public class Api extends Controller {
 		return query.findList();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
 	private static Date getNewestDateOfItems(final List items,
 			final Class exType) throws NoSuchMethodException,
 			InvocationTargetException, IllegalAccessException {
@@ -216,7 +213,7 @@ public class Api extends Controller {
 		return ok(VERSION);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
 	private static Result xmlResult(final List items, final Class exType) {
 		// Set headers
 		response().setHeader(CONTENT_TYPE, "text/xml");

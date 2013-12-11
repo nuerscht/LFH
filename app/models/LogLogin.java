@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class LogLogin extends Model {
 
     @Id
@@ -23,18 +23,18 @@ public class LogLogin extends Model {
 
     @CreatedTimestamp
     private Date createdAt;
-    
+
     private String info;
 
     public String getInfo() {
-		return info;
-	}
+        return info;
+    }
 
-	public void setInfo(String info) {
-		this.info = info;
-	}
+    public void setInfo(String info) {
+        this.info = info;
+    }
 
-	public static Finder<Integer, LogLogin> find = new Finder<Integer, LogLogin>(Integer.class, LogLogin.class);
+    public static Finder<Integer, LogLogin> find = new Finder<Integer, LogLogin>(Integer.class, LogLogin.class);
 
     public Integer getId() {
         return id;

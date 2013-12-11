@@ -13,9 +13,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 
-
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class CartHasProduct extends Model {
 
     @Embeddable
@@ -30,7 +29,7 @@ public class CartHasProduct extends Model {
         public boolean equals(Object obj) {
             if (obj == this) return true;
             if (obj == null) return false;
-            if (! (obj instanceof CartHasProductId)) return false;
+            if (!(obj instanceof CartHasProductId)) return false;
             CartHasProductId id = (CartHasProductId) obj;
             return id.productId == productId && id.cartId == cartId;
         }
@@ -40,11 +39,11 @@ public class CartHasProduct extends Model {
     public CartHasProductId id;
 
     @ManyToOne
-    @JoinColumn(name="product_id", updatable=false, insertable=false)
+    @JoinColumn(name = "product_id", updatable = false, insertable = false)
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name="cart_id", updatable=false, insertable=false)
+    @JoinColumn(name = "cart_id", updatable = false, insertable = false)
     private Cart cart;
 
     @Constraints.Required
@@ -124,10 +123,10 @@ public class CartHasProduct extends Model {
 
     public static CartHasProduct fetchByCartAndProduct(Cart cart, Product product) {
         return Ebean.find(CartHasProduct.class)
-                .where()
-                .eq("product_id", product.getId())
-                .eq("cart_id", cart.getId())
-                .findUnique();
+            .where()
+            .eq("product_id", product.getId())
+            .eq("cart_id", cart.getId())
+            .findUnique();
     }
 
     @Override

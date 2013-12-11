@@ -24,7 +24,7 @@ import com.avaje.ebean.annotation.UpdatedTimestamp;
 
 
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class Product extends Model {
 
     @Id
@@ -34,21 +34,21 @@ public class Product extends Model {
     private String title;
 
     @Constraints.Required
-    private Double price;   
-    
+    private Double price;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @Constraints.Required
     private Long ean;
 
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Attribute> attributes;
-    
-    @OneToMany(cascade=CascadeType.ALL)
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Image> images;
-    
-	@UpdatedTimestamp
+
+    @UpdatedTimestamp
     private Date updatedAt;
 
     @CreatedTimestamp
@@ -59,10 +59,10 @@ public class Product extends Model {
     public Integer getId() {
         return id;
     }
-    
+
     public void setId(Integer id) {
-		this.id = id;
-	}
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -97,17 +97,17 @@ public class Product extends Model {
     }
 
     /**
-	 * @return the attributes
-	 */
-	public List<Attribute> getAttributes() {
-		return attributes;
-	}
+     * @return the attributes
+     */
+    public List<Attribute> getAttributes() {
+        return attributes;
+    }
 
-	public void addImage(Image image){
-		this.images.add(image);
-	}
-	
-	public Date getUpdatedAt() {
+    public void addImage(Image image) {
+        this.images.add(image);
+    }
+
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
@@ -139,17 +139,21 @@ public class Product extends Model {
     }
 
     public void setToCart(Cart cart, Integer amount) {
-        CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(cart, this);
+        if (amount <= 0) {
+            this.removeFromCart(cart);
+        } else {
+            CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(cart, this);
 
-        if (rel == null) {
-            rel = new CartHasProduct();
-            rel.setPrice(this.getPrice());
+            if (rel == null) {
+                rel = new CartHasProduct();
+                rel.setPrice(this.getPrice());
+            }
+
+            rel.setProduct(this);
+            rel.setCart(cart);
+            rel.setAmount(amount);
+            rel.save();
         }
-
-        rel.setProduct(this);
-        rel.setCart(cart);
-        rel.setAmount(amount);
-        rel.save();
     }
 
     public Boolean removeFromCart(Cart cart) {
@@ -162,33 +166,33 @@ public class Product extends Model {
 
         return false;
     }
-    
-    public List<Rating> getRatings(){
-    	return Rating.find.where().eq("product_id", this.getId()).orderBy("updatedAt desc").findList();
+
+    public List<Rating> getRatings() {
+        return Rating.find.where().eq("product_id", this.getId()).orderBy("updatedAt desc").findList();
     }
-    
-    public List<Image> getImages(){
-    	return images;
+
+    public List<Image> getImages() {
+        return images;
     }
-    
-    public boolean hasImage(){
-    	return this.images.size() > 0;
+
+    public boolean hasImage() {
+        return this.images.size() > 0;
     }
-    
+
     /**
      * Return a page of computer
      *
-     * @param page Page to display
+     * @param page     Page to display
      * @param pageSize Number of products per page
-     * @param sortBy Product property used for sorting
-     * @param order Sort order (either or asc or desc)
-     * @param filter Filter applied on the products
+     * @param sortBy   Product property used for sorting
+     * @param order    Sort order (either or asc or desc)
+     * @param filter   Filter applied on the products
      */
     public static Page<Product> page(int page, int pageSize, String sortBy, String order, String filter) {
-        return 
+        return
             find.where()
                 .or(Expr.like("Title", "%" + filter + "%"),
-                		Expr.like("Description", "%" + filter + "%"))
+                    Expr.like("Description", "%" + filter + "%"))
                 .orderBy(sortBy + " " + order)
                 .findPagingList(pageSize)
                 .setFetchAhead(false)

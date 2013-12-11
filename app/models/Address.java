@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import java.util.*;
 
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class Address extends Model {
 
     @Id
@@ -48,10 +48,10 @@ public class Address extends Model {
 
     @Constraints.Required
     private Boolean isActive;
-    
+
     private Date birthday;
 
-	@UpdatedTimestamp
+    @UpdatedTimestamp
     private Date updatedAt;
 
     @CreatedTimestamp

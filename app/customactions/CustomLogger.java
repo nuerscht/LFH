@@ -18,9 +18,8 @@ import utils.SessionSerializer;
 
 /**
  * Simple class to log to db and file
- * 
+ *
  * @author Sandro Dallo
- * 
  */
 public class CustomLogger {
 
@@ -31,9 +30,9 @@ public class CustomLogger {
 
 	private User extractUser(final Context ctx) {
 		User user = (User) ctx.args.get("token_user");
-		if(user == null && ctx.session().get("user") != null)
+        if (user == null && ctx.session().get("user") != null)
 			user = SessionSerializer.<User>deserialize(ctx.session().get("user").getBytes());
-		return user ;
+        return user;
 	}
 
 	private String getHeaderString(final Map<String, String[]> headers,
@@ -52,7 +51,7 @@ public class CustomLogger {
 
 	private String getParameters(final Request request, final String delimiter) {
 		final StringBuilder sb = new StringBuilder();
-		final Map<String, String[]> map = new HashMap<String,String[]>();
+        final Map<String, String[]> map = new HashMap<String, String[]>();
 		map.putAll(request.queryString());
 		List<FilePart> files = null;
 
@@ -104,9 +103,8 @@ public class CustomLogger {
 
 	/**
 	 * Write an entry to the api log.
-	 * 
-	 * @param ctx
-	 *            Http context
+     *
+     * @param ctx Http context
 	 */
 	public void logToApiDb(final Context ctx) {
 		try {
@@ -120,11 +118,9 @@ public class CustomLogger {
 
 	/**
 	 * Write an entry to the api log.
-	 * 
-	 * @param ctx
-	 *            Http context
-	 * @param info
-	 *            The message to write to the db
+     *
+     * @param ctx  Http context
+     * @param info The message to write to the db
 	 */
 	public void logToApiDb(final Context ctx, final String info) {
 		try {
@@ -142,15 +138,11 @@ public class CustomLogger {
 
 	/**
 	 * Write an entry to the api log.
-	 * 
-	 * @param user
-	 *            The calling user
-	 * @param info
-	 *            The message to write to the db
-	 * @param params
-	 *            Request parameters
-	 * @param requestedUrl
-	 *            Requested url
+     *
+     * @param user         The calling user
+     * @param info         The message to write to the db
+     * @param params       Request parameters
+     * @param requestedUrl Requested url
 	 */
 	public void logToApiDb(final User user, final String info,
 			final String params, final String requestedUrl) {
@@ -169,13 +161,10 @@ public class CustomLogger {
 
 	/**
 	 * Write generic entry to the specified log
-	 * 
-	 * @param ctx
-	 *            Http context
-	 * @param level
-	 *            Log level of the message
-	 * @param log
-	 *            A configured log file name
+     *
+     * @param ctx   Http context
+     * @param level Log level of the message
+     * @param log   A configured log file name
 	 */
 	public void logToFile(final Context ctx, final LogLevel level,
 			final String log) {
@@ -191,13 +180,10 @@ public class CustomLogger {
 
 	/**
 	 * Write entry to the specified log
-	 * 
-	 * @param msg
-	 *            The message to write
-	 * @param level
-	 *            Log level of the message
-	 * @param log
-	 *            A configured log file name
+     *
+     * @param msg   The message to write
+     * @param level Log level of the message
+     * @param log   A configured log file name
 	 */
 	public void logToFile(final String msg, final LogLevel level,
 			final String log) {
@@ -226,9 +212,8 @@ public class CustomLogger {
 
 	/**
 	 * Write an entry to the login log
-	 * 
-	 * @param ctx
-	 *            Http context
+     *
+     * @param ctx Http context
 	 */
 	public void logToLoginDb(final Context ctx) {
 		try {
@@ -257,11 +242,9 @@ public class CustomLogger {
 
 	/**
 	 * Write an entry to the login log
-	 * 
-	 * @param user
-	 *            The calling user
-	 * @param info
-	 *            The message to write to the db
+     *
+     * @param user The calling user
+     * @param info The message to write to the db
 	 */
 	public void logToLoginDb(final User user, final String info) {
 		try {

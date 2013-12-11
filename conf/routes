@@ -21,6 +21,7 @@ POST        /rate/:id                     controllers.Product.submitRating(id: I
 # Cart
 GET         /cart                         controllers.Cart.index()
 GET         /cart/:id                     controllers.Cart.indexById(id: Integer)
+POST        /cart                         controllers.Cart.update()
 
 # API
 GET         /customers                    controllers.Api.customers(id: String, since: String ?= null)

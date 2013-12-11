@@ -57,20 +57,21 @@
             @inputRadioGroup(
                 ratingForm("rate"), 
                 options = options("1" -> "1" ,"2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"),
-                '_label -> "Rating",
+                '_label -> "Bewertung",
                 'required -> "required"
             )
             
             @textarea(
                 ratingForm("comment"), 
-                '_label -> "Comment"
+                'class -> "comment",
+                '_label -> "Kommentar"
             )
 
         </fieldset>
 
         <div class="actions">
-            <input id="submit-rating" type="submit" class="btn primary" value="Rate">
-            <a href="@routes.Product.details(product.getId)" class="btn">Cancel</a>
+            <input id="submit-rating" type="submit" class="btn primary" value="Bewerten">
+            <a href="@routes.Product.details(product.getId)" class="btn">L&ouml;schen</a>
         </div>
         
     }}

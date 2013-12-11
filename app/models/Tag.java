@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class Tag extends Model {
 
     @Id
@@ -31,7 +31,7 @@ public class Tag extends Model {
     private String description;
 
 
-	@CreatedTimestamp
+    @CreatedTimestamp
     private Date createdAt;
 
     public static Finder<String, Tag> find = new Finder<String, Tag>(String.class, Tag.class);
@@ -41,21 +41,22 @@ public class Tag extends Model {
     }
 
     /**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getDescription() {
+    public String getDescription() {
         return description;
     }
+
     /**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 
     public Date getCreatedAt() {
@@ -68,17 +69,17 @@ public class Tag extends Model {
 
     public List<Product> getProducts() {
         String sql
-                = " select product.id, product.title, product.price, product.description, product.ean, product.updated_at, product.created_at"
-                + " from product"
-                + " join product_has_tag on product_has_tag.product_id = product.id"
-                + " group by product.id ";
+            = " select product.id, product.title, product.price, product.description, product.ean, product.updated_at, product.created_at"
+            + " from product"
+            + " join product_has_tag on product_has_tag.product_id = product.id"
+            + " group by product.id ";
 
         RawSql rawSql = RawSqlBuilder.parse(sql).create();
 
         return Ebean.find(Product.class)
-                .setRawSql(rawSql)
-                .where()
-                .eq("product_has_tag.tag_id", getId())
-                .findList();
+            .setRawSql(rawSql)
+            .where()
+            .eq("product_has_tag.tag_id", getId())
+            .findList();
     }
 }

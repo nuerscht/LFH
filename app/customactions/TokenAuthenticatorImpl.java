@@ -9,10 +9,11 @@ import play.mvc.Http.Context;
 import play.mvc.SimpleResult;
 
 import com.avaje.ebean.Ebean;
+
 /**
  * Validates user token returns with 401 if no valid user is found.
- * @author Sandro Dallo
  *
+ * @author Sandro Dallo
  */
 public class TokenAuthenticatorImpl extends Action<TokenAuthenticator> {
 

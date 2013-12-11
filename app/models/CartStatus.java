@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import com.avaje.ebean.annotation.UpdateMode;
 
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class CartStatus extends Model {
 
     public static final String OPEN = "open";
@@ -38,6 +38,7 @@ public class CartStatus extends Model {
     public String getDescription() {
         return description;
     }
+
     /**
      * @param description the description to set
      */

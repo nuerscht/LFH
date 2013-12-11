@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class Cart extends Model {
 
     @Id
@@ -28,10 +28,10 @@ public class Cart extends Model {
 
     @UpdatedTimestamp
     private Date updatedAt;
-    
-    @OneToMany(cascade=CascadeType.ALL)
+
+    @OneToMany(cascade = CascadeType.ALL)
     private List<CartHasProduct> cartHasProduct;
-    
+
     @CreatedTimestamp
     private Date createdAt;
 
@@ -66,13 +66,13 @@ public class Cart extends Model {
     }
 
     /**
-	 * @return the cartHasProduct
-	 */
-	public List<CartHasProduct> getCartHasProduct() {
-		return cartHasProduct;
-	}
+     * @return the cartHasProduct
+     */
+    public List<CartHasProduct> getCartHasProduct() {
+        return cartHasProduct;
+    }
 
-	public Date getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
@@ -97,10 +97,10 @@ public class Cart extends Model {
      */
     public static Cart fetchOrCreateOpenCart(User user) {
         Cart cart = Ebean.find(Cart.class)
-                .where()
-                .eq("user_id", user.getId())
-                .eq("status_id", CartStatus.OPEN)
-                .findUnique();
+            .where()
+            .eq("user_id", user.getId())
+            .eq("status_id", CartStatus.OPEN)
+            .findUnique();
 
         if (cart == null) {
             cart = new Cart();

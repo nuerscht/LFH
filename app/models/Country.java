@@ -15,7 +15,7 @@ import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 @Entity
-@UpdateMode(updateChangesOnly=false)
+@UpdateMode(updateChangesOnly = false)
 public class Country extends Model {
 
     @Id
@@ -23,13 +23,13 @@ public class Country extends Model {
 
     @Constraints.MaxLength(100)
     private String name;
-    
+
     @UpdatedTimestamp
     private Date updatedAt;
 
     @CreatedTimestamp
     private Date createdAt;
-    
+
     public static Finder<Integer, Country> find = new Finder<Integer, Country>(Integer.class, Country.class);
 
     public Integer getId() {
@@ -63,12 +63,12 @@ public class Country extends Model {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-    
-    public static Map<String,String> countries() {
-        LinkedHashMap<String,String> options = new LinkedHashMap<String,String>();
-        for(Country c: Country.find.orderBy("name").findList()) {
+
+    public static Map<String, String> countries() {
+        LinkedHashMap<String, String> options = new LinkedHashMap<String, String>();
+        for (Country c : Country.find.orderBy("name").findList()) {
             options.put(c.id.toString(), c.name);
         }
         return options;
-    } 
+    }
 }
