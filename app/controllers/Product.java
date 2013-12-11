@@ -208,6 +208,6 @@ public class Product extends Eshomo {
             product.addToCart(cart);
         }
 
-        return redirect(controllers.routes.Product.details(id, 0));
+        return redirect(routes.Product.details(id, 0));
     }
 }

@@ -139,17 +139,21 @@ public class Product extends Model {
     }
 
     public void setToCart(Cart cart, Integer amount) {
-        CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(cart, this);
+        if (amount <= 0) {
+            this.removeFromCart(cart);
+        } else {
+            CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(cart, this);
 
-        if (rel == null) {
-            rel = new CartHasProduct();
-            rel.setPrice(this.getPrice());
+            if (rel == null) {
+                rel = new CartHasProduct();
+                rel.setPrice(this.getPrice());
+            }
+
+            rel.setProduct(this);
+            rel.setCart(cart);
+            rel.setAmount(amount);
+            rel.save();
         }
-
-        rel.setProduct(this);
-        rel.setCart(cart);
-        rel.setAmount(amount);
-        rel.save();
     }
 
     public Boolean removeFromCart(Cart cart) {
