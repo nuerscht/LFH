@@ -85,6 +85,6 @@ public class Image extends Model {
     }
     
     public String getAssetUrl(){
-    	return routes.Assets.at("images/upload/" + getId() + getExtension()).toString();
+    	return routes.Assets.at(play.Play.application().configuration().getString("eshomo.upload.directory") + getId() + getExtension()).toString();
     }
 }

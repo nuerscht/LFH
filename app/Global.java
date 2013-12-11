@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -5,6 +6,7 @@ import models.*;
 import play.*;
 import play.libs.F.Promise;
 import play.libs.Yaml;
+import play.api.Play;
 import play.api.mvc.EssentialFilter;
 import play.filters.gzip.GzipFilter;
 import play.mvc.*;
@@ -28,6 +30,9 @@ public class Global extends GlobalSettings {
 
         // Load test data to the database
         loadTestData(app);
+        
+        // Create upload directory
+        createUploadDir();
 	}
 
     /**
@@ -90,6 +95,14 @@ public class Global extends GlobalSettings {
             Ebean.save(data.get("addresses"));
         }
 
+    }
+    
+    private void createUploadDir(){
+    	File directory = new File("public/" + play.Play.application().configuration().getString("eshomo.upload.directory"));
+    	if(!directory.isDirectory()){
+    		directory.mkdir();
+    	}
+    	
     }
 
 }
