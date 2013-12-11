@@ -16,12 +16,18 @@ import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.zip.GZIPInputStream;
 
+import models.Attribute;
+import models.Product;
 import models.User;
 import models.UserType;
 
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.yaml.snakeyaml.reader.StreamReader;
 
+import akka.dispatch.AbstractNodeQueue.Node;
 import play.libs.WS;
 import play.libs.WS.WSRequestHolder;
 import play.test.FakeApplication;
@@ -30,13 +36,14 @@ import eshomo.EshomoTest;
 
 public class ApiIntegrationTest extends EshomoTest {
 
-	// private constant fields
-	private final String customers_url = "/customers";
-	private final String orders_url = "/orders";
-	private final String articles_url = "/articles";
-	private final String version_url = "/version";
-	private final String server_url = "http://localhost:3333";
-
+	
+    // private constant fields
+	private static final String CUSTOMERL_URL = "/customers";
+	private static final String ORDERS_URL = "/orders";
+	private static final String ARTICLES_URL = "/articles";
+	private static final String VERSION_URL = "/version";
+	private static final String SERVER_URL = "http://localhost:3333";
+	protected static final String CURRENCY = "Chf";
 	/**
 	 * Checks if call to the /customers succeeds if user is active and an admin.
 	 * 
@@ -46,7 +53,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginValidUser_Customer() {
 		User user = getNewUser(true, true);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(customers_url, params, 200, "<customers>");
+		checkTokenLogin(CUSTOMERL_URL, params, 200, "<customers>");
 	}
 
 	/**
@@ -58,7 +65,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginValidUser_Articles() {
 		User user = getNewUser(true, true);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(articles_url, params, 200, "<articles>");
+		checkTokenLogin(ARTICLES_URL, params, 200, "<articles>");
 	}
 
 	/**
@@ -70,7 +77,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginValidUser_Orders() {
 		User user = getNewUser(true, true);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(orders_url, params, 404,
+		checkTokenLogin(ORDERS_URL, params, 404,
 				"Angeforderte Ressource nicht gefunden");
 	}
 
@@ -83,7 +90,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginValidUser_Version() {
 		User user = getNewUser(true, true);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(version_url, params, 200, "1.0");
+		checkTokenLogin(VERSION_URL, params, 200, "1.0");
 	}
 
 	/**
@@ -95,7 +102,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginNonAdmin_Customer() {
 		User user = getNewUser(false, true);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(customers_url, params, 401,
+		checkTokenLogin(CUSTOMERL_URL, params, 401,
 				"Kein gültiges Token gefunden");
 	}
 
@@ -108,7 +115,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginNonAdmin_Articles() {
 		User user = getNewUser(false, true);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(articles_url, params, 401,
+		checkTokenLogin(ARTICLES_URL, params, 401,
 				"Kein gültiges Token gefunden");
 	}
 
@@ -121,7 +128,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginNonAdmin_Orders() {
 		User user = getNewUser(false, true);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(orders_url, params, 401, "Kein gültiges Token gefunden");
+		checkTokenLogin(ORDERS_URL, params, 401, "Kein gültiges Token gefunden");
 	}
 
 	/**
@@ -133,7 +140,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginNonAdmin_Version() {
 		User user = getNewUser(false, true);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(version_url, params, 401,
+		checkTokenLogin(VERSION_URL, params, 401,
 				"Kein gültiges Token gefunden");
 	}
 
@@ -146,7 +153,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginNonActive_Customer() {
 		User user = getNewUser(true, false);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(customers_url, params, 401,
+		checkTokenLogin(CUSTOMERL_URL, params, 401,
 				"Kein gültiges Token gefunden");
 	}
 
@@ -159,7 +166,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginNonActive_Articles() {
 		User user = getNewUser(true, false);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(articles_url, params, 401,
+		checkTokenLogin(ARTICLES_URL, params, 401,
 				"Kein gültiges Token gefunden");
 	}
 
@@ -172,7 +179,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginNonActive_Orders() {
 		User user = getNewUser(true, false);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(orders_url, params, 401, "Kein gültiges Token gefunden");
+		checkTokenLogin(ORDERS_URL, params, 401, "Kein gültiges Token gefunden");
 	}
 
 	/**
@@ -184,7 +191,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginNonActive_Version() {
 		User user = getNewUser(true, false);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(version_url, params, 401,
+		checkTokenLogin(VERSION_URL, params, 401,
 				"Kein gültiges Token gefunden");
 	}
 
@@ -197,7 +204,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginNonActiveAdmin_Customer() {
 		User user = getNewUser(false, false);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(customers_url, params, 401,
+		checkTokenLogin(CUSTOMERL_URL, params, 401,
 				"Kein gültiges Token gefunden");
 	}
 
@@ -210,7 +217,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginNonActiveAdmin_Articles() {
 		User user = getNewUser(false, false);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(articles_url, params, 401,
+		checkTokenLogin(ARTICLES_URL, params, 401,
 				"Kein gültiges Token gefunden");
 	}
 
@@ -223,7 +230,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginNonActiveAdmin_Orders() {
 		User user = getNewUser(false, false);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(orders_url, params, 401, "Kein gültiges Token gefunden");
+		checkTokenLogin(ORDERS_URL, params, 401, "Kein gültiges Token gefunden");
 	}
 
 	/**
@@ -235,7 +242,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	public void checkTokenLoginNonActiveAdmin_Version() {
 		User user = getNewUser(false, false);
 		String[] params = new String[] { "id", "all", "token", user.getToken() };
-		checkTokenLogin(version_url, params, 401,
+		checkTokenLogin(VERSION_URL, params, 401,
 				"Kein gültiges Token gefunden");
 	}
 
@@ -247,7 +254,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	@Test
 	public void checkTokenLoginNoToken_Customer() {
 		String[] params = new String[] { "id", "all" };
-		checkTokenLogin(customers_url, params, 400,
+		checkTokenLogin(CUSTOMERL_URL, params, 400,
 				"Kein gültiges Token gefunden");
 	}
 
@@ -259,7 +266,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	@Test
 	public void checkTokenLoginNoToken_Articles() {
 		String[] params = new String[] { "id", "all" };
-		checkTokenLogin(articles_url, params, 400,
+		checkTokenLogin(ARTICLES_URL, params, 400,
 				"Kein gültiges Token gefunden");
 	}
 
@@ -271,7 +278,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	@Test
 	public void checkTokenLoginNoToken_Orders() {
 		String[] params = new String[] { "id", "all" };
-		checkTokenLogin(orders_url, params, 400, "Kein gültiges Token gefunden");
+		checkTokenLogin(ORDERS_URL, params, 400, "Kein gültiges Token gefunden");
 	}
 
 	/**
@@ -282,7 +289,7 @@ public class ApiIntegrationTest extends EshomoTest {
 	@Test
 	public void checkTokenLoginNoToken_Version() {
 		String[] params = new String[] { "id", "all" };
-		checkTokenLogin(version_url, params, 400,
+		checkTokenLogin(VERSION_URL, params, 400,
 				"Kein gültiges Token gefunden");
 	}
 
@@ -313,24 +320,7 @@ public class ApiIntegrationTest extends EshomoTest {
 		});
 	}
 	
-	@Test
-	public void checkGzipContent(){
-		FakeApplication fakeApp = Helpers.fakeApplication();
-		running(testServer(3333, fakeApp), new Runnable() {
-			public void run() {
-				String[] params = new String[] { "id", "all", "token",
-						getUserActiveAdminUser().getToken() };
-				String[] headers = new String[] { "Accept-Encoding", "gzip" };
-				WS.Response response = callApi(articles_url, params, headers);
-				// Check if status is okay and content is correct
-				String msg = unzipBody(response.getBodyAsStream());
-				assertThat(response.getStatus()).isEqualTo(200);
-				assertThat(response.getHeader("Content-Encoding")).isEqualTo(
-						"gzip");
-				
-			}
-		});
-	}
+
 
 	@Test
 	public void getAllArticelsXml() {
@@ -339,20 +329,88 @@ public class ApiIntegrationTest extends EshomoTest {
 			public void run() {
 				String[] params = new String[] { "id", "all", "token",
 						getUserActiveAdminUser().getToken() };
-				String[] headers = new String[] { "Accept-Encoding", "gzip" };
-				WS.Response response = callApi(articles_url, params, headers);
+				WS.Response response = callApi(ARTICLES_URL, params, null);
 				// Check if status is okay and content is correct
-				String msg = unzipBody(response.getBodyAsStream());
 				assertThat(response.getStatus()).isEqualTo(200);
 				assertThat(response.getHeader("Content-Type")).isEqualTo(
 						"text/xml");
-				assertThat(response.getHeader("Content-Encoding")).isEqualTo(
-						"gzip");
 				assertThat(response.getHeader("Etag")).isNotEmpty();
+				
+				// Get Xml dom and check for products
+				Document dom = response.asXml();
+				NodeList nodes = dom.getElementsByTagName("article");
+				int count = Product.find.all().size();
+				assertThat(nodes.getLength()).isEqualTo(count);
+				
 
 			}
 		});
 	}
+	
+	   @Test
+	    public void getAllArticelsXml_NotModified() {
+	        FakeApplication fakeApp = Helpers.fakeApplication();
+	        running(testServer(3333, fakeApp), new Runnable() {
+	            public void run() {
+	                String[] params = new String[] { "id", "all", "token",
+	                        getUserActiveAdminUser().getToken() };
+	                WS.Response response = callApi(ARTICLES_URL, params, null);	              
+	                // Call service and get the etag
+	                String etag = response.getHeader("Etag");
+	                // Call service again with the etag
+	                String[] headers = new String[]{"If-None-Match",etag};
+	                response = callApi(ARTICLES_URL, params, headers);       
+	                // Check response status
+	                assertThat(response.getStatus()).isEqualTo(304);
+	                assertThat(response.getBody()).isEmpty();
+
+	                
+
+	            }
+	        });
+	    }
+	   
+       @Test
+       public void getOneArticleXml() {
+           FakeApplication fakeApp = Helpers.fakeApplication();
+           running(testServer(3333, fakeApp), new Runnable() {
+               @SuppressWarnings("rawtypes")
+            public void run() {
+                   Product p = Product.find.byId(1);
+                   String[] params = new String[] { "id", "1", "token",
+                           getUserActiveAdminUser().getToken() };
+                   WS.Response response = callApi(ARTICLES_URL, params, null);
+                   assertThat(response.getStatus()).isEqualTo(200);
+                   assertThat(response.getHeader("Content-Type")).isEqualTo(
+                           "text/xml");
+                   assertThat(response.getHeader("Etag")).isNotEmpty();
+                   
+                   // Get Xml dom and check for products
+                   Document dom = response.asXml();                  
+                   Element node = (Element) dom.getElementsByTagName("article").item(0);
+                   assertThat(node.getAttribute("id")).isEqualTo(p.getId().toString());
+                   System.out.println(node.getElementsByTagName("title").item(0).getTextContent());
+                   assertThat(node.getElementsByTagName("title").item(0).getTextContent()).isEqualTo(p.getTitle());
+                   assertThat(node.getElementsByTagName("description").item(0).getTextContent()).isEqualTo(p.getDescription());
+                   assertThat(node.getElementsByTagName("ean").item(0).getTextContent()).isEqualTo(p.getEan().toString());
+                   assertThat(node.getElementsByTagName("price").item(0).getTextContent()).isEqualTo(p.getPrice().toString());
+                   assertThat(node.getElementsByTagName("currency").item(0).getTextContent()).isEqualTo(CURRENCY);
+                   NodeList list = node.getElementsByTagName("attributes/attribute");
+                   int attrMatches = 0;
+                   for (int i = 0; i < list.getLength(); i++) {
+                       for(Attribute att : p.getAttributes()){
+                           if(list.item(i).getTextContent().equalsIgnoreCase(att.getValue())){
+                               attrMatches++;
+                               break;
+                           }
+                       }
+                   }      
+                   assertThat(attrMatches).isEqualTo(p.getAttributes().size());
+                   
+
+               }
+           });
+       }
 
 	/**
 	 * Calls the API with the given parameters and returns a response.
@@ -367,18 +425,20 @@ public class ApiIntegrationTest extends EshomoTest {
 	 */
 	private WS.Response callApi(final String url, final String[] queryParams,
 			final String[] headers) {
-		WSRequestHolder result = WS.url(server_url + url);
-		for (int i = 0; i + 1 < queryParams.length; i += 2) {
-			result.setQueryParameter(queryParams[i], queryParams[i + 1]);
-		}
-		for (int i = 0; i + 1 < headers.length; i += 2) {
-			result.setHeader(headers[i], headers[i + 1]);
-		}
-
+		WSRequestHolder result = WS.url(SERVER_URL + url);
+		if(queryParams != null)
+    		for (int i = 0; i + 1 < queryParams.length; i += 2) {
+    			result.setQueryParameter(queryParams[i], queryParams[i + 1]);
+    		}
+		if(headers != null)
+    		for (int i = 0; i + 1 < headers.length; i += 2) {
+    			result.setHeader(headers[i], headers[i + 1]);
+    		}
 		return result.get().get(10000);
 	}
 
-	private String unzipBody(InputStream str) {
+	@SuppressWarnings("unused")
+    private String unzipBody(InputStream str) {
 		InputStreamReader sr = null;
 		StringWriter writer = null;
 		GZIPInputStream gis = null;
