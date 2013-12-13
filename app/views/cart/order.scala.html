@@ -1,0 +1,12 @@
+@(cart: models.Cart)
+
+@main("Bestellen") {
+    <div class="order">
+        <h1>Bestellung absenden</h1>
+        <form method="post" action="/cart/order">
+            <div class="buttons">
+                <button type="submit">Bestellung absenden</button>
+            </div>
+        </form>
+    </div>
+}
