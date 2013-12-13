@@ -35,6 +35,11 @@ import play.test.FakeApplication;
 import play.test.Helpers;
 import eshomo.EshomoTest;
 
+/**
+ * Integration tests for API functionality.
+ * @author dal
+ *
+ */
 public class ApiIntegrationTest extends EshomoTest {
 
     // private constant fields
@@ -44,6 +49,7 @@ public class ApiIntegrationTest extends EshomoTest {
     private static final String VERSION_URL = "/version";
     private static final String SERVER_URL = "http://localhost:3333";
     protected static final String CURRENCY = "Chf";
+    protected static final String VERSION = "1.0";
 
     /**
      * Checks if call to the /customers succeeds if user is active and an admin.
@@ -312,7 +318,13 @@ public class ApiIntegrationTest extends EshomoTest {
             }
         });
     }
-
+    
+    
+    /**
+     * Checks if the API returns all articles and if the xml document is well formed.
+     * 
+     * @author dal
+     */
     @Test
     public void getAllArticelsXml() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -336,6 +348,12 @@ public class ApiIntegrationTest extends EshomoTest {
         });
     }
 
+    /**
+     * Checks if the API returns a 304 if no article has changed since the 
+     * last service call.
+     * 
+     * @author dal
+     */
     @Test
     public void getAllArticelsXml_NotModified() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -356,7 +374,14 @@ public class ApiIntegrationTest extends EshomoTest {
             }
         });
     }
-
+    
+    /**
+     * Checks if the API returns the article specified by the
+     * query parameter 'id' and verifies the values with the one
+     * from the database.
+     * 
+     * @author dal
+     */
     @Test
     public void getOneArticleXml() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -401,6 +426,11 @@ public class ApiIntegrationTest extends EshomoTest {
         });
     }
 
+    /**
+     * Checks if API returns a 304 if the article hasn't changed.
+     * 
+     * @author dal
+     */
     @Test
     public void getOneArticleXml_NotModified() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -422,6 +452,13 @@ public class ApiIntegrationTest extends EshomoTest {
         });
     }
 
+    /**
+     * Checks if the API returns only new or changed articles as 
+     * specified by the query parameter 'since', means updated_at newer
+     * as the passed timestamp.
+     * 
+     * @author dal
+     */
     @Test
     public void getAllArticelsXml_Since() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -455,7 +492,12 @@ public class ApiIntegrationTest extends EshomoTest {
             }
         });
     }
-
+    
+    /**
+     * Checks if the API returns all customers and if the xml document is well formed.
+     * 
+     * @author dal
+     */
     @Test
     public void getAllCustomersXml() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -479,6 +521,11 @@ public class ApiIntegrationTest extends EshomoTest {
         });
     }
 
+    /**
+     * Checks if the API returns a 304 if no customer has changed.
+     * 
+     * @author dal
+     */
     @Test
     public void getAllCustomerXml_NotModified() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -499,7 +546,14 @@ public class ApiIntegrationTest extends EshomoTest {
             }
         });
     }
-
+    
+    /**
+     * Checks if the API returns the specified customer by the
+     * query parameter 'id' and has the same values as the db 
+     * entity.
+     * 
+     * @author dal
+     */
     @Test
     public void getOneCustomerXml() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -544,6 +598,11 @@ public class ApiIntegrationTest extends EshomoTest {
         });
     }
 
+    /**
+     * Checks if the API returns a 304 if the customer hasn't changed.
+     * 
+     * @author dal
+     */
     @Test
     public void getOneCustomerXml_NotModified() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -565,10 +624,16 @@ public class ApiIntegrationTest extends EshomoTest {
         });
     }
 
+    /**
+     * Checks if the API returns only new or changed customer since the 
+     * specified unix timestamp passed by the query string.
+     * 
+     * @author dal
+     */
     @Test
     public void getAllCustomerXml_Since() {
         FakeApplication fakeApp = Helpers.fakeApplication();
-        running(testServer(3333, fakeApp), new Runnable() {
+        running(testServer(3334, fakeApp), new Runnable() {
             public void run() {
                 // Wait and create new product
                 try {
@@ -598,6 +663,11 @@ public class ApiIntegrationTest extends EshomoTest {
         });
     }
 
+    /**
+     * Check if API returns all orders and if the xml format is well formed.
+     * 
+     * @author dal
+     */
     @Test
     public void getAllOrdersXml() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -614,7 +684,7 @@ public class ApiIntegrationTest extends EshomoTest {
 
                 // Get Xml dom and check for orders
                 Document dom = response.asXml();
-                NodeList nodes = dom.getElementsByTagName("orders");
+                NodeList nodes = dom.getElementsByTagName("order");
                 int count = Cart.find.all().size();
                 assertThat(nodes.getLength()).isEqualTo(count);
 
@@ -622,6 +692,11 @@ public class ApiIntegrationTest extends EshomoTest {
         });
     }
 
+    /**
+     * Checks if the API returns a 304 if no order has changed.
+     * 
+     * @author dal
+     */
     @Test
     public void getAllOrdersXml_NotModified() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -643,7 +718,13 @@ public class ApiIntegrationTest extends EshomoTest {
             }
         });
     }
-
+    
+    /**
+     * Checks if the return order has the correct xml format and
+     * the same values as the db entity.
+     * 
+     * @author dal
+     */
     @Test
     public void getOneOrderXml() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -668,8 +749,9 @@ public class ApiIntegrationTest extends EshomoTest {
                 assertThat(node.getAttribute("id")).isEqualTo(cart.getId().toString());
                 assertThat(node.getAttribute("customer")).isEqualTo(user.getId().toString());
                 assertThat(node.getAttribute("billaddress")).isEqualTo(address.getId().toString());
-                assertThat(node.getAttribute("shippingaddress")).isEqualTo(address.getId().toString());             
-
+                assertThat(node.getAttribute("shippingaddress")).isEqualTo(address.getId().toString());
+                assertThat(node.getAttribute("status")).isEqualTo(cart.getStatus().getId().toString());
+                
                 NodeList nodeList = node.getElementsByTagName("position");
                 assertThat(nodeList.getLength()).isEqualTo(chp.size());
                 
@@ -685,7 +767,11 @@ public class ApiIntegrationTest extends EshomoTest {
             }
         });
     }
-
+    /**
+     * Checks if the API returns a 304 if the order hasn't changed.
+     * 
+     *  @author dal
+     */
     @Test
     public void getOneOrderXml_NotModified() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -707,7 +793,12 @@ public class ApiIntegrationTest extends EshomoTest {
             }
         });
     }
-
+    /**
+     * Checks if the API calls returns only changed or new orders as the specified
+     * unix timestamp in the query parameter.
+     * 
+     *  @author dal
+     */
     @Test
     public void getAllOrdersXml_Since() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -744,13 +835,72 @@ public class ApiIntegrationTest extends EshomoTest {
         });
     }
     
+    /**
+     * Checks if API returns the version as xml document.
+     * 
+     * @author dal
+     */
     @Test
-    public void getOneAriclesJson() {
+    public void getVersionXml() {
+        FakeApplication fakeApp = Helpers.fakeApplication();
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+                
+                String[] params = new String[] { "id", "all", "token",
+                        getUserActiveAdminUser().getToken()};
+                WS.Response response = callApi(VERSION_URL, params, null);
+                // Check if status is okay and content is correct
+                assertThat(response.getStatus()).isEqualTo(200);
+                assertThat(response.getHeader("Content-Type")).isEqualTo("text/xml");
+
+                // Get Xml dom and check for products
+                Document dom = response.asXml();
+                NodeList nodes = dom.getElementsByTagName("version");
+                assertThat(nodes.getLength()).isEqualTo(1);
+                assertThat(nodes.item(0).getTextContent()).isEqualTo(VERSION);
+                
+
+            }
+        });
+    }
+    
+    /**
+     * Checks if API returns the version as xml document.
+     * 
+     * @author dal
+     */
+    @Test
+    public void getVersionJson() {
+        FakeApplication fakeApp = Helpers.fakeApplication();
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+                
+                String[] params = new String[] { "id", "all", "token",
+                        getUserActiveAdminUser().getToken(),"type","json"};
+                WS.Response response = callApi(VERSION_URL, params, null);
+                // Check if status is okay and content is correct
+                assertThat(response.getStatus()).isEqualTo(200);
+                assertThat(response.getHeader("Content-Type")).isEqualTo("application/json");
+
+                // Get json object and check for version
+                JsonNode node = response.asJson();
+                assertThat(node.path("version").asText()).isEqualTo(VERSION);
+                
+            }
+        });
+    }
+    
+    /**
+     * Verifies the json behavior of the API. Only one test per url because
+     * the xml and json service call, shares the same code base.
+     */
+    @Test
+    public void getOneArticlesJson() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
             public void run() {
                 createCarts();
-                Cart cart = Cart.find.byId(1);
+                Product product = Product.find.byId(1);
                 String[] params = new String[] { "id", "1",
                         "type","json","token",
                         getUserActiveAdminUser().getToken() };
@@ -763,15 +913,113 @@ public class ApiIntegrationTest extends EshomoTest {
                 // Get json object and check for articles
                 JsonNode node = response.asJson();
                 node = node.get("articles").get(0);
-               
+                assertThat(node.path("id").asInt()).isEqualTo(product.getId());
+                assertThat(node.path("title").asText()).isEqualTo(product.getTitle());
+                assertThat(node.path("description").asText()).isEqualTo(product.getDescription());
+                assertThat(node.path("price").asDouble()).isEqualTo(product.getPrice());
+                assertThat(node.path("currency").asText()).isEqualTo(CURRENCY);
+                // Check Attributes
 
+                assertThat(node.path("attributes").size()).isEqualTo(product.getAttributes().size());
+                int cnt = 0;
+                for (JsonNode n : node.path("attributes")) {
+                    Attribute att = product.getAttributes().get(cnt++);                    
+                    assertThat(n.asText()).isEqualTo(att.getValue());
+                }             
             }
         });
     }
 
+    /**
+     * Verifies the json behavior of the API. Only one test per url because
+     * the xml and json service call, shares the same code base.
+     */
+    @Test
+    public void getOneCustomerJson() {
+        FakeApplication fakeApp = Helpers.fakeApplication();
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+                createCarts();
+                User user = User.find.byId(1);
+                String[] params = new String[] { "id", "1",
+                        "type","json","token",
+                        getUserActiveAdminUser().getToken() };
+                WS.Response response = callApi(CUSTOMERL_URL, params, null);
+                // Check if status is okay and content is correct
+                assertThat(response.getStatus()).isEqualTo(200);
+                assertThat(response.getHeader("Content-Type")).isEqualTo("application/json");
+                assertThat(response.getHeader("Etag")).isNotEmpty();
+                
+                Address addr = user.getAddresses().get(0);
 
-    // TODO: Here
+                // Get json object and check for articles
+                JsonNode node = response.asJson();
+                node = node.get("customers").get(0);
+                assertThat(node.path("id").asInt()).isEqualTo(user.getId());
+                assertThat(node.path("name").asText()).isEqualTo(addr.getLastname());
+                assertThat(node.path("firstname").asText()).isEqualTo(addr.getFirstname());
+                assertThat(node.path("email").asText()).isEqualTo(addr.getEmail());
+                assertThat(node.path("birthday").asLong()).isEqualTo(addr.getBirthday().getTime() / 1000L);
+                // Check Addresses
+                assertThat(node.path("addresses").size()).isEqualTo(user.getAddresses().size());
+                int cnt = 0;
+                for (JsonNode n : node.path("addresses")) {
+                    Address a = user.getAddresses().get(cnt++);                    
+                    assertThat(n.path("id").asInt()).isEqualTo(a.getId());
+                    assertThat(n.path("type").asInt()).isEqualTo(1);
+                    assertThat(n.path("city").asText()).isEqualTo(a.getPlace());
+                    assertThat(n.path("street").asText()).isEqualTo(a.getStreet());
+                    assertThat(n.path("postcode").asText()).isEqualTo(a.getZip());
+                    assertThat(n.path("country").asText()).isEqualTo(a.getCountry().getName());
+                }             
+            }
+        });
+    }
 
+    /**
+     * Verifies the json behavior of the API. Only one test per url because
+     * the xml and json service call, shares the same code base.
+     */
+    @Test
+    public void getOneOrderJson() {
+        FakeApplication fakeApp = Helpers.fakeApplication();
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+                createCarts();
+                Cart order = Cart.find.byId(1);
+                String[] params = new String[] { "id", "1",
+                        "type","json","token",
+                        getUserActiveAdminUser().getToken() };
+                WS.Response response = callApi(ORDERS_URL, params, null);
+                // Check if status is okay and content is correct
+                assertThat(response.getStatus()).isEqualTo(200);
+                assertThat(response.getHeader("Content-Type")).isEqualTo("application/json");
+                assertThat(response.getHeader("Etag")).isNotEmpty();
+                
+                Address addr = order.getAddress();
+                User user = order.getUser();
+
+                // Get json object and check for articles
+                JsonNode node = response.asJson();
+                node = node.get("orders").get(0);
+                assertThat(node.path("id").asInt()).isEqualTo(order.getId());
+                assertThat(node.path("customer").asInt()).isEqualTo(user.getId());
+                assertThat(node.path("billaddress").asInt()).isEqualTo(addr.getId());
+                assertThat(node.path("shippingaddress").asInt()).isEqualTo(addr.getId());
+                assertThat(node.path("status").asText()).isEqualTo(order.getStatus().getId());
+                // Check positions
+                assertThat(node.path("positions").size()).isEqualTo(order.getCartHasProduct().size());
+                int cnt = 0;
+                for (JsonNode n : node.path("positions")) {
+                    CartHasProduct prod = order.getCartHasProduct().get(cnt++);                    
+                    assertThat(n.path("article").asInt()).isEqualTo(prod.getProduct().getId());
+                    assertThat(n.path("amount").asInt()).isEqualTo(prod.getAmount());
+                    assertThat(n.path("discount").asDouble()).isEqualTo(prod.getDiscount());
+                }             
+            }
+        });
+    }
+    
     /**
      * Calls the API with the given parameters and returns a response.
      * 

@@ -228,8 +228,10 @@ public class Api extends Controller {
                 : request().getQueryString("type");
         String result = "";
         if (type.equals("json")) {
-            result = String.format("{version: %s}", VERSION);
+            response().setHeader(CONTENT_TYPE, "application/json");
+            result = String.format("{\"version\": %s}", VERSION);
         } else {
+            response().setHeader(CONTENT_TYPE, "text/xml");
             result = String
                     .format("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><version>%s</version>",
                             VERSION);
