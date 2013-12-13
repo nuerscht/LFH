@@ -4,24 +4,20 @@ import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.running;
 import static play.test.Helpers.testServer;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 import models.Address;
 import models.Attribute;
 import models.Cart;
 import models.CartHasProduct;
+import models.CartStatus;
 import models.Product;
 import models.User;
 import models.UserType;
@@ -30,9 +26,9 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.yaml.snakeyaml.reader.StreamReader;
 
-import akka.dispatch.AbstractNodeQueue.Node;
+import com.fasterxml.jackson.databind.JsonNode;
+
 import play.libs.WS;
 import play.libs.WS.WSRequestHolder;
 import play.test.FakeApplication;
@@ -82,8 +78,7 @@ public class ApiIntegrationTest extends EshomoTest {
     public void checkTokenLoginValidUser_Orders() {
         User user = getNewUser(true, true);
         String[] params = new String[] { "id", "all", "token", user.getToken() };
-        checkTokenLogin(ORDERS_URL, params, 404,
-                "Angeforderte Ressource nicht gefunden");
+        checkTokenLogin(ORDERS_URL, params, 404, "Angeforderte Ressource nicht gefunden");
     }
 
     /**
@@ -108,8 +103,7 @@ public class ApiIntegrationTest extends EshomoTest {
     public void checkTokenLoginNonAdmin_Customer() {
         User user = getNewUser(false, true);
         String[] params = new String[] { "id", "all", "token", user.getToken() };
-        checkTokenLogin(CUSTOMERL_URL, params, 401,
-                "Kein gültiges Token gefunden");
+        checkTokenLogin(CUSTOMERL_URL, params, 401, "Kein gültiges Token gefunden");
     }
 
     /**
@@ -121,8 +115,7 @@ public class ApiIntegrationTest extends EshomoTest {
     public void checkTokenLoginNonAdmin_Articles() {
         User user = getNewUser(false, true);
         String[] params = new String[] { "id", "all", "token", user.getToken() };
-        checkTokenLogin(ARTICLES_URL, params, 401,
-                "Kein gültiges Token gefunden");
+        checkTokenLogin(ARTICLES_URL, params, 401, "Kein gültiges Token gefunden");
     }
 
     /**
@@ -146,8 +139,7 @@ public class ApiIntegrationTest extends EshomoTest {
     public void checkTokenLoginNonAdmin_Version() {
         User user = getNewUser(false, true);
         String[] params = new String[] { "id", "all", "token", user.getToken() };
-        checkTokenLogin(VERSION_URL, params, 401,
-                "Kein gültiges Token gefunden");
+        checkTokenLogin(VERSION_URL, params, 401, "Kein gültiges Token gefunden");
     }
 
     /**
@@ -159,8 +151,7 @@ public class ApiIntegrationTest extends EshomoTest {
     public void checkTokenLoginNonActive_Customer() {
         User user = getNewUser(true, false);
         String[] params = new String[] { "id", "all", "token", user.getToken() };
-        checkTokenLogin(CUSTOMERL_URL, params, 401,
-                "Kein gültiges Token gefunden");
+        checkTokenLogin(CUSTOMERL_URL, params, 401, "Kein gültiges Token gefunden");
     }
 
     /**
@@ -172,8 +163,7 @@ public class ApiIntegrationTest extends EshomoTest {
     public void checkTokenLoginNonActive_Articles() {
         User user = getNewUser(true, false);
         String[] params = new String[] { "id", "all", "token", user.getToken() };
-        checkTokenLogin(ARTICLES_URL, params, 401,
-                "Kein gültiges Token gefunden");
+        checkTokenLogin(ARTICLES_URL, params, 401, "Kein gültiges Token gefunden");
     }
 
     /**
@@ -197,8 +187,7 @@ public class ApiIntegrationTest extends EshomoTest {
     public void checkTokenLoginNonActive_Version() {
         User user = getNewUser(true, false);
         String[] params = new String[] { "id", "all", "token", user.getToken() };
-        checkTokenLogin(VERSION_URL, params, 401,
-                "Kein gültiges Token gefunden");
+        checkTokenLogin(VERSION_URL, params, 401, "Kein gültiges Token gefunden");
     }
 
     /**
@@ -211,8 +200,7 @@ public class ApiIntegrationTest extends EshomoTest {
     public void checkTokenLoginNonActiveAdmin_Customer() {
         User user = getNewUser(false, false);
         String[] params = new String[] { "id", "all", "token", user.getToken() };
-        checkTokenLogin(CUSTOMERL_URL, params, 401,
-                "Kein gültiges Token gefunden");
+        checkTokenLogin(CUSTOMERL_URL, params, 401, "Kein gültiges Token gefunden");
     }
 
     /**
@@ -225,8 +213,7 @@ public class ApiIntegrationTest extends EshomoTest {
     public void checkTokenLoginNonActiveAdmin_Articles() {
         User user = getNewUser(false, false);
         String[] params = new String[] { "id", "all", "token", user.getToken() };
-        checkTokenLogin(ARTICLES_URL, params, 401,
-                "Kein gültiges Token gefunden");
+        checkTokenLogin(ARTICLES_URL, params, 401, "Kein gültiges Token gefunden");
     }
 
     /**
@@ -252,8 +239,7 @@ public class ApiIntegrationTest extends EshomoTest {
     public void checkTokenLoginNonActiveAdmin_Version() {
         User user = getNewUser(false, false);
         String[] params = new String[] { "id", "all", "token", user.getToken() };
-        checkTokenLogin(VERSION_URL, params, 401,
-                "Kein gültiges Token gefunden");
+        checkTokenLogin(VERSION_URL, params, 401, "Kein gültiges Token gefunden");
     }
 
     /**
@@ -264,8 +250,7 @@ public class ApiIntegrationTest extends EshomoTest {
     @Test
     public void checkTokenLoginNoToken_Customer() {
         String[] params = new String[] { "id", "all" };
-        checkTokenLogin(CUSTOMERL_URL, params, 400,
-                "Kein gültiges Token gefunden");
+        checkTokenLogin(CUSTOMERL_URL, params, 400, "Kein gültiges Token gefunden");
     }
 
     /**
@@ -276,8 +261,7 @@ public class ApiIntegrationTest extends EshomoTest {
     @Test
     public void checkTokenLoginNoToken_Articles() {
         String[] params = new String[] { "id", "all" };
-        checkTokenLogin(ARTICLES_URL, params, 400,
-                "Kein gültiges Token gefunden");
+        checkTokenLogin(ARTICLES_URL, params, 400, "Kein gültiges Token gefunden");
     }
 
     /**
@@ -299,8 +283,7 @@ public class ApiIntegrationTest extends EshomoTest {
     @Test
     public void checkTokenLoginNoToken_Version() {
         String[] params = new String[] { "id", "all" };
-        checkTokenLogin(VERSION_URL, params, 400,
-                "Kein gültiges Token gefunden");
+        checkTokenLogin(VERSION_URL, params, 400, "Kein gültiges Token gefunden");
     }
 
     /**
@@ -322,8 +305,7 @@ public class ApiIntegrationTest extends EshomoTest {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
             public void run() {
-                WS.Response response = callApi(url, queryParams,
-                        new String[] {});
+                WS.Response response = callApi(url, queryParams, new String[] {});
                 // Check if status is okay and content is correct
                 assertThat(response.getStatus()).isEqualTo(expectedStatus);
                 assertThat(response.getBody()).contains(expectedContent);
@@ -341,8 +323,7 @@ public class ApiIntegrationTest extends EshomoTest {
                 WS.Response response = callApi(ARTICLES_URL, params, null);
                 // Check if status is okay and content is correct
                 assertThat(response.getStatus()).isEqualTo(200);
-                assertThat(response.getHeader("Content-Type")).isEqualTo(
-                        "text/xml");
+                assertThat(response.getHeader("Content-Type")).isEqualTo("text/xml");
                 assertThat(response.getHeader("Etag")).isNotEmpty();
 
                 // Get Xml dom and check for products
@@ -380,49 +361,35 @@ public class ApiIntegrationTest extends EshomoTest {
     public void getOneArticleXml() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
-            @SuppressWarnings("rawtypes")
             public void run() {
                 Product p = Product.find.byId(1);
                 String[] params = new String[] { "id", "1", "token",
                         getUserActiveAdminUser().getToken() };
                 WS.Response response = callApi(ARTICLES_URL, params, null);
                 assertThat(response.getStatus()).isEqualTo(200);
-                assertThat(response.getHeader("Content-Type")).isEqualTo(
-                        "text/xml");
+                assertThat(response.getHeader("Content-Type")).isEqualTo("text/xml");
                 assertThat(response.getHeader("Etag")).isNotEmpty();
 
                 // Get Xml dom and check for products
                 Document dom = response.asXml();
-                Element node = (Element) dom.getElementsByTagName("article")
-                        .item(0);
+                Element node = (Element) dom.getElementsByTagName("article").item(0);
                 DecimalFormat df = new DecimalFormat("0.00");
-                assertThat(node.getAttribute("id")).isEqualTo(
-                        p.getId().toString());
-                assertThat(
-                        node.getElementsByTagName("title").item(0)
-                                .getTextContent()).isEqualTo(p.getTitle());
-                assertThat(
-                        node.getElementsByTagName("description").item(0)
-                                .getTextContent())
+                assertThat(node.getAttribute("id")).isEqualTo(p.getId().toString());
+                assertThat(node.getElementsByTagName("title").item(0).getTextContent()).isEqualTo(
+                        p.getTitle());
+                assertThat(node.getElementsByTagName("description").item(0).getTextContent())
                         .isEqualTo(p.getDescription());
-                assertThat(
-                        node.getElementsByTagName("ean").item(0)
-                                .getTextContent()).isEqualTo(
+                assertThat(node.getElementsByTagName("ean").item(0).getTextContent()).isEqualTo(
                         p.getEan().toString());
-                assertThat(
-                        node.getElementsByTagName("price").item(0)
-                                .getTextContent()).isEqualTo(
+                assertThat(node.getElementsByTagName("price").item(0).getTextContent()).isEqualTo(
                         df.format(p.getPrice()).toString());
-                assertThat(
-                        node.getElementsByTagName("currency").item(0)
-                                .getTextContent()).isEqualTo(CURRENCY);
-                NodeList list = node
-                        .getElementsByTagName("attribute");
+                assertThat(node.getElementsByTagName("currency").item(0).getTextContent())
+                        .isEqualTo(CURRENCY);
+                NodeList list = node.getElementsByTagName("attribute");
                 int attrMatches = 0;
                 for (int i = 0; i < list.getLength(); i++) {
                     for (Attribute att : p.getAttributes()) {
-                        if (list.item(i).getTextContent()
-                                .equalsIgnoreCase(att.getValue())) {
+                        if (list.item(i).getTextContent().equalsIgnoreCase(att.getValue())) {
                             attrMatches++;
                             break;
                         }
@@ -438,7 +405,6 @@ public class ApiIntegrationTest extends EshomoTest {
     public void getOneArticleXml_NotModified() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
-            @SuppressWarnings("rawtypes")
             public void run() {
                 String[] params = new String[] { "id", "1", "token",
                         getUserActiveAdminUser().getToken() };
@@ -471,16 +437,14 @@ public class ApiIntegrationTest extends EshomoTest {
                     Thread.sleep(3000L);
                 } catch (InterruptedException e) {
                 }
-                Product p = createNewProduct();
+                createNewProduct();
 
                 String[] params = new String[] { "id", "all", "token",
-                        getUserActiveAdminUser().getToken(), "since",
-                        String.valueOf(since) };
+                        getUserActiveAdminUser().getToken(), "since", String.valueOf(since) };
                 WS.Response response = callApi(ARTICLES_URL, params, null);
                 // Check if status is okay and content is correct
                 assertThat(response.getStatus()).isEqualTo(200);
-                assertThat(response.getHeader("Content-Type")).isEqualTo(
-                        "text/xml");
+                assertThat(response.getHeader("Content-Type")).isEqualTo("text/xml");
                 assertThat(response.getHeader("Etag")).isNotEmpty();
 
                 // Get Xml dom and check for products
@@ -502,8 +466,7 @@ public class ApiIntegrationTest extends EshomoTest {
                 WS.Response response = callApi(CUSTOMERL_URL, params, null);
                 // Check if status is okay and content is correct
                 assertThat(response.getStatus()).isEqualTo(200);
-                assertThat(response.getHeader("Content-Type")).isEqualTo(
-                        "text/xml");
+                assertThat(response.getHeader("Content-Type")).isEqualTo("text/xml");
                 assertThat(response.getHeader("Etag")).isNotEmpty();
 
                 // Get Xml dom and check for products
@@ -541,7 +504,6 @@ public class ApiIntegrationTest extends EshomoTest {
     public void getOneCustomerXml() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
-            @SuppressWarnings("rawtypes")
             public void run() {
                 User user = User.find.byId(1);
                 Address address = user.getAddresses().get(0);
@@ -549,55 +511,34 @@ public class ApiIntegrationTest extends EshomoTest {
                         getUserActiveAdminUser().getToken() };
                 WS.Response response = callApi(CUSTOMERL_URL, params, null);
                 assertThat(response.getStatus()).isEqualTo(200);
-                assertThat(response.getHeader("Content-Type")).isEqualTo(
-                        "text/xml");
+                assertThat(response.getHeader("Content-Type")).isEqualTo("text/xml");
                 assertThat(response.getHeader("Etag")).isNotEmpty();
 
                 // Get Xml dom and check for products
                 Document dom = response.asXml();
-                Element node = (Element) dom.getElementsByTagName("customer")
-                        .item(0);
+                Element node = (Element) dom.getElementsByTagName("customer").item(0);
 
-                assertThat(node.getAttribute("id")).isEqualTo(
-                        user.getId().toString());
-                assertThat(
-                        node.getElementsByTagName("name").item(0)
-                                .getTextContent()).isEqualTo(
+                assertThat(node.getAttribute("id")).isEqualTo(user.getId().toString());
+                assertThat(node.getElementsByTagName("name").item(0).getTextContent()).isEqualTo(
                         address.getLastname());
-                assertThat(
-                        node.getElementsByTagName("firstname").item(0)
-                                .getTextContent()).isEqualTo(
-                        address.getFirstname());
-                assertThat(
-                        node.getElementsByTagName("email").item(0)
-                                .getTextContent())
-                        .isEqualTo(address.getEmail());
-                assertThat(
-                        node.getElementsByTagName("birthdate").item(0)
-                                .getTextContent())
-                        .isEqualTo(
-                                String.valueOf(address.getBirthday().getTime() / 1000L));
+                assertThat(node.getElementsByTagName("firstname").item(0).getTextContent())
+                        .isEqualTo(address.getFirstname());
+                assertThat(node.getElementsByTagName("email").item(0).getTextContent()).isEqualTo(
+                        address.getEmail());
+                assertThat(node.getElementsByTagName("birthdate").item(0).getTextContent())
+                        .isEqualTo(String.valueOf(address.getBirthday().getTime() / 1000L));
 
                 node = (Element) node.getElementsByTagName("address").item(0);
-                assertThat(node.getAttribute("id")).isEqualTo(
-                        address.getId().toString());
+                assertThat(node.getAttribute("id")).isEqualTo(address.getId().toString());
                 assertThat(node.getAttribute("type")).isEqualTo("1");
-                assertThat(
-                        node.getElementsByTagName("city").item(0)
-                                .getTextContent())
-                        .isEqualTo(address.getPlace());
-                assertThat(
-                        node.getElementsByTagName("street").item(0)
-                                .getTextContent()).isEqualTo(
+                assertThat(node.getElementsByTagName("city").item(0).getTextContent()).isEqualTo(
+                        address.getPlace());
+                assertThat(node.getElementsByTagName("street").item(0).getTextContent()).isEqualTo(
                         address.getStreet());
-                assertThat(
-                        node.getElementsByTagName("postcode").item(0)
-                                .getTextContent()).isEqualTo(
-                        address.getZip().toString());
-                assertThat(
-                        node.getElementsByTagName("country").item(0)
-                                .getTextContent()).isEqualTo(
-                        address.getCountry().getName());
+                assertThat(node.getElementsByTagName("postcode").item(0).getTextContent())
+                        .isEqualTo(address.getZip().toString());
+                assertThat(node.getElementsByTagName("country").item(0).getTextContent())
+                        .isEqualTo(address.getCountry().getName());
 
             }
         });
@@ -607,7 +548,6 @@ public class ApiIntegrationTest extends EshomoTest {
     public void getOneCustomerXml_NotModified() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
-            @SuppressWarnings("rawtypes")
             public void run() {
                 String[] params = new String[] { "id", "1", "token",
                         getUserActiveAdminUser().getToken() };
@@ -625,7 +565,7 @@ public class ApiIntegrationTest extends EshomoTest {
         });
     }
 
-    //@Test
+    @Test
     public void getAllCustomerXml_Since() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
@@ -640,16 +580,13 @@ public class ApiIntegrationTest extends EshomoTest {
                     Thread.sleep(3000L);
                 } catch (InterruptedException e) {
                 }
-                User user = getNewUser(true, true);
-
+                getNewUser(true, true);
                 String[] params = new String[] { "id", "all", "token",
-                        getUserActiveAdminUser().getToken(), "since",
-                        String.valueOf(since) };
+                        getUserActiveAdminUser().getToken(), "since", String.valueOf(since) };
                 WS.Response response = callApi(CUSTOMERL_URL, params, null);
                 // Check if status is okay and content is correct
                 assertThat(response.getStatus()).isEqualTo(200);
-                assertThat(response.getHeader("Content-Type")).isEqualTo(
-                        "text/xml");
+                assertThat(response.getHeader("Content-Type")).isEqualTo("text/xml");
                 assertThat(response.getHeader("Etag")).isNotEmpty();
 
                 // Get Xml dom and check for products
@@ -661,7 +598,177 @@ public class ApiIntegrationTest extends EshomoTest {
         });
     }
 
-    // TODO: Here
+    @Test
+    public void getAllOrdersXml() {
+        FakeApplication fakeApp = Helpers.fakeApplication();
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+                createCarts();
+                String[] params = new String[] { "id", "all", "token",
+                        getUserActiveAdminUser().getToken() };
+                WS.Response response = callApi(ORDERS_URL, params, null);
+                // Check if status is okay and content is correct
+                assertThat(response.getStatus()).isEqualTo(200);
+                assertThat(response.getHeader("Content-Type")).isEqualTo("text/xml");
+                assertThat(response.getHeader("Etag")).isNotEmpty();
+
+                // Get Xml dom and check for orders
+                Document dom = response.asXml();
+                NodeList nodes = dom.getElementsByTagName("orders");
+                int count = Cart.find.all().size();
+                assertThat(nodes.getLength()).isEqualTo(count);
+
+            }
+        });
+    }
+
+    @Test
+    public void getAllOrdersXml_NotModified() {
+        FakeApplication fakeApp = Helpers.fakeApplication();
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+                createCarts();
+                String[] params = new String[] { "id", "all", "token",
+                        getUserActiveAdminUser().getToken() };
+                WS.Response response = callApi(ORDERS_URL, params, null);
+                // Call service and get the etag
+                String etag = response.getHeader("Etag");
+                // Call service again with the etag
+                String[] headers = new String[] { "If-None-Match", etag };
+                response = callApi(ORDERS_URL, params, headers);
+                // Check response status
+                assertThat(response.getStatus()).isEqualTo(304);
+                assertThat(response.getBody()).isEmpty();
+
+            }
+        });
+    }
+
+    @Test
+    public void getOneOrderXml() {
+        FakeApplication fakeApp = Helpers.fakeApplication();
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+                createCarts();
+                Cart cart = Cart.find.byId(1);
+                Address address = cart.getAddress();
+                List<CartHasProduct> chp = cart.getCartHasProduct();
+                User user = cart.getUser();
+                String[] params = new String[] { "id", "1", "token",
+                        getUserActiveAdminUser().getToken() };
+                WS.Response response = callApi(ORDERS_URL, params, null);
+                assertThat(response.getStatus()).isEqualTo(200);
+                assertThat(response.getHeader("Content-Type")).isEqualTo("text/xml");
+                assertThat(response.getHeader("Etag")).isNotEmpty();
+
+                // Get Xml dom and check for products
+                Document dom = response.asXml();
+                Element node = (Element) dom.getElementsByTagName("order").item(0);
+
+                assertThat(node.getAttribute("id")).isEqualTo(cart.getId().toString());
+                assertThat(node.getAttribute("customer")).isEqualTo(user.getId().toString());
+                assertThat(node.getAttribute("billaddress")).isEqualTo(address.getId().toString());
+                assertThat(node.getAttribute("shippingaddress")).isEqualTo(address.getId().toString());             
+
+                NodeList nodeList = node.getElementsByTagName("position");
+                assertThat(nodeList.getLength()).isEqualTo(chp.size());
+                
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    Element el = (Element) nodeList.item(i);
+                    CartHasProduct c = chp.get(i);
+                    assertThat(el.getAttribute("article")).isEqualTo(c.getProduct().getId().toString());
+                    assertThat(el.getAttribute("amount")).isEqualTo(c.getAmount().toString());
+                    assertThat(el.getAttribute("discount")).isEqualTo(c.getDiscount().toString());
+                }
+                
+
+            }
+        });
+    }
+
+    @Test
+    public void getOneOrderXml_NotModified() {
+        FakeApplication fakeApp = Helpers.fakeApplication();
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+                createCarts();
+                String[] params = new String[] { "id", "1", "token",
+                        getUserActiveAdminUser().getToken() };
+                WS.Response response = callApi(ORDERS_URL, params, null);
+                // Call service and get the etag
+                String etag = response.getHeader("Etag");
+                // Call service again with the etag
+                String[] headers = new String[] { "If-None-Match", etag };
+                response = callApi(ORDERS_URL, params, headers);
+                // Check response status
+                assertThat(response.getStatus()).isEqualTo(304);
+                assertThat(response.getBody()).isEmpty();
+
+            }
+        });
+    }
+
+    @Test
+    public void getAllOrdersXml_Since() {
+        FakeApplication fakeApp = Helpers.fakeApplication();
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+                // Wait and create new order
+                createCarts();
+                try {
+                    Thread.sleep(3000L);
+                } catch (InterruptedException e) {
+                }
+                long since = (new Date()).getTime() / 1000L;
+                try {
+                    Thread.sleep(3000L);
+                } catch (InterruptedException e) {
+                }
+                // Create cart
+                createCart(new int[][]{{1,3,1}},User.find.byId(1), CartStatus.OPEN);
+                // Get carts
+                String[] params = new String[] { "id", "all", "token",
+                        getUserActiveAdminUser().getToken(), "since", String.valueOf(since) };
+                WS.Response response = callApi(ORDERS_URL, params, null);
+                // Check if status is okay and content is correct
+                assertThat(response.getStatus()).isEqualTo(200);
+                assertThat(response.getHeader("Content-Type")).isEqualTo("text/xml");
+                assertThat(response.getHeader("Etag")).isNotEmpty();
+
+                // Get Xml dom and check for products
+                Document dom = response.asXml();
+                NodeList nodes = dom.getElementsByTagName("order");
+                assertThat(nodes.getLength()).isEqualTo(1);
+
+            }
+        });
+    }
+    
+    @Test
+    public void getOneAriclesJson() {
+        FakeApplication fakeApp = Helpers.fakeApplication();
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+                createCarts();
+                Cart cart = Cart.find.byId(1);
+                String[] params = new String[] { "id", "1",
+                        "type","json","token",
+                        getUserActiveAdminUser().getToken() };
+                WS.Response response = callApi(ARTICLES_URL, params, null);
+                // Check if status is okay and content is correct
+                assertThat(response.getStatus()).isEqualTo(200);
+                assertThat(response.getHeader("Content-Type")).isEqualTo("application/json");
+                assertThat(response.getHeader("Etag")).isNotEmpty();
+
+                // Get json object and check for articles
+                JsonNode node = response.asJson();
+                node = node.get("articles").get(0);
+               
+
+            }
+        });
+    }
+
 
     // TODO: Here
 
@@ -676,8 +783,7 @@ public class ApiIntegrationTest extends EshomoTest {
      *            A String Array with the headers
      * @return The response of the service call
      */
-    private WS.Response callApi(final String url, final String[] queryParams,
-            final String[] headers) {
+    private WS.Response callApi(final String url, final String[] queryParams, final String[] headers) {
         WSRequestHolder result = WS.url(SERVER_URL + url);
         if (queryParams != null)
             for (int i = 0; i + 1 < queryParams.length; i += 2) {
@@ -746,13 +852,26 @@ public class ApiIntegrationTest extends EshomoTest {
      * @return An admin user
      */
     private User getUserActiveAdminUser() {
-        return User.find.where().eq("isActive", true)
-                .eq("type", UserType.find.byId("admin")).findList().get(0);
+        return User.find.where().eq("isActive", true).eq("type", UserType.find.byId("admin"))
+                .findList().get(0);
     }
 
-    private Cart createCart(int[][] products, User user) {
+    private void createCarts() {
+        int[][] c1 = new int[][] { { 1, 1, 1 }, { 2, 2, 1 }, { 3, 1, 1 } };
+        int[][] c2 = new int[][] { { 4, 3, 1 }, { 5, 2, 1 }, { 6, 1, 1 } };
+        int[][] c3 = new int[][] { { 7, 1, 1 }, { 8, 2, 1 }, { 9, 3, 1 } };
+        int[][] c4 = new int[][] { { 10, 1, 1 }, { 11, 2, 1 }, { 12, 3, 1 } };
+        // Create carts
+        createCart(c1, User.find.byId(1), CartStatus.OPEN);
+        createCart(c2, User.find.byId(2), CartStatus.ORDERED);
+        createCart(c3, User.find.byId(1), CartStatus.ORDERED);
+        createCart(c4, User.find.byId(3), CartStatus.OPEN);
+    }
+
+    private Cart createCart(int[][] products, User user, String status) {
         Cart cart = new Cart();
         cart.setUser(user);
+        cart.setStatus(CartStatus.find.byId(status));
         cart.setAddress(user.getAddresses().get(0));
         cart.save();
         for (int i = 0; i < products.length; i++) {
