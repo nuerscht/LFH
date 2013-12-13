@@ -633,7 +633,7 @@ public class ApiIntegrationTest extends EshomoTest {
     @Test
     public void getAllCustomerXml_Since() {
         FakeApplication fakeApp = Helpers.fakeApplication();
-        running(testServer(3334, fakeApp), new Runnable() {
+        running(testServer(3333, fakeApp), new Runnable() {
             public void run() {
                 // Wait and create new product
                 try {
@@ -645,7 +645,15 @@ public class ApiIntegrationTest extends EshomoTest {
                     Thread.sleep(3000L);
                 } catch (InterruptedException e) {
                 }
-                getNewUser(true, true);
+                // create a user
+                User user = new User();
+                user.setEmail("jabba@thehutt.com");
+                user.setIsActive(true);
+                user.setPassword("ihatesolo");
+                user.setType(UserType.find.byId("admin"));
+                user.setIsActive(true);
+                user.save();
+                
                 String[] params = new String[] { "id", "all", "token",
                         getUserActiveAdminUser().getToken(), "since", String.valueOf(since) };
                 WS.Response response = callApi(CUSTOMERL_URL, params, null);
