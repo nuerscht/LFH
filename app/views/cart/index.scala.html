@@ -1,6 +1,6 @@
 @(cart: models.Cart)
 
-@main("Welcome to the LFH Shop") {
+@main("Dein Warenkorb") {
     <div class="cart">
         <h1>Warenkorb</h1>
         <form method="post" action="/cart">
@@ -24,6 +24,7 @@
             </table>
             <div class="buttons">
                 <button type="submit">Warenkorb aktualisieren</button>
+                <div class="pull-right"><a href="/cart/order"><strong>Warenkorb bestellen</strong></a></div>
             </div>
         </form>
     </div>

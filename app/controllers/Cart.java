@@ -1,24 +1,16 @@
 package controllers;
 
-import models.*;
+import views.html.cart.*;
 import play.mvc.Result;
 import play.data.Form;
-import play.data.DynamicForm;
-
 import java.util.*;
 
 public class Cart extends Eshomo {
 
-    public static class CartUpdate {
-        public Integer remove;
-        public Map<Integer, Integer> products = new HashMap<>();
-    }
-
     public static Result index() {
-        models.User currentUser = getUserObj();
-        models.Cart cart = models.Cart.fetchOrCreateOpenCart(currentUser);
+        models.Cart cart = getCurrentCart();
 
-        return ok(views.html.cart.index.render(cart));
+        return ok(index.render(cart));
     }
 
     public static Result indexById(Integer id) {
@@ -26,16 +18,15 @@ public class Cart extends Eshomo {
         models.User cartUser = cart.getUser();
         models.User currentUser = getUserObj();
 
-        if (cartUser != null && !cartUser.getId().equals(currentUser.getId())) {
+        if (cartUser == null || !cartUser.getId().equals(currentUser.getId())) {
             throw new RuntimeException("You cannot access this cart");
         }
 
-        return ok(views.html.cart.index.render(cart));
+        return ok(index.render(cart));
     }
 
     public static Result update() {
-        models.User currentUser = getUserObj();
-        models.Cart cart = models.Cart.fetchOrCreateOpenCart(currentUser);
+        models.Cart cart = getCurrentCart();
 
         // get the request params as a CartUpdate
         Form<CartUpdate> form = Form.form(CartUpdate.class);
@@ -47,15 +38,47 @@ public class Cart extends Eshomo {
             Integer amount = entry.getValue();
 
             models.Product product = models.Product.find.byId(productId);
-            product.setToCart(cart, amount);
+            cart.setProduct(product, amount);
         }
 
         // remove an element if the user wants to
         if (update.remove != null) {
             models.Product product = models.Product.find.byId(update.remove);
-            product.removeFromCart(cart);
+            cart.removeProduct(product);
         }
 
-        return ok(views.html.cart.index.render(cart));
+        return ok(index.render(cart));
+    }
+
+    public static Result order() {
+        models.Cart cart = getCurrentCart();
+
+        // add logic
+
+        return ok(order.render(cart));
+    }
+
+    public static Result submitOrder() {
+        models.Cart cart = getCurrentCart();
+
+        // add logic
+
+        return ok(order.render(cart));
+    }
+
+    /**
+     * @return The current open cart of the logged in user.
+     */
+    private static models.Cart getCurrentCart() {
+        models.User currentUser = getUserObj();
+        return models.Cart.fetchOrCreateOpenCart(currentUser);
+    }
+
+    /**
+     * Holds the form information of a cart update POST request.
+     */
+    public static class CartUpdate {
+        public Integer remove;
+        public Map<Integer, Integer> products = new HashMap<>();
     }
 }
