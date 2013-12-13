@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.avaje.ebean.Query;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 
@@ -403,8 +404,15 @@ public class User extends UserData {
     public static Result showTransactions(final int userid) {
         if ((isLoggedIn() && getLoggedInUserId().equals(userid)) ||
             (isLoggedIn() && !getLoggedInUserId().equals(userid) && isAdminUser())) {
-            List<Cart> carts = Ebean.find(Cart.class).where().eq("user_id", userid).where().eq("status_id", CartStatus.ORDERED).orderBy().asc("updated_at").findList();
+            Query<Cart> cartsQuery = Ebean.find(Cart.class);
+            if (userid != -1) {
+                cartsQuery.where().eq("user_id", userid).where().eq("status_id", CartStatus.ORDERED).orderBy().asc("updated_at").findList();
+            } else { 
+                cartsQuery.where().eq("status_id", CartStatus.ORDERED).orderBy().asc("updated_at").findList();
+            }
 
+            List<Cart> carts = cartsQuery.findList();
+            
             List<Order> orders = new ArrayList<Order>();
 
             Iterator<Cart> itrCarts = carts.iterator();
