@@ -17,9 +17,22 @@ public class Product extends Eshomo {
     public static final int NUM_PRODUCTS_PER_PAGE = 20;
     // An unbound rating form
     final static Form<Rating> ratingForm = Form.form(Rating.class);
+    final static Form<Tags> tagForm = Form.form(Tags.class);
     final static Form<models.Product> productForm = Form.form(models.Product.class);
     final static Form<Image> imageForm = Form.form(Image.class);
 
+    public class Tags {
+    	public List<models.Tag> tags;
+    	
+    	public Tags(List<models.Tag> tags){
+    		this.tags = tags;
+    	}
+    	
+    	public List<models.Tag> getTags(){
+    		return tags;
+    	}
+    }
+    
     /**
      * @return Product overview
      */
@@ -118,6 +131,7 @@ public class Product extends Eshomo {
         Form<Image> imageForm;
         models.Product product = models.Product.find.byId(id);
         Form<models.Product> productForm = Form.form(models.Product.class).fill(product);
+        //Form<Tags> tagForm = Form.form(Tags.class).fill(new Tags(product.getTags()));
         if (product.hasImage()) {
             imageForm = Form.form(Image.class).fill(product.getImages().get(0));
         } else {

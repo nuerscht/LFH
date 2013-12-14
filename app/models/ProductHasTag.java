@@ -4,6 +4,7 @@ import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdateMode;
 
 import play.db.ebean.Model;
+import play.db.ebean.Model.Finder;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -23,6 +24,8 @@ public class ProductHasTag extends Model {
     @CreatedTimestamp
     private Date createdAt;
 
+    public static Finder<String, ProductHasTag> find = new Finder<String, ProductHasTag>(String.class, ProductHasTag.class);
+    
     public Product getProduct() {
         return product;
     }

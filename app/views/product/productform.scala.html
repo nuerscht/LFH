@@ -16,6 +16,19 @@
     </div>
 }
 
+@tagGroup(field: Field, className: String = "tag") = {
+    <div class="@className">
+        
+        <a class="removeTag pull-right"><img src="@routes.Assets.at("images/delete.png")"></a>
+        
+        @inputText(
+            field("id"), 
+            '_label -> "Wert",
+            'class -> "form-control" 
+        )
+    </div>
+}
+
 @main("LFH Shop - Produckt hinzufuegen") {
 
     @form(action = routes.Product.save(productId), 'id -> "form", 'enctype -> "multipart/form-data") {
@@ -85,6 +98,26 @@
     
         </div>
         
+        <div class="tags">
+        
+            <h2>Tags</h2>
+        
+            @repeat(productForm("tags"), min = 1) { tagField =>
+                @tagGroup(tagField)
+            }
+            @**
+            * Keep an hidden block that will be used as template for Javascript copy code
+            **@
+            @tagGroup(
+                productForm("tags[x]"),
+                className = "tag_template"
+            )
+            <div class="manage">
+                <a class="addTag btn btn-default">Neuer Tag</a>
+            </div>
+    
+        </div>
+        
         <div class="images">
         
             <h2>Bilder</h2>
@@ -128,6 +161,11 @@
             renumber()
         })
         
+        $('.tags').on('click', 'a', function(e) {
+            $(this).parents('.tag').remove()
+            renumber()
+        })
+        
         $('.addAttribute').on('click', function(e) {
             var template = $('.attribute_template')
             template.before('<div class="attribute">' + template.html() + '</div>')
@@ -135,8 +173,16 @@
             cleanLabel()
         })
         
+        $('.addTag').on('click', function(e) {
+            var template = $('.tag_template')
+            template.before('<div class="tag">' + template.html() + '</div>')
+            renumber()
+            cleanLabel()
+        })
+        
         $('#form').submit(function() {
             $('.attribute_template').remove()
+            $('.tag_template').remove()
         })
         
         $(document).ready(function() {
@@ -148,6 +194,7 @@
         var cleanLabel = function(){
         	$('label:contains("Wert")').remove()
         	$('span:contains("Required")').remove()
+        	$('span:contains("Maximum length: 45")').remove()
         }
         
         // Another nasty part, 
@@ -168,6 +215,11 @@
             $('.attribute').each(function(i) {
                 $('input', this).each(function() {
                     $(this).attr('name', $(this).attr('name').replace(/attributes\[.+?\]/g, 'attributes[' + i + ']'));
+                })
+            })
+            $('.tag').each(function(i) {
+                $('input', this).each(function() {
+                    $(this).attr('name', $(this).attr('name').replace(/tags\[.+?\]/g, 'tags[' + i + ']'));
                 })
             })
         }

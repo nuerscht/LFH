@@ -30,7 +30,9 @@ public class Tag extends Model {
 
     private String description;
 
-
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Product> products;
+    
     @CreatedTimestamp
     private Date createdAt;
 
@@ -58,7 +60,6 @@ public class Tag extends Model {
         this.description = description;
     }
 
-
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -68,18 +69,7 @@ public class Tag extends Model {
     }
 
     public List<Product> getProducts() {
-        String sql
-            = " select product.id, product.title, product.price, product.description, product.ean, product.updated_at, product.created_at"
-            + " from product"
-            + " join product_has_tag on product_has_tag.product_id = product.id"
-            + " group by product.id ";
-
-        RawSql rawSql = RawSqlBuilder.parse(sql).create();
-
-        return Ebean.find(Product.class)
-            .setRawSql(rawSql)
-            .where()
-            .eq("product_has_tag.tag_id", getId())
-            .findList();
+    	return products;
     }
+
 }
