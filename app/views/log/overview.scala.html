@@ -1,0 +1,25 @@
+@(model: controllers.Log.LogViewModel)
+@import controllers.Log.LogViewModel
+@import controllers.Log.LogViewEntryModel
+
+@main("LFH Shop - Log &Uuml;bersicht"){
+    <h1>Log &Uuml;bersicht</h1>
+    <table class="table table-striped">
+        <tr>
+            <th>Datum</th>
+            <th>Info</th>
+            @if(model.typ == "api"){
+            <th>Parameter</th>
+            }
+        </tr>
+    @for(entry <- model.entries) {
+        <tr>
+            <td>@entry.date</td>
+            <td>@entry.info</td>
+            @if(model.typ == "api"){
+            <td>@entry.params</td>
+            }
+        <tr>
+    } 
+    </table>
+}
