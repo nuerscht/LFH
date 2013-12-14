@@ -4,6 +4,7 @@ import views.html.cart.*;
 import play.mvc.Result;
 import play.data.Form;
 import java.util.*;
+import com.typesafe.plugin.*;
 
 public class Cart extends Eshomo {
 
@@ -67,8 +68,26 @@ public class Cart extends Eshomo {
         Form<CartOrderType> form = Form.form(CartOrderType.class);
         CartOrderType orderType = form.bindFromRequest().get();
 
-        // TODO: Mail versenden
+        // render email
+        String subject = "Bestellung LFH Shop";
+        String content;
+        if (orderType.type.equals("invoice")) {
+            content = mailInvoice.render(subject, cart, address).toString();
+        } else {
+            content = views.html.cart.mailPrepayment.render(subject, cart, address).toString();
+        }
 
+        // get admin's email address
+        String adminEmail = play.Play.application().configuration().getString("email.admin");
+
+        // send email to store admin and current user
+        MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
+        mail.setSubject(subject);
+        mail.setFrom(adminEmail);
+        mail.setRecipient(adminEmail, user.getEmail());
+        mail.sendHtml(content);
+
+        // mark cart as ordered
         cart.setStatusOrdered();
         cart.save();
 
