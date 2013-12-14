@@ -57,6 +57,14 @@ public class Cart extends Model {
         this.status = status;
     }
 
+    public void setStatusOpen() {
+        this.status = CartStatus.find.byId(CartStatus.OPEN);
+    }
+
+    public void setStatusOrdered() {
+        this.status = CartStatus.find.byId(CartStatus.ORDERED);
+    }
+
     public Address getAddress() {
         return address;
     }

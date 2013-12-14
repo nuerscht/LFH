@@ -3,8 +3,6 @@ package controllers;
 import views.html.cart.*;
 import play.mvc.Result;
 import play.data.Form;
-import views.html.cart.order;
-
 import java.util.*;
 
 public class Cart extends Eshomo {
@@ -57,8 +55,6 @@ public class Cart extends Eshomo {
         models.Address address = user.getCurrentAddress();
         models.Cart cart = getCurrentCart();
 
-        // add logic
-
         return ok(order.render(cart, address));
     }
 
@@ -67,9 +63,16 @@ public class Cart extends Eshomo {
         models.Address address = user.getCurrentAddress();
         models.Cart cart = getCurrentCart();
 
-        // add logic
+        // get the request params as a CartUpdate
+        Form<CartOrderType> form = Form.form(CartOrderType.class);
+        CartOrderType orderType = form.bindFromRequest().get();
 
-        return ok(order.render(cart, address));
+        // TODO: Mail versenden
+
+        cart.setStatusOrdered();
+        cart.save();
+
+        return redirect("/");
     }
 
     /**
@@ -86,5 +89,12 @@ public class Cart extends Eshomo {
     public static class CartUpdate {
         public Integer remove;
         public Map<Integer, Integer> products = new HashMap<>();
+    }
+
+    /**
+     * Holds the form information of a cart order POST request.
+     */
+    public static class CartOrderType {
+        public String type;
     }
 }
