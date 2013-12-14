@@ -11,6 +11,7 @@
         @inputText(
             field("value"), 
             '_label -> "Wert",
+            '_showConstraints -> false,
             'class -> "form-control" 
         )
     </div>
@@ -24,6 +25,7 @@
         @inputText(
             field("id"), 
             '_label -> "Wert",
+            '_showConstraints -> false,
             'class -> "form-control" 
         )
     </div>
@@ -93,7 +95,7 @@
                 className = "attribute_template"
             )
             <div class="manage">
-                <a class="addAttribute btn btn-default">Neues Attribut</a>
+                <a class="addAttribute btn btn-default" id="attribute-button">Neues Attribut</a>
             </div>
     
         </div>
@@ -113,7 +115,7 @@
                 className = "tag_template"
             )
             <div class="manage">
-                <a class="addTag btn btn-default">Neuer Tag</a>
+                <a class="addTag btn btn-default" id="tag-button">Neuer Tag</a>
             </div>
     
         </div>
@@ -131,6 +133,7 @@
             @inputText(imageForm("name"),
                 '_label -> "Name",
                 'class -> "form-control", 
+                '_showConstraints -> false,
                 'placeholder -> "Bitte Namen eingeben", 
                 'type -> "text"
             )
@@ -193,8 +196,6 @@
         // Pretty nasty, but did not manage to create working inputs without lables
         var cleanLabel = function(){
         	$('label:contains("Wert")').remove()
-        	$('span:contains("Required")').remove()
-        	$('span:contains("Maximum length: 45")').remove()
         }
         
         // Another nasty part, 

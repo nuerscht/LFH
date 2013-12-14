@@ -90,7 +90,6 @@ public class Global extends GlobalSettings {
             Ebean.save(data.get("products"));
             Ebean.save(data.get("attributes"));
             Ebean.save(data.get("tags"));
-            Ebean.save(data.get("prodTags"));
             Ebean.save(data.get("users"));
             Ebean.save(data.get("addresses"));
         }

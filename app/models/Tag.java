@@ -72,4 +72,16 @@ public class Tag extends Model {
     	return products;
     }
 
+	public static Tag getOrCreate(Tag tag) {
+		Tag existingTag = Tag.find.byId(tag.getId());
+		if(existingTag == null){
+			Tag newTag = new Tag();
+			newTag.setId(tag.getId());
+			newTag.setDescription(tag.getDescription());
+			newTag.save();
+			return newTag;
+		}
+		return existingTag;
+	}
+
 }
