@@ -63,6 +63,9 @@ public class Global extends GlobalSettings {
         return Promise.<SimpleResult>pure(badRequest(notFound.render(request)));
     }
 
+	/**
+	 * Enable compression gzip.
+	 */
     @SuppressWarnings("unchecked")
 	public <T extends EssentialFilter> Class<T>[] filters() {
         return new Class[]{GzipFilter.class};

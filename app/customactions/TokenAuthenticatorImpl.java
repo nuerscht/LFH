@@ -17,31 +17,32 @@ import com.avaje.ebean.Ebean;
  */
 public class TokenAuthenticatorImpl extends Action<TokenAuthenticator> {
 
-    private final CustomLogger logger = new CustomLogger();
+	private final CustomLogger logger = new CustomLogger();
 
-    @Override
-    public Promise<SimpleResult> call(final Context ctx) throws Throwable {
-        final String token = ctx.request().getQueryString("token");
-        // Return if no token is found
-        if (token == null || token.length() < 1) {
-            logger.logToLoginDb(ctx, Messages.get("api.request.invalid"));
-            return F.Promise.pure((SimpleResult) badRequest(Messages
-                .get("api.request.invalid")));
-        }
-        final User user = Ebean.find(User.class)
-            .where()
-            .eq("token", token)
-            .eq("type_id", "admin")
-            .findUnique();
-        // Break if no user has been found
-        if (user == null)
-            return F.Promise.pure((SimpleResult) unauthorized((Messages
-                .get("api.request.invalid"))));
+	@Override
+	public Promise<SimpleResult> call(final Context ctx) throws Throwable {
+		final String token = ctx.request().getQueryString("token");
+		// Return if no token is found
+		if (token == null || token.length() < 1) {
+			logger.logToLoginDb(ctx, Messages.get("api.request.invalid"));
+			return F.Promise.pure((SimpleResult) badRequest(Messages
+					.get("api.request.invalid")));
+		}
+		final User user = Ebean.find(User.class)
+				.where()
+				.eq("token", token)
+				.eq("type_id", "admin")
+				.eq("isActive", true)
+				.findUnique();
+		// Break if no user has been found
+		if (user == null)
+			return F.Promise.pure((SimpleResult) unauthorized((Messages
+					.get("api.request.invalid"))));
 
-        ctx.args.put("token_user", user);
-        logger.logToLoginDb(ctx, Messages.get("api.request.authenticated"));
-        return delegate.call(ctx);
+		ctx.args.put("token_user", user);
+		logger.logToLoginDb(ctx, Messages.get("api.request.authenticated"));
+		return delegate.call(ctx);
 
-    }
+	}
 
 }

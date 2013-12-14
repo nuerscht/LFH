@@ -1,25 +1,19 @@
 @(users: List[models.User])
 @import models._
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<customers>
-	@for(user <- users){
-	@defining(user.getAddresses()(0)){ first =>
-    <customer id="@user.getId()">
-        <name>@first.getLastname()</name>
-        <firstname>@first.getFirstname()</firstname>
-        <addresses>
-        @for(add <- user.getAddresses()){
+<customers>	@for(user <- users){	
+    <customer id="@user.getId()">@defining(user.getAddresses().size() > 0){ hasAddress =>
+        <name>@if(hasAddress){@user.getAddresses()(0).getLastname()}</name>
+        <firstname>@if(hasAddress){@user.getAddresses()(0).getFirstname()}</firstname>
+        <addresses>@for(add <- user.getAddresses()){        
            <address id="@add.getId()" type="1">
            <city>@add.getPlace()</city>
            <street>@add.getStreet()</street>
            <postcode>@add.getZip()</postcode>
            <country>@if(add.getCountry()!= null){@add.getCountry().getName()}</country>
-           </address>
-         }
+           </address>}
         </addresses>
-        <email>@first.getEmail()</email>
-        <birthdate>@if(first.getBirthday()!=null){@{first.getBirthday().getTime() / 1000L}}</birthdate>
-      </customer>
-     }
-    }
+        <email>@if(hasAddress){@user.getAddresses()(0).getEmail()}</email>
+        <birthdate>@if(hasAddress){@if(user.getAddresses()(0).getBirthday()!=null){@{user.getAddresses()(0).getBirthday().getTime() / 1000L}}}</birthdate>
+      }</customer>}    
 </customers>

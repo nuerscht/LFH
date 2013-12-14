@@ -1,0 +1,8 @@
+@(subject: String)(cart: models.Cart)(address: models.Address)
+
+@mail(subject)(cart)(address) {
+    <h2>Rechnung</h2>
+    <p>
+        Bitte folgende Rechnung innert 30 Tagen begleichen.
+    </p>
+}

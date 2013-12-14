@@ -126,50 +126,6 @@ public class Product extends Model {
         this.createdAt = createdAt;
     }
 
-    public void addToCart(Cart cart) {
-        CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(cart, this);
-
-        if (rel == null) {
-            rel = new CartHasProduct();
-            rel.setPrice(this.getPrice());
-        } else {
-            rel.setAmount(rel.getAmount() + 1);
-        }
-
-        rel.setProduct(this);
-        rel.setCart(cart);
-        rel.save();
-    }
-
-    public void setToCart(Cart cart, Integer amount) {
-        if (amount <= 0) {
-            this.removeFromCart(cart);
-        } else {
-            CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(cart, this);
-
-            if (rel == null) {
-                rel = new CartHasProduct();
-                rel.setPrice(this.getPrice());
-            }
-
-            rel.setProduct(this);
-            rel.setCart(cart);
-            rel.setAmount(amount);
-            rel.save();
-        }
-    }
-
-    public Boolean removeFromCart(Cart cart) {
-        CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(cart, this);
-
-        if (rel != null) {
-            rel.delete();
-            return true;
-        }
-
-        return false;
-    }
-
     public List<Rating> getRatings() {
         return Rating.find.where().eq("product_id", this.getId()).orderBy("updatedAt desc").findList();
     }

@@ -89,6 +89,10 @@ public class User extends Model {
         return addresses;
     }
 
+    public Address getCurrentAddress() {
+        return getAddresses().get(0);
+    }
+
     public Date getUpdatedAt() {
         return updatedAt;
     }

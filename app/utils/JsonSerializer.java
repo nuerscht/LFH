@@ -121,7 +121,7 @@ public class JsonSerializer {
         ObjectNode node = Json.newObject();
         node.put("id", element.getId());
         node.put("customer", element.getUser().getId());
-        node.put("billingaddress", element.getAddress() != null ? element.getAddress().getId() : null);
+        node.put("billaddress", element.getAddress() != null ? element.getAddress().getId() : null);
         node.put("shippingaddress", element.getAddress() != null ? element.getAddress().getId() : null);
         node.put("status", element.getStatus().getId());
         ArrayNode aNode = getMapper().createArrayNode();
@@ -165,7 +165,7 @@ public class JsonSerializer {
         ObjectNode node = Json.newObject();
         node.put("id", element.getId());
         node.put("type", 1);
-        node.put("city", element.getPhone());
+        node.put("city", element.getPlace());
         node.put("street", element.getStreet());
         node.put("postcode", element.getZip());
         node.put("country",

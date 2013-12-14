@@ -1,0 +1,9 @@
+@(subject: String)(cart: models.Cart)(address: models.Address)
+
+@mail(subject)(cart)(address) {
+    <h2>Vorauszahlung</h2>
+    <p>
+        Bitte den Betrag auf folgendes Konto überweisen.
+        Sobald der Gesamtbetrag bei uns eingegangen ist, wird die Bestellung versendet.
+    </p>
+}

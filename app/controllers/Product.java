@@ -233,7 +233,7 @@ public class Product extends Eshomo {
 
         if (product != null) {
             models.Cart cart = models.Cart.fetchOrCreateOpenCart(getUserObj());
-            product.addToCart(cart);
+            cart.addProduct(product);
         }
 
         return redirect(routes.Product.details(id, 0));

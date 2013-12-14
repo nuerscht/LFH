@@ -1,0 +1,26 @@
+@(cart: models.Cart, address: models.Address)
+
+@main("Bestellen") {
+    <div class="order">
+        <h1>Bestellung absenden</h1>
+
+        <h2>Adresse</h2>
+        <div class="address">
+            @address.getFirstname @address.getLastname<br/>
+            @address.getStreet<br/>
+            @address.getZip @address.getPlace<br/>
+            @address.getPhone<br/>
+            <a href="@routes.User.showDataCurrent">Adresse ändern</a>
+        </div>
+
+        <h2>Bestellart</h2>
+        <form role="form" method="post" action="/cart/order">
+            <div class="form-group">
+                <label><input type="radio" name="type" value="invoice" checked="checked"/> Rechnung</label><br/>
+                <label><input type="radio" name="type" value="prepayment"/> Vorauszahlung</label>
+                <p class="help-block">Wählen Sie zwischen Rechnung und Vorauszahlung.</p>
+            </div>
+            <button type="submit">Bestellung absenden</button>
+        </form>
+    </div>
+}

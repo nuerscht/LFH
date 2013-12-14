@@ -57,6 +57,14 @@ public class Cart extends Model {
         this.status = status;
     }
 
+    public void setStatusOpen() {
+        this.status = CartStatus.find.byId(CartStatus.OPEN);
+    }
+
+    public void setStatusOrdered() {
+        this.status = CartStatus.find.byId(CartStatus.ORDERED);
+    }
+
     public Address getAddress() {
         return address;
     }
@@ -110,5 +118,50 @@ public class Cart extends Model {
         }
 
         return cart;
+    }
+
+
+    public void addProduct(Product product) {
+        CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(this, product);
+
+        if (rel == null) {
+            rel = new CartHasProduct();
+            rel.setPrice(product.getPrice());
+        } else {
+            rel.setAmount(rel.getAmount() + 1);
+        }
+
+        rel.setProduct(product);
+        rel.setCart(this);
+        rel.save();
+    }
+
+    public void setProduct(Product product, Integer amount) {
+        if (amount <= 0) {
+            this.removeProduct(product);
+        } else {
+            CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(this, product);
+
+            if (rel == null) {
+                rel = new CartHasProduct();
+                rel.setPrice(product.getPrice());
+            }
+
+            rel.setProduct(product);
+            rel.setCart(this);
+            rel.setAmount(amount);
+            rel.save();
+        }
+    }
+
+    public Boolean removeProduct(Product product) {
+        CartHasProduct rel = CartHasProduct.fetchByCartAndProduct(this, product);
+
+        if (rel != null) {
+            rel.delete();
+            return true;
+        }
+
+        return false;
     }
 }
