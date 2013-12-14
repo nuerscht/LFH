@@ -3,6 +3,8 @@ package controllers;
 import views.html.cart.*;
 import play.mvc.Result;
 import play.data.Form;
+import views.html.cart.order;
+
 import java.util.*;
 
 public class Cart extends Eshomo {
@@ -51,19 +53,23 @@ public class Cart extends Eshomo {
     }
 
     public static Result order() {
+        models.User user = getUserObj();
+        models.Address address = user.getCurrentAddress();
         models.Cart cart = getCurrentCart();
 
         // add logic
 
-        return ok(order.render(cart));
+        return ok(order.render(cart, address));
     }
 
     public static Result submitOrder() {
+        models.User user = getUserObj();
+        models.Address address = user.getCurrentAddress();
         models.Cart cart = getCurrentCart();
 
         // add logic
 
-        return ok(order.render(cart));
+        return ok(order.render(cart, address));
     }
 
     /**

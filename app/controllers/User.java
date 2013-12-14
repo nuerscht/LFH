@@ -247,6 +247,12 @@ public class User extends UserData {
         }
     }
 
+    public static Result showDataCurrent() {
+        models.User user = getUserObj();
+
+        return showData(user.getId());
+    }
+
     /**
      * shows user data (login/address) in backend
      *
