@@ -54,8 +54,9 @@ GET         /country/delete               controllers.Country.delete(id: Integer
 POST        /country/modify               controllers.Country.modify(id: Integer)
 
 #Log
-GET			/log/overview				  controllers.Log.logs(filter: String ?= null, page: Integer)
-POST		/log/overview				  controllers.Log.logs(filter: String ?= null, page: Integer) 
+GET			/log/api				      controllers.Log.getApiLogs(filter: String ?= null, page: Integer ?= 0)
+GET         /log/login                    controllers.Log.getLoginLogs(filter: String ?= null, page: Integer ?= 0)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                 controllers.Assets.at(path="/public", file)

@@ -39,7 +39,7 @@ public class CustomLogger {
 			final String delimiter) {
 		final StringBuilder sb = new StringBuilder();
 		for (final Entry<String, String[]> entry : headers.entrySet()) {
-			sb.append(String.format("%s -> Value: %s " + delimiter,
+			sb.append(String.format("%s: %s " + delimiter,
 					entry.getKey(), getString(entry.getValue())));
 		}
 
@@ -76,7 +76,7 @@ public class CustomLogger {
 		}
 
 		for (final Entry<String, String[]> entry : map.entrySet()) {
-			sb.append(String.format("%s -> Value: %s " + delimiter,
+			sb.append(String.format("%s: %s " + delimiter,
 					entry.getKey(), getString(entry.getValue())));
 		}
 

@@ -18,7 +18,9 @@
     padding: 20px;
 }
 
-.sidebar .nav > li > a {
+.sidebar .nav > li > a,
+.sidebar .nav > li > b,
+.sidebar .nav > li > span {
     display: block;
     color: #716b7a;
     padding: 5px 20px;
@@ -107,3 +109,9 @@
     width: 30px;
     text-align: center;
 }
+/*
+ * Log
+ */
+ .pager > li  {
+     color: #716b7a;
+ }

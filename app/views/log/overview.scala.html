@@ -1,12 +1,64 @@
 @(model: controllers.Log.LogViewModel)
 @import controllers.Log.LogViewModel
+@import controllers.Log.PageLinkModel
 @import controllers.Log.LogViewEntryModel
+@import helper._
+@import helper.twitterBootstrap._
 
-@main("LFH Shop - Log &Uuml;bersicht"){
-    <h1>Log &Uuml;bersicht</h1>
+@getRoute(typ: String) = @{
+    if(typ == "api"){
+        routes.Log.getApiLogs()
+      } else
+      {
+        routes.Log.getLoginLogs()
+      }   
+}
+@getParameteredRoute(typ: String, filter: String, page: Integer) = @{
+    if(typ == "api"){
+        routes.Log.getApiLogs(filter,page)
+      } else
+      {
+        routes.Log.getLoginLogs(filter,page)
+      }   
+}
+
+@main("LFH Shop - " + model.title){
+    <h1>@model.title</h1>        
+        @form(action = getRoute(model.typ)) {
+        <div class="form-group">
+            <input type="text" class="form-control" name="filter" id="filter" placeholder="Logs durchsuchen" value="@model.filter" />
+        </div>
+        <div class="form-group">
+            <button type="submit" id="search-product" class="btn btn-default">Suchen</button>
+        </div>
+    }
+    @if(model.totalPage > 1){
+    <div class="pager">
+        <ul>
+            <li><a href="@getParameteredRoute(model.typ,model.filter,0)">&lt;&lt;</a></li>
+            <li><a href="@getParameteredRoute(model.typ,model.filter,model.linkModel.getPrevLink())">&lt;</a></li>
+            @if(model.linkModel.hasLess()){
+            <li>...</li>
+            }
+            @for(m <- model.linkModel.getPageLinks()){
+                @if(m == model.currentPage){
+                    <li><a href="@getParameteredRoute(model.typ,model.filter,m)" class="active">@{m + 1}</a></li>
+                } else {
+                    <li><a href="@getParameteredRoute(model.typ,model.filter,m)">@{m + 1}</a></li>
+                }
+            }
+            @if(model.linkModel.hasMore()){
+            <li>...</li>
+            }
+            <li><a href="@getParameteredRoute(model.typ,model.filter,model.linkModel.getNextLink())">&gt;</a></li>
+            <li><a href="@getParameteredRoute(model.typ,model.filter,model.linkModel.getLastLink())">&gt;&gt;</a></li>
+        </ul>
+    </div>
+    }
     <table class="table table-striped">
         <tr>
             <th>Datum</th>
+            <th>Benutzer</th>
             <th>Info</th>
             @if(model.typ == "api"){
             <th>Parameter</th>
@@ -15,6 +67,7 @@
     @for(entry <- model.entries) {
         <tr>
             <td>@entry.date</td>
+            <td>@entry.userName</td>
             <td>@entry.info</td>
             @if(model.typ == "api"){
             <td>@entry.params</td>

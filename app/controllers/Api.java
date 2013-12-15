@@ -34,7 +34,7 @@ import customactions.TokenAuthenticator;
 /**
  * API interface to LFH Mave Project.
  * 
- * @author Sandro Dallo
+ * @author dal
  */
 public class Api extends Controller {
 
