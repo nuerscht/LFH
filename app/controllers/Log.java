@@ -30,7 +30,7 @@ import views.html.log.overview;
 public class Log extends Eshomo {
 
     private final static int PAGE_SIZE = 5;
-    private final static int VISIBLE_PAGE = 5;
+    private final static int VISIBLE_PAGE = 50;
     
 
     public static Result getApiLogs(String filter, int page) throws InterruptedException,
