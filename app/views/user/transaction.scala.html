@@ -5,6 +5,7 @@
 	<table class="table table-striped">
 		<tr>
 			<th>Nr.</th>
+            <th>User</th>
 			<th>Datum</th>
 			<th>Status</th>
 			<th>Total</th>
@@ -12,6 +13,7 @@
 	@for(transaction <- transactions) {
   		<tr>
   			<td>@transaction.id</td>
+            <td><a href="/user/data?userid=@transaction.user.getId">@transaction.user.getId</a></td>
   			<td>@transaction.date</td>
   			<td>@transaction.status</td>
   			<td>CHF @transaction.price</td>
