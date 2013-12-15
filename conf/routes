@@ -23,7 +23,8 @@ GET         /cart                         controllers.Cart.index()
 POST        /cart                         controllers.Cart.update()
 GET         /cart/order                   controllers.Cart.order()
 POST        /cart/order                   controllers.Cart.submitOrder()
-GET         /cart/:id                     controllers.Cart.indexById(id: Integer)
+GET         /transactions                 controllers.Cart.history()
+GET         /transactions/:id             controllers.Cart.indexById(id: Integer)
 
 # API
 GET         /customers                    controllers.Api.customers(id: String, since: String ?= null)
@@ -55,7 +56,7 @@ GET         /country/delete               controllers.Country.delete(id: Integer
 POST        /country/modify               controllers.Country.modify(id: Integer)
 
 #Log
-GET			/log/api				      controllers.Log.getApiLogs(filter: String ?= null, page: Integer ?= 0)
+GET         /log/api                      controllers.Log.getApiLogs(filter: String ?= null, page: Integer ?= 0)
 GET         /log/login                    controllers.Log.getLoginLogs(filter: String ?= null, page: Integer ?= 0)
 
 

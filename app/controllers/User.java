@@ -159,12 +159,6 @@ public class User extends UserData {
                 Ebean.endTransaction();
             }
 
-            //if the changed user is the current user
-            if (getLoggedInUserId().equals(userid)) {
-                setUserObj(user);
-                return Application.index();
-            }
-
             return list();
         } else {
             return forbidden();
@@ -253,7 +247,7 @@ public class User extends UserData {
     }
 
     public static Result showDataCurrent() {
-        models.User user = getUserObj();
+        models.User user = getLoggedInUser();
 
         return showData(user.getId());
     }

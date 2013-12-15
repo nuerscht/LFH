@@ -164,4 +164,22 @@ public class Cart extends Model {
 
         return false;
     }
+
+    public Integer getTotalAmount() {
+        List<CartHasProduct> items = getCartHasProduct();
+        Integer amount = 0;
+        for (CartHasProduct item : items) {
+            amount += item.getAmount();
+        }
+        return amount;
+    }
+
+    public Double getTotalPrice() {
+        List<CartHasProduct> items = getCartHasProduct();
+        Double price = 0.0;
+        for (CartHasProduct item : items) {
+            price += item.getTotal();
+        }
+        return price;
+    }
 }
