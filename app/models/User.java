@@ -42,6 +42,9 @@ public class User extends Model {
 
     @Constraints.Required
     private Boolean isActive = true;
+    
+    @Constraints.Required
+    private Boolean deleted = false;
 
     @OneToMany
     private List<Address> addresses;
@@ -82,11 +85,23 @@ public class User extends Model {
         isActive = active;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     /**
      * @return the addresses
      */
     public List<Address> getAddresses() {
         return addresses;
+    }
+
+    public Address getCurrentAddress() {
+        return getAddresses().get(0);
     }
 
     public Date getUpdatedAt() {

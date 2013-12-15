@@ -1,9 +1,18 @@
 package controllers;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Expr;
+
+import customactions.CustomLogger;
+import customactions.LogLevel;
+
+import org.apache.commons.io.FileUtils;
 
 import models.*;
 import play.data.DynamicForm;
@@ -19,7 +28,8 @@ public class Product extends Eshomo {
     final static Form<Rating> ratingForm = Form.form(Rating.class);
     final static Form<models.Product> productForm = Form.form(models.Product.class);
     final static Form<Image> imageForm = Form.form(Image.class);
-
+    private static final CustomLogger logger = new CustomLogger();
+    
     /**
      * @return Product overview
      */
@@ -98,7 +108,14 @@ public class Product extends Eshomo {
      * @return admin list view of products
      */
     public static Result list() {
-        return ok(adminlist.render(models.Product.find.all()));
+    	String keyword = Form.form().bindFromRequest().get("keyword");
+    	List<models.Product> products;
+    	if(keyword != null){
+    		products = models.Product.find.where(Expr.like("Title", "%" + keyword + "%")).findList();
+    	} else{
+    		products = models.Product.find.all();
+    	}
+        return ok(adminlist.render(products));
     }
 
     /**
@@ -118,6 +135,7 @@ public class Product extends Eshomo {
         Form<Image> imageForm;
         models.Product product = models.Product.find.byId(id);
         Form<models.Product> productForm = Form.form(models.Product.class).fill(product);
+        //Form<Tags> tagForm = Form.form(Tags.class).fill(new Tags(product.getTags()));
         if (product.hasImage()) {
             imageForm = Form.form(Image.class).fill(product.getImages().get(0));
         } else {
@@ -138,7 +156,7 @@ public class Product extends Eshomo {
         Form<models.Product> form = Form.form(models.Product.class).bindFromRequest();
         Form<Image> imageForm = Form.form(Image.class).bindFromRequest();
         DynamicForm dynForm = Form.form().bindFromRequest();
-
+        
         // Get the models and data of the form
         models.Product product = form.get();
         FilePart imageFile = request().body().asMultipartFormData().getFile("image");
@@ -156,7 +174,16 @@ public class Product extends Eshomo {
 
             Ebean.beginTransaction();
             try {
-
+            	// Process tags
+            	List<models.Tag> formTags = product.getTags();
+            	product.setTags(new ArrayList<models.Tag>());
+            	
+            	for(models.Tag tag : formTags){
+            		if((tag.getId() != null) && !(tag.getId().equals(""))){
+            			product.addTag(models.Tag.getOrCreate(tag));
+            		}
+            	}
+            	
                 if (imageFile != null) {
                     String extension = imageFile.getFilename().substring(imageFile.getFilename().lastIndexOf("."));
                     image = new Image();
@@ -179,14 +206,18 @@ public class Product extends Eshomo {
                 } else {
                     Ebean.save(product);
                 }
+                product.saveManyToManyAssociations("tags");
 
                 //Finally move image as we know the id
                 if (image != null) {
-                    imageFile.getFile().renameTo(new File("public/" + play.Play.application().configuration()
-                        .getString("eshomo.upload.directory"), image.getId() + image.getExtension()));
+                	FileUtils.moveFile(imageFile.getFile(), new File("public/" + play.Play.application().configuration()
+                			.getString("eshomo.upload.directory"), image.getId() + image.getExtension()));
                 }
 
                 Ebean.commitTransaction();
+            }catch(IOException e){
+            	logger.logToFile(e.getMessage() + "=>" + Arrays.toString(e.getStackTrace()), LogLevel.ERROR, "application");
+            	return internalServerError();
             } finally {
                 Ebean.endTransaction();
             }

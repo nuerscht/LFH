@@ -19,19 +19,19 @@
 	
     
     <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Produkt Details</h3>
+    </div>
     <div class="panel-body">
-	<ul>
-		<div><strong>ID</strong> @product.getId()</div>
-		<div><strong>Preis</strong> @product.getPrice()</div>
-		<div><strong>EAN:</strong> @product.getEan()</div>
-	</ul>
-	
-	<ul>
-	   @for(attribute <- product.getAttributes){
-	       <li>@attribute.getValue</li>
-	   }
-	</ul>
-		@product.getDescription()
+	<table>
+		<tr><th>ID</th><td>@product.getId()</td></tr>
+		<tr><th>Preis</th><td>@Messages("api.request.currency") @product.getPrice()</td></tr>
+		<tr><th>EAN:</th><td>@product.getEan()</td></tr>
+		@for(attribute <- product.getAttributes){
+           <tr><th></th><td>@attribute.getValue</td></tr>
+        }
+	</table>
+	@product.getDescription()
 	</div>
     </div>
 
@@ -52,14 +52,19 @@
     @if(Eshomo.isLoggedIn()){
     @form(routes.Product.submitRating(product.getId)) {
    		<fieldset>
-            
-            
-            @inputRadioGroup(
-                ratingForm("rate"), 
-                options = options("1" -> "1" ,"2" -> "2", "3" -> "3", "4" -> "4", "5" -> "5"),
-                '_label -> "Bewertung",
-                'required -> "required"
-            )
+
+            <div class="clearfix  " id="rate_field">
+            <h4>Bewertung abgeben</h4>
+            <div class="input">
+                <span class="rating" id="rate">
+                    @for(index <- 5 to 1 by -1){
+                        <input type="radio" id="rate_@index" name="rate" value="@index" class="rating-input" required="required">
+                        <label for="rate_@index" class="rating-star" onclick="window.location='#submit-rating';"></label>
+                    }
+                </span>
+
+            </div>
+            </div>
             
             @textarea(
                 ratingForm("comment"), 
@@ -75,17 +80,29 @@
         </div>
         
     }}
+    <h4>Bewertungen anderer Benutzer</h4>
     @for(rating <- ratings) {
+        
         <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Bewertung von @rating.getUser().getEmail()</h3>
+        </div>
         <div class="panel-body">
-            <div class="row">
-                <div><strong>Benutzer:</strong> @rating.getUser().getEmail()</div>
-                <div><strong>Datum:</strong> @rating.getCreatedAt()</div>
+            <div>
+            <span class="rating" id="rate_@rating.getId()">
+                @for(index <- 5 to 1 by -1){ 
+                    @if(rating.getRate >= index){
+                        <label class="rating-star-static-disabled"></label>
+                    }else{
+                        <label class="rating-star-static"></label>
+                    }
+                    
+                }
+            </span>
             </div>
-            <div>@rating.getRate()</div>
-            <strong>Kommentar</strong><br>
             @rating.getComment()
         </div>
+        <div class="panel-footer">@rating.getCreatedAt()</div>
         </div>
 	}
     </div>

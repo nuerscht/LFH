@@ -4,8 +4,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static play.test.Helpers.HTMLUNIT;
 import static play.test.Helpers.running;
 import static play.test.Helpers.testServer;
-import models.Product;
-import models.User;
+import models.*;
 
 import org.junit.Test;
 
@@ -114,6 +113,7 @@ public class ProductIntegrationTest extends EshomoTest {
             	String ean = "1231231231239";
             	String price = "12.33";
             	String attribute = "Very very long";
+            	String tag = "NewTag";
             	User user = User.find.byId(1);
             	
             	browser.goTo("http://localhost:3333");
@@ -133,9 +133,12 @@ public class ProductIntegrationTest extends EshomoTest {
                 browser.fill("#ean").with(ean);
                 browser.fill("#price").with(price);
                 browser.fill("#attributes_0__value").with(attribute);
+                browser.fill("#tags_0__id").with(tag);
                 browser.submit("#save-product");
                 
-                Product product = Product.find.orderBy("created_at desc").setMaxRows(1).findUnique();
+                Product product = Product.find.where().eq("title", title).findUnique();
+                
+                assertThat(product != null);
                 
                 browser.goTo("http://localhost:3333" + routes.Product.details(product.getId(), 0));
 
@@ -144,6 +147,10 @@ public class ProductIntegrationTest extends EshomoTest {
                 assertThat(browser.pageSource()).contains(ean);
                 assertThat(browser.pageSource()).contains(price);
                 assertThat(browser.pageSource()).contains(attribute);
+                assertThat(browser.pageSource()).contains(tag);
+                
+                browser.goTo("http://localhost:3333" + routes.Product.productsByTag(tag));
+                assertThat(browser.pageSource()).contains(title);
             }
         });
 	}

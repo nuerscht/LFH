@@ -53,7 +53,7 @@ public class User extends UserData {
     public static Result list() {
         if (isLoggedIn() && isAdminUser()) {
 
-            List<models.User> users = Ebean.find(models.User.class).findList();
+            List<models.User> users = Ebean.find(models.User.class).where().eq("deleted", false).findList();
 
             return listUsers(users);
         } else {
@@ -94,7 +94,7 @@ public class User extends UserData {
     }
 
     /**
-     * deletes the user with the given userid
+     * sets the deleted flag for the given userid
      *
      * @param userid
      * @return
@@ -102,13 +102,18 @@ public class User extends UserData {
      */
     public static Result delete(final int userid) {
         if (isLoggedIn() && isAdminUser()) {
-            models.User user = getUserByUserId(userid);
-            Address address = getAddressByUserId(user.getId());
+            models.User user    = getUserByUserId(userid);
+            Address     address = getAddressByUserId(user.getId());
+
+            user.setDeleted(true);
+            address.setDeleted(true);
+            user.setIsActive(false);
+            address.setIsActive(false);
 
             Ebean.beginTransaction();
             try {
-                Ebean.delete(address);
-                Ebean.delete(user);
+                Ebean.save(user);
+                Ebean.save(address);
                 Ebean.commitTransaction();
             } finally {
                 Ebean.endTransaction();
@@ -221,7 +226,7 @@ public class User extends UserData {
             List<Address> addresses = Ebean.find(Address.class).where().or(
                 Expr.like("firstname", searchStringLike),
                 Expr.like("lastname", searchStringLike)
-            ).findList();
+            ).where().eq("deleted", false).findList();
 
 
             if (addresses.size() > 0) {
@@ -245,6 +250,12 @@ public class User extends UserData {
         } else {
             return forbidden();
         }
+    }
+
+    public static Result showDataCurrent() {
+        models.User user = getUserObj();
+
+        return showData(user.getId());
     }
 
     /**

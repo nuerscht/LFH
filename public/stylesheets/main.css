@@ -1,10 +1,7 @@
-
 /*
  * Sidebar
  */
-
-.sidebar .nav,
-.sidebar form {
+.sidebar .nav,.sidebar form {
     margin-top: 30px;
     margin-bottom: 30px;
     padding-top: 10px;
@@ -25,8 +22,8 @@
     color: #716b7a;
     padding: 5px 20px;
 }
-.sidebar .nav > li > a:hover,
-.sidebar .nav > li > a:focus {
+
+.sidebar .nav > li > a:hover,.sidebar .nav > li > a:focus {
     text-decoration: none;
     background-color: #ddd;
 }
@@ -34,7 +31,6 @@
 /*
  * Product list
  */
-
 .products > .product {
     box-sizing: content-box;
     position: relative;
@@ -64,17 +60,61 @@
 }
 
 /*
+ * Rating Stars
+ */
+.rating {
+    overflow: hidden;
+    display: inline-block;
+}
+
+.rating-input {
+    position: absolute;
+    left: 0;
+    top: -50px;
+}
+
+.rating:hover .rating-star:hover, .rating:hover 
+    .rating-star:hover ~ .rating-star,.rating-input:checked ~ .rating-star {
+    background-position: 0 0;
+}
+
+.rating-star, .rating-star-static, .rating:hover .rating-star {
+    float: right;
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url('/assets/images/star.png') 0
+        -16px;
+}
+
+/*
+ * Rating Stars static
+ */
+.rating-star-static, .rating-star-static-disabled {
+    float: right;
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url('/assets/images/star.png') 0
+        -16px;
+}
+
+.rating-star-static-disabled {
+    background-position: 0 0;
+}
+
+/*
  * Forms
  */
 .description {
-	min-height: 150px;
-	resize:vertical;
+    min-height: 150px;
+    resize: vertical;
 }
 
 .comment {
     min-height: 100px;
     width: 100%;
-    resize:vertical;
+    resize: vertical;
 }
 
 .manage {
@@ -82,17 +122,16 @@
     margin-top: 20px;
 }
 
-.attribute_template {
+.attribute_template, .tag_template {
     display: none;
 }
 
 .image {
     width: 100%;
-    
 }
 
 .images {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 /*
  * Cart

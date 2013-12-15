@@ -47,6 +47,9 @@ public class Product extends Model {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Image> images;
+    
+    @ManyToMany(cascade = CascadeType.REMOVE, mappedBy="products")
+    private List<Tag> tags;
 
     @UpdatedTimestamp
     private Date updatedAt;
@@ -126,7 +129,25 @@ public class Product extends Model {
     public List<Rating> getRatings() {
         return Rating.find.where().eq("product_id", this.getId()).orderBy("updatedAt desc").findList();
     }
+    
+    public List<Tag> getTags(){
+    	return tags;
+    }
+    
+    public void setTags(List<Tag> tags){
+    	this.tags = tags;
+    }
 
+    public void addTag(Tag tag){
+    	if(!(this.hasTag(tag))){
+    		this.tags.add(tag);
+    	}
+    }
+    
+    public boolean hasTag(Tag tag) {
+		return this.tags.contains(tag);
+	}
+    
     public List<Image> getImages() {
         return images;
     }
@@ -154,4 +175,6 @@ public class Product extends Model {
                 .setFetchAhead(false)
                 .getPage(page);
     }
+
+	
 }

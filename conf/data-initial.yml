@@ -23,24 +23,28 @@ users:
     password: ffhs2011
     isActive: true
     type: *admin
+    deleted: false
   - !!models.User
     &vil
     email: andy.villiger@students.ffhs.ch
     password: ffhs2011
     isActive: true
     type: *admin
+    deleted: false
   - !!models.User
     &ald
     email: jonas.alder@students.ffhs.ch
     password: ffhs2011
     isActive: true
     type: *admin
+    deleted: false
   - !!models.User
     &dal
     email: sandro.dallo@students.ffhs.ch
     password: ffhs2011
     isActive: true
     type: *admin
+    deleted: false
 countries:
   - !!models.Country
     &ch
@@ -62,6 +66,7 @@ addresses:
     isActive: true
     country: *ch
     birthday: "1981-03-19 00:00:00"
+    deleted: false
   - !!models.Address
     &ad2
     user: *vil
@@ -75,6 +80,7 @@ addresses:
     isActive: true
     country: *ch
     birthday: "1984-02-12 00:00:00"
+    deleted: false
   - !!models.Address
     &ad3
     user: *ald
@@ -88,6 +94,7 @@ addresses:
     isActive: true
     country: *ch
     birthday: "1979-06-13 00:00:00"
+    deleted: false
   - !!models.Address
     &ad4
     user: *dal
@@ -101,3 +108,4 @@ addresses:
     isActive: true
     country: *ch
     birthday: "1978-10-14 00:00:00"
+    deleted: false
