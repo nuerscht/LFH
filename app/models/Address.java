@@ -49,6 +49,9 @@ public class Address extends Model {
     @Constraints.Required
     private Boolean isActive;
 
+    @Constraints.Required
+    private Boolean deleted;
+
     private Date birthday;
 
     @UpdatedTimestamp
@@ -133,6 +136,14 @@ public class Address extends Model {
 
     public void setIsActive(Boolean active) {
         isActive = active;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Date getBirthday() {

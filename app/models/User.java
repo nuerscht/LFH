@@ -42,6 +42,9 @@ public class User extends Model {
 
     @Constraints.Required
     private Boolean isActive = true;
+    
+    @Constraints.Required
+    private Boolean deleted = false;
 
     @OneToMany
     private List<Address> addresses;
@@ -80,6 +83,14 @@ public class User extends Model {
 
     public void setIsActive(Boolean active) {
         isActive = active;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     /**
