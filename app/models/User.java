@@ -136,4 +136,11 @@ public class User extends Model {
         return token;
     }
 
+    public boolean isAdmin() {
+        return getType().getId().equals(UserType.ADMIN);
+    }
+
+    public boolean isCustomer() {
+        return getType().getId().equals(UserType.CUSTOMER);
+    }
 }
