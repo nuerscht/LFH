@@ -1,4 +1,4 @@
-@(productForm: Form[models.Product], imageForm: Form[Image], productId: Integer, product: models.Product, title: String, message: String)
+@(productForm: Form[models.Product], imageForm: Form[Image], productId: Integer, product: models.Product, tags: List[models.Tag], title: String, message: String)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -26,7 +26,8 @@
             field("id"), 
             '_label -> "Wert",
             '_showConstraints -> false,
-            'class -> "form-control" 
+            'class -> "typeahead form-control",
+            'autocomplete -> "off"
         )
     </div>
 }
@@ -165,27 +166,41 @@
         })
         
         $('.tags').on('click', 'a', function(e) {
-            $(this).parents('.tag').remove()
-            renumber()
+            $(this).parents('.tag').remove();
+            renumber();
         })
         
         $('.addAttribute').on('click', function(e) {
-            var template = $('.attribute_template')
-            template.before('<div class="attribute">' + template.html() + '</div>')
-            renumber()
-            cleanLabel()
+            var template = $('.attribute_template');
+            template.before('<div class="attribute">' + template.html() + '</div>');
+            renumber();
+            cleanLabel();
         })
         
         $('.addTag').on('click', function(e) {
-            var template = $('.tag_template')
-            template.before('<div class="tag">' + template.html() + '</div>')
-            renumber()
-            cleanLabel()
+            var template = $('.tag_template');
+            template.before('<div class="tag">' + template.html() + '</div>');
+            renumber();
+            cleanLabel();
+            $('.typeahead').trigger('added');
         })
         
+        var typeaheadSettings = {
+        	source: [  @for(tag <- tags){ '@{tag.getId()}', } ],
+        };
+        
+        //$('.typeahead').autocomplete( @for(tag <- tags){ @{tag.getId()}
+        //	}); /* init first input */
+
+        $('.typeahead').on('added',function(){
+            $('.typeahead').typeahead(typeaheadSettings);
+        });
+        	
+        $('.typeahead').typeahead(typeaheadSettings);
+        
         $('#form').submit(function() {
-            $('.attribute_template').remove()
-            $('.tag_template').remove()
+            $('.attribute_template').remove();
+            $('.tag_template').remove();
         })
         
         $(document).ready(function() {

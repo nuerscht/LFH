@@ -18,10 +18,9 @@ public class Cart extends Eshomo {
     public static Result indexById(Integer id) {
         models.Cart cart = models.Cart.find.byId(id);
         models.User cartUser = cart.getUser();
-        models.User currentUser = getLoggedInUser();
 
-        if (cartUser == null || !cartUser.getId().equals(currentUser.getId())) {
-            throw new RuntimeException("You cannot access this cart");
+        if (! isLoggedInUser(cartUser) && ! cartUser.isAdmin()) {
+            return forbidden();
         }
 
         return ok(indexOrdered.render(cart));

@@ -37,6 +37,7 @@ public class Eshomo extends Controller {
      * clears the session if an user log out
      */
     protected static void userLogout() {
+        loginMessage = "";
         session().clear();
     }
 
@@ -55,7 +56,7 @@ public class Eshomo extends Controller {
      * @return
      */
     protected static Boolean isAdminUser() {
-        return getLoggedInUser().getType().getId().equals(UserType.ADMIN);
+        return getLoggedInUser().isAdmin();
     }
 
     /**
@@ -85,5 +86,9 @@ public class Eshomo extends Controller {
         }
 
         return models.User.find.byId(userId);
+    }
+
+    protected static boolean isLoggedInUser(models.User user) {
+        return user.getId().equals(getLoggedInUser().getId());
     }
 }

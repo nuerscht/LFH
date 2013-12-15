@@ -34,10 +34,12 @@ public class Account extends UserData {
      * @author boe
      */
     public static Html getLoginHtml() {
+        String loginMsg = loginMessage;
+        loginMessage    = "";
         if ("1".equals(session("loggedin"))) {
             return loggedin.render(getLoggedInUser());
         } else
-            return login.render(loginMessage);
+            return login.render(loginMsg);
     }
 
     /**

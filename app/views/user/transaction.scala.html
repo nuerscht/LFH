@@ -1,4 +1,4 @@
-@(transactions: List[controllers.User.Order])
+@(carts: List[models.Cart])
 
 @main("LFH Shop - Transaktions&uuml;bersicht") {
 	<h1>Bestellungen</h1>
@@ -10,13 +10,21 @@
 			<th>Status</th>
 			<th>Total</th>
 		</tr>
-	@for(transaction <- transactions) {
+	@for(cart <- carts) {
   		<tr>
-  			<td>@transaction.id</td>
-            <td><a href="/user/data?userid=@transaction.user.getId">@transaction.user.getId</a></td>
-  			<td>@transaction.date</td>
-  			<td>@transaction.status</td>
-  			<td>CHF @transaction.price</td>
+  			<td>@cart.getId</td>
+            <td><a href="/user/data?userid=@cart.getUser.getId">@cart.getUser.getId</a></td>
+  			<td>@cart.getUpdatedAt.format("dd.MM.yyyy")</td>
+  			<td>
+                <a href="/transactions/@cart.getId">
+                    @if(cart.getTotalAmount > 1) {
+                        @cart.getTotalAmount Produkte anzeigen
+                    } else {
+                        Produkt anzeigen
+                    }
+                </a>
+            </td>
+  			<td>CHF @cart.getTotalPrice</td>
   		<tr>
 	} 
 	</table>

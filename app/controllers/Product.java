@@ -123,8 +123,9 @@ public class Product extends Eshomo {
      */
     public static Result add() {
         Form<models.Product> productForm = Form.form(models.Product.class);
+        List<models.Tag> tags = models.Tag.find.all();
 
-        return ok(productform.render(productForm, imageForm, 0, null, "Produkt erfassen", ""));
+        return ok(productform.render(productForm, imageForm, 0, null, tags, "Produkt erfassen", ""));
     }
 
     /**
@@ -133,6 +134,7 @@ public class Product extends Eshomo {
      */
     public static Result edit(Integer id) {
         Form<Image> imageForm;
+        List<models.Tag> tags = models.Tag.find.all();
         models.Product product = models.Product.find.byId(id);
         Form<models.Product> productForm = Form.form(models.Product.class).fill(product);
         //Form<Tags> tagForm = Form.form(Tags.class).fill(new Tags(product.getTags()));
@@ -142,7 +144,7 @@ public class Product extends Eshomo {
             imageForm = Product.imageForm;
         }
 
-        return ok(productform.render(productForm, imageForm, product.getId(), product, "Produkt editieren", ""));
+        return ok(productform.render(productForm, imageForm, product.getId(), product, tags, "Produkt editieren", ""));
     }
 
     /**
@@ -158,6 +160,7 @@ public class Product extends Eshomo {
         DynamicForm dynForm = Form.form().bindFromRequest();
         
         // Get the models and data of the form
+        List<models.Tag> tags = models.Tag.find.all();
         models.Product product = form.get();
         FilePart imageFile = request().body().asMultipartFormData().getFile("image");
         Image image = null;
@@ -169,7 +172,7 @@ public class Product extends Eshomo {
         }
 
         if (form.hasErrors()) {
-            return badRequest(productform.render(form, imageForm, id, product, "Produkt editieren", "Formular ungültig"));
+            return badRequest(productform.render(form, imageForm, id, product, tags, "Produkt editieren", "Formular ungültig"));
         } else {
 
             Ebean.beginTransaction();
