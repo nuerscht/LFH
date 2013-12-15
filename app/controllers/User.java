@@ -399,6 +399,7 @@ public class User extends UserData {
         public String date;
         public String status;
         public String price;
+        public models.User user;
     }
 
     /**
@@ -428,6 +429,7 @@ public class User extends UserData {
                 order.id = cart.getId();
                 order.date = new SimpleDateFormat("dd.MM.yyyy").format(cart.getUpdatedAt());
                 order.status = cart.getStatus().getDescription().toString();
+                order.user = cart.getUser();
 
                 List<CartHasProduct> cartDetails = Ebean.find(CartHasProduct.class).where().eq("cart_id", cart.getId()).findList();
 
