@@ -3,29 +3,33 @@
 @main("Warenkorb") {
     <div class="cart">
         <h1>Warenkorb</h1>
-        <form method="post" action="/cart">
-            <table class="table table-striped">
-                <tr>
-                    <th>Produkt</th>
-                    <th>Anzahl</th>
-                    <th>Preis</th>
-                    <th></th>
-                </tr>
-                @for(item <- cart.getCartHasProduct) {
+        @if(cart.getTotalAmount > 0) {
+            <form method="post" action="/cart">
+                <table class="table table-striped">
                     <tr>
-                        <td class="title"><a href="/details/@item.getProduct.getId">@item.getProduct.getTitle</a></td>
-                        <td class="amount"><label><input type="text" value="@item.getAmount" name="products[@item.getProduct.getId]"/></label></td>
-                        <td class="price">@item.getTotal</td>
-                        <td class="remove">
-                            <button type="submit" name="remove" value="@item.getProduct.getId">Entfernen</button>
-                        </td>
-                    <tr>
-                }
-            </table>
-            <div class="buttons">
-                <button type="submit">Warenkorb aktualisieren</button>
-                <div class="pull-right"><a href="/cart/order"><strong>Warenkorb bestellen</strong></a></div>
-            </div>
-        </form>
+                        <th>Produkt</th>
+                        <th>Anzahl</th>
+                        <th>Preis</th>
+                        <th></th>
+                    </tr>
+                    @for(item <- cart.getCartHasProduct) {
+                        <tr>
+                            <td class="title"><a href="/details/@item.getProduct.getId">@item.getProduct.getTitle</a></td>
+                            <td class="amount"><label><input type="text" value="@item.getAmount" name="products[@item.getProduct.getId]"/></label></td>
+                            <td class="price">@item.getTotal</td>
+                            <td class="remove">
+                                <button type="submit" name="remove" value="@item.getProduct.getId">Entfernen</button>
+                            </td>
+                        <tr>
+                        }
+                </table>
+                <div class="buttons">
+                    <button type="submit">Warenkorb aktualisieren</button>
+                    <div class="pull-right"><a href="/cart/order"><strong>Warenkorb bestellen</strong></a></div>
+                </div>
+            </form>
+        } else {
+            Der Warenkorb ist leer.
+        }
     </div>
 }
