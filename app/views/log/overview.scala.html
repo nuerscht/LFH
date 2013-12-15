@@ -20,7 +20,7 @@
       {
         routes.Log.getLoginLogs(filter,page)
       }   
-}
+}   
 
 @main("LFH Shop - " + model.title){
     <h1>@model.title</h1>        
@@ -33,10 +33,10 @@
         </div>
     }
     @if(model.totalPage > 1){
-    <div class="pager">
-        <ul>
-            <li><a href="@getParameteredRoute(model.typ,model.filter,0)">&lt;&lt;</a></li>
-            <li><a href="@getParameteredRoute(model.typ,model.filter,model.linkModel.getPrevLink())">&lt;</a></li>
+    <div class="paging">
+        <ul class="clear">
+            <li>@if(model.currentPage > 0){<a href="@getParameteredRoute(model.typ,model.filter,0)"><span class="glyphicon glyphicon-fast-backward"></span></a>}else{<span class="glyphicon glyphicon-fast-backward"></span>}</li>
+            <li>@if(model.currentPage > 0){<a href="@getParameteredRoute(model.typ,model.filter,model.linkModel.getPrevLink())"><span class="glyphicon glyphicon-backward"></span></a>}else{<span class="glyphicon glyphicon-backward"></span>}</li>
             @if(model.linkModel.hasLess()){
             <li>...</li>
             }
@@ -50,12 +50,12 @@
             @if(model.linkModel.hasMore()){
             <li>...</li>
             }
-            <li><a href="@getParameteredRoute(model.typ,model.filter,model.linkModel.getNextLink())">&gt;</a></li>
-            <li><a href="@getParameteredRoute(model.typ,model.filter,model.linkModel.getLastLink())">&gt;&gt;</a></li>
+            <li>@if(model.currentPage + 1 < model.totalPage){<a href="@getParameteredRoute(model.typ,model.filter,model.linkModel.getNextLink())"><span class="glyphicon glyphicon-forward"></span></a>}else{<span class="glyphicon glyphicon-forward"></span>}</li>
+            <li>@if(model.currentPage + 1 < model.totalPage){<a href="@getParameteredRoute(model.typ,model.filter,model.linkModel.getLastLink())"><span class="glyphicon glyphicon-fast-forward"></span></a>}else{<span class="glyphicon glyphicon-fast-forward"></span>}</li>
         </ul>
     </div>
     }
-    <table class="table table-striped log-overview">
+    <table class="table table-striped log-overview clear">
         <tr>
             <th class="log-overview-date">Datum</th>
             <th class="log-overview-user">Benutzer</th>

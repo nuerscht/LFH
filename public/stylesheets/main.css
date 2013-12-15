@@ -151,7 +151,46 @@
 /*
  * Log
  */
-  .log-overview {
+   .paging {
+    color: #716b7a;
+    text-align: center;
+    width: 100%;
+    display: table;
+ }
+ 
+  .paging > ul {
+    float: left;
+    list-style-type: none;
+  }
+  .paging > ul > li {
+    display: inline;
+    float: left;
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+    width: 30px;
+    border: 1px solid #ddd;
+    line-height: 150%;
+  }
+ .paging > ul > li > a {
+     text-decoration: none;
+     text-align: center;
+     display: block;
+     color: #716b7a;
+ }
+  .paging > ul > li > a:hover {
+    background-color: #ddd;
+ }
+ 
+ .paging > ul > li > .active {
+    font-weight: bold;
+    background-color: #ddd;
+ }
+ 
+ .clear {
+  clear: both;
+ }
+ 
+ .log-overview {
    table-layout: fixed;
  }
   .log-overview-date,   .log-overview-user {
@@ -164,5 +203,4 @@
  }
  .log-overview  tr  td  {
      word-wrap:break-word;
-
  }
