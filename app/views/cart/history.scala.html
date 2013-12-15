@@ -17,11 +17,11 @@
                         <td>@cart.getUpdatedAt.format("dd. MMM yyyy")</td>
                         <td>
                             <a href="/transactions/@cart.getId">
-                            @if(cart.getTotalAmount > 1) {
-                                @cart.getTotalAmount Produkte anzeigen
-                            } else {
-                                Produkt anzeigen
-                            }
+                                @if(cart.getTotalAmount > 1) {
+                                    @cart.getTotalAmount Produkte anzeigen
+                                } else {
+                                    Produkt anzeigen
+                                }
                             </a>
                         </td>
                         <td>CHF @cart.getTotalPrice</td>

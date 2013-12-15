@@ -400,6 +400,7 @@ public class User extends UserData {
         public String status;
         public String price;
         public models.User user;
+        public Integer amount;
     }
 
     /**
@@ -408,46 +409,19 @@ public class User extends UserData {
      * @return
      */
     public static Result showTransactions(final int userid) {
-        if ((isLoggedIn() && getLoggedInUserId().equals(userid)) ||
-            (isLoggedIn() && !getLoggedInUserId().equals(userid) && isAdminUser())) {
+        if (isAdminUser()) {
             Query<Cart> cartsQuery = Ebean.find(Cart.class);
-            if (userid != -1) {
-                cartsQuery.where().eq("user_id", userid).where().eq("status_id", CartStatus.ORDERED).orderBy().asc("updated_at").findList();
-            } else { 
+
+            // get orders for all (userid = -1) or one user in particular
+            if (userid < 0) {
                 cartsQuery.where().eq("status_id", CartStatus.ORDERED).orderBy().asc("updated_at").findList();
+            } else {
+                cartsQuery.where().eq("user_id", userid).where().eq("status_id", CartStatus.ORDERED).orderBy().asc("updated_at").findList();
             }
 
             List<Cart> carts = cartsQuery.findList();
-            
-            List<Order> orders = new ArrayList<Order>();
 
-            Iterator<Cart> itrCarts = carts.iterator();
-            while (itrCarts.hasNext()) {
-                Cart cart = itrCarts.next();
-
-                Order order = new Order();
-                order.id = cart.getId();
-                order.date = new SimpleDateFormat("dd.MM.yyyy").format(cart.getUpdatedAt());
-                order.status = cart.getStatus().getDescription().toString();
-                order.user = cart.getUser();
-
-                List<CartHasProduct> cartDetails = Ebean.find(CartHasProduct.class).where().eq("cart_id", cart.getId()).findList();
-
-                Double price = 0.0;
-                Iterator<CartHasProduct> itrCartDetails = cartDetails.iterator();
-                while (itrCartDetails.hasNext()) {
-                    CartHasProduct cartDetail = itrCartDetails.next();
-
-                    price += cartDetail.getPrice() * cartDetail.getAmount();
-                }
-
-                order.price = String.format("%1$,.2f", price);
-                orders.add(order);
-            }
-
-            return ok(
-                transaction.render(orders)
-            );
+            return ok(transaction.render(carts));
         } else {
             return forbidden();
         }
