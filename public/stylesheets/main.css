@@ -151,6 +151,18 @@
 /*
  * Log
  */
- .pager > li  {
-     color: #716b7a;
+  .log-overview {
+   table-layout: fixed;
+ }
+  .log-overview-date,   .log-overview-user {
+     width: 20%;
+
+ }
+ .log-overview-info,   .log-overview-params {
+     width: 30%%;
+
+ }
+ .log-overview  tr  td  {
+     word-wrap:break-word;
+
  }

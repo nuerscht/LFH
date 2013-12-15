@@ -30,8 +30,14 @@ public class CustomLogger {
 
 	private User extractUser(final Context ctx) {
 		User user = (User) ctx.args.get("token_user");
-        if (user == null && ctx.session().get("user") != null)
-			user = SessionSerializer.<User>deserialize(ctx.session().get("user").getBytes());
+        if (user == null && ctx.session().get("user_id") != null){
+            try {
+                int id = Integer.parseInt(ctx.session().get("user_id"));
+                user = User.find.byId(id);
+            } catch (NumberFormatException e) {
+              logger.error("Failed to parse user id. " + e.getMessage());
+            }
+        }
         return user;
 	}
 

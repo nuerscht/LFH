@@ -55,13 +55,13 @@
         </ul>
     </div>
     }
-    <table class="table table-striped">
+    <table class="table table-striped log-overview">
         <tr>
-            <th>Datum</th>
-            <th>Benutzer</th>
-            <th>Info</th>
+            <th class="log-overview-date">Datum</th>
+            <th class="log-overview-user">Benutzer</th>
+            <th class="log-overview-info">Info</th>
             @if(model.typ == "api"){
-            <th>Parameter</th>
+            <th class="log-overview-param">Parameter</th>
             }
         </tr>
     @for(entry <- model.entries) {

@@ -251,7 +251,7 @@ public class Api extends Controller {
         if (exType == Cart.class)
             result = orders.render(items).toString();
 
-        return ok(result.replaceFirst("\\s+\\n", ""));
+        return ok(result.replace("\\s+\\n", ""));
     }
 
 }
