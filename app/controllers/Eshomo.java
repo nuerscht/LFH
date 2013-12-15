@@ -37,6 +37,7 @@ public class Eshomo extends Controller {
      * clears the session if an user log out
      */
     protected static void userLogout() {
+        loginMessage = "";
         session().clear();
     }
 
