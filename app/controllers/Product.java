@@ -2,11 +2,15 @@ package controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
+
+import customactions.CustomLogger;
+import customactions.LogLevel;
 
 import org.apache.commons.io.FileUtils;
 
@@ -24,6 +28,7 @@ public class Product extends Eshomo {
     final static Form<Rating> ratingForm = Form.form(Rating.class);
     final static Form<models.Product> productForm = Form.form(models.Product.class);
     final static Form<Image> imageForm = Form.form(Image.class);
+    private static final CustomLogger logger = new CustomLogger();
     
     /**
      * @return Product overview
@@ -151,8 +156,7 @@ public class Product extends Eshomo {
         Form<models.Product> form = Form.form(models.Product.class).bindFromRequest();
         Form<Image> imageForm = Form.form(Image.class).bindFromRequest();
         DynamicForm dynForm = Form.form().bindFromRequest();
-        String message = "";
-
+        
         // Get the models and data of the form
         models.Product product = form.get();
         FilePart imageFile = request().body().asMultipartFormData().getFile("image");
@@ -206,15 +210,14 @@ public class Product extends Eshomo {
 
                 //Finally move image as we know the id
                 if (image != null) {
-                	try{
-                		FileUtils.moveFile(imageFile.getFile(), new File("public/" + play.Play.application().configuration()
-                				.getString("eshomo.upload.directory"), image.getId() + image.getExtension()));
-                	}catch(IOException e){
-                		return internalServerError();
-                	}
+                	FileUtils.moveFile(imageFile.getFile(), new File("public/" + play.Play.application().configuration()
+                			.getString("eshomo.upload.directory"), image.getId() + image.getExtension()));
                 }
 
                 Ebean.commitTransaction();
+            }catch(IOException e){
+            	logger.logToFile(e.getMessage() + "=>" + Arrays.toString(e.getStackTrace()), LogLevel.ERROR, "application");
+            	return internalServerError();
             } finally {
                 Ebean.endTransaction();
             }
