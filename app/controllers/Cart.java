@@ -1,5 +1,6 @@
 package controllers;
 
+import models.*;
 import views.html.cart.*;
 import play.mvc.Result;
 import play.data.Form;
@@ -17,13 +18,13 @@ public class Cart extends Eshomo {
     public static Result indexById(Integer id) {
         models.Cart cart = models.Cart.find.byId(id);
         models.User cartUser = cart.getUser();
-        models.User currentUser = getUserObj();
+        models.User currentUser = getLoggedInUser();
 
         if (cartUser == null || !cartUser.getId().equals(currentUser.getId())) {
             throw new RuntimeException("You cannot access this cart");
         }
 
-        return ok(index.render(cart));
+        return ok(indexOrdered.render(cart));
     }
 
     public static Result update() {
@@ -52,7 +53,7 @@ public class Cart extends Eshomo {
     }
 
     public static Result order() {
-        models.User user = getUserObj();
+        models.User user = getLoggedInUser();
         models.Address address = user.getCurrentAddress();
         models.Cart cart = getCurrentCart();
 
@@ -60,21 +61,21 @@ public class Cart extends Eshomo {
     }
 
     public static Result submitOrder() {
-        models.User user = getUserObj();
+        models.User user = getLoggedInUser();
         models.Address address = user.getCurrentAddress();
         models.Cart cart = getCurrentCart();
 
         // get the request params as a CartUpdate
-        Form<CartOrderType> form = Form.form(CartOrderType.class);
-        CartOrderType orderType = form.bindFromRequest().get();
+        Form<CartOrder> form = Form.form(CartOrder.class);
+        CartOrder order = form.bindFromRequest().get();
 
         // render email
         String subject = "Bestellung LFH Shop";
         String content;
-        if (orderType.type.equals("invoice")) {
+        if (order.type.equals("invoice")) {
             content = mailInvoice.render(subject, cart, address).toString();
         } else {
-            content = views.html.cart.mailPrepayment.render(subject, cart, address).toString();
+            content = mailPrepayment.render(subject, cart, address).toString();
         }
 
         // get admin's email address
@@ -94,11 +95,21 @@ public class Cart extends Eshomo {
         return redirect("/");
     }
 
+    public static Result history() {
+        List<models.Cart> carts = models.Cart.find
+            .where()
+            .eq("user_id", getLoggedInUserId())
+            .eq("status_id", CartStatus.ORDERED)
+            .findList();
+
+        return ok(history.render(carts));
+    }
+
     /**
      * @return The current open cart of the logged in user.
      */
     private static models.Cart getCurrentCart() {
-        models.User currentUser = getUserObj();
+        models.User currentUser = getLoggedInUser();
         return models.Cart.fetchOrCreateOpenCart(currentUser);
     }
 
@@ -113,7 +124,7 @@ public class Cart extends Eshomo {
     /**
      * Holds the form information of a cart order POST request.
      */
-    public static class CartOrderType {
+    public static class CartOrder {
         public String type;
     }
 }

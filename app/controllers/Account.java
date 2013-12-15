@@ -35,7 +35,7 @@ public class Account extends UserData {
      */
     public static Html getLoginHtml() {
         if ("1".equals(session("loggedin"))) {
-            return loggedin.render(getUserObj());
+            return loggedin.render(getLoggedInUser());
         } else
             return login.render(loginMessage);
     }

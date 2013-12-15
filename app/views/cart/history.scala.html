@@ -1,0 +1,29 @@
+@(carts: List[models.Cart])
+
+@main("Deine Bestellungen") {
+    <div class="orders">
+        <h1>Bestellungen</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>Datum</th>
+                <th>Produkte</th>
+                <th>Preis</th>
+            </tr>
+            @for(cart <- carts) {
+                <tr>
+                    <td>@cart.getUpdatedAt.format("dd. MMM yyyy")</td>
+                    <td>
+                        <a href="/transactions/@cart.getId">
+                            @if(cart.getTotalAmount > 1) {
+                                cart.getTotalAmount Produkte anzeigen
+                            } else {
+                                Produkt anzeigen
+                            }
+                        </a>
+                    </td>
+                    <td>CHF @cart.getTotalPrice</td>
+                <tr>
+            }
+        </table>
+    </div>
+}

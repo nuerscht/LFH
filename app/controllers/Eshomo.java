@@ -1,20 +1,8 @@
 package controllers;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import models.UserType;
 
-import org.apache.commons.codec.binary.Base64;
-
-import play.api.templates.Html;
 import play.mvc.Controller;
-import utils.SessionSerializer;
-import views.html.account.login;
-import views.html.account.loggedin;
 
 /**
  * basic class for eshomo controllers
@@ -34,13 +22,13 @@ public class Eshomo extends Controller {
     /**
      * stores user login in session
      *
-     * @param user
+     * @param
      * @throws
      * @author boe
      */
     protected static void userLogin(final models.User user) {
-        setUserObj(user);
         session("loggedin", "1");
+        session("user_id", user.getId().toString());
         long unixTime = System.currentTimeMillis() / 1000L;
         session("logintime", Long.toString(unixTime));
     }
@@ -58,10 +46,7 @@ public class Eshomo extends Controller {
      * @return
      */
     public static Boolean isLoggedIn() {
-        if ("1".equals(session("loggedin")))
-            return Boolean.TRUE;
-        else
-            return Boolean.FALSE;
+        return "1".equals(session("loggedin"));
     }
 
     /**
@@ -70,10 +55,7 @@ public class Eshomo extends Controller {
      * @return
      */
     protected static Boolean isAdminUser() {
-        if (getUserObj().getType().getId().equals(UserType.ADMIN))
-            return Boolean.TRUE;
-        else
-            return Boolean.FALSE;
+        return getLoggedInUser().getType().getId().equals(UserType.ADMIN);
     }
 
     /**
@@ -82,28 +64,26 @@ public class Eshomo extends Controller {
      * @return
      */
     protected static Integer getLoggedInUserId() {
-        models.User user = getUserObj();
+        String userIdString = session("user_id");
+        if (userIdString != null) {
+            return Integer.parseInt(userIdString);
+        }
 
-        if (user != null)
-            return user.getId();
         return -1;
     }
 
     /**
-     * deserialize user object from session
+     * load user object from database
      *
      * @return
      */
-    protected static models.User getUserObj() {
-        return SessionSerializer.<models.User>deserialize(session("user").getBytes());
-    }
+    protected static models.User getLoggedInUser() {
+        Integer userId = getLoggedInUserId();
 
-    /**
-     * serialize user object and save it into session
-     *
-     * @param user
-     */
-    protected static void setUserObj(final models.User user) {
-        session("user", SessionSerializer.serialize(user));
+        if (userId < 0) {
+            throw new RuntimeException("No logged in user found.");
+        }
+
+        return models.User.find.byId(userId);
     }
 }

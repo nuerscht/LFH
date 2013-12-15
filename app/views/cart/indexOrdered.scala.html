@@ -1,0 +1,21 @@
+@(cart: models.Cart)
+
+@main("Bestellung") {
+    <div class="cart">
+        <h1>Bestellung</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>Produkt</th>
+                <th>Anzahl</th>
+                <th>Preis</th>
+            </tr>
+            @for(item <- cart.getCartHasProduct) {
+                <tr>
+                    <td class="title"><a href="/details/@item.getProduct.getId">@item.getProduct.getTitle</a></td>
+                    <td class="amount">@item.getAmount</td>
+                    <td class="price">@item.getTotal</td>
+                <tr>
+            }
+        </table>
+    </div>
+}

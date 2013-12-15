@@ -90,7 +90,7 @@ public class Product extends Eshomo {
         } else {
             Rating rating = form.get();
             rating.setProduct(product);
-            rating.setUser(getUserObj());
+            rating.setUser(getLoggedInUser());
             try {
                 Ebean.beginTransaction();
                 Ebean.save(rating);
@@ -211,7 +211,7 @@ public class Product extends Eshomo {
                 //Finally move image as we know the id
                 if (image != null) {
                 	FileUtils.moveFile(imageFile.getFile(), new File("public/" + play.Play.application().configuration()
-                			.getString("eshomo.upload.directory"), image.getId() + image.getExtension()));
+                        .getString("eshomo.upload.directory"), image.getId() + image.getExtension()));
                 }
 
                 Ebean.commitTransaction();
@@ -235,7 +235,7 @@ public class Product extends Eshomo {
         models.Product product = models.Product.find.byId(id);
 
         if (product != null) {
-            models.Cart cart = models.Cart.fetchOrCreateOpenCart(getUserObj());
+            models.Cart cart = models.Cart.fetchOrCreateOpenCart(getLoggedInUser());
             cart.addProduct(product);
         }
 
