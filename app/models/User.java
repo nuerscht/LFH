@@ -135,6 +135,10 @@ public class User extends Model {
     public String getToken() {
         return token;
     }
+    
+    public Address getAdress() {
+    	return Address.find.where().eq("user_id", this.getId()).findUnique();
+    }
 
     public boolean isAdmin() {
         return getType().getId().equals(UserType.ADMIN);
