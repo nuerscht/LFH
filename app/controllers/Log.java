@@ -1,25 +1,22 @@
 package controllers;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
-import com.avaje.ebean.Expression;
-import com.avaje.ebean.ExpressionList;
-import com.avaje.ebean.PagingList;
-import com.avaje.ebean.Query;
-import com.avaje.ebean.Expr;
 
 import models.Address;
 import models.LogApi;
 import models.LogLogin;
 import play.mvc.Result;
 import views.html.log.overview;
+
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.Expression;
+import com.avaje.ebean.ExpressionList;
+import com.avaje.ebean.PagingList;
 
 /**
  * Controller to display log entries.
@@ -78,7 +75,7 @@ public class Log extends Eshomo {
 
             return ok(overview.render(model));
         } else
-            return forbidden();
+            return forbidden(views.html.error.forbidden.render());
     }
 
     /**
@@ -121,7 +118,7 @@ public class Log extends Eshomo {
             model.linkModel = new PageLinkModel(VISIBLE_PAGE, model.currentPage, model.totalPage);
             return ok(overview.render(model));
         } else
-            return forbidden();
+            return forbidden(views.html.error.forbidden.render());
     }
 
     private static <T> LogViewModel getLogViewModel(PagingList<T> list, String filter, int page)

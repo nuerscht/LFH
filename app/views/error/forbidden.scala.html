@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Zugriff verweigert</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
+
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <script src="@routes.Assets.at("javascripts/jquery.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 col-left sidebar">
+                    <h1><a style="text-decoration:none;" href="@routes.Application.index">LFH Shop</a></h1>
+                </div>
+                <div class="col-sm-6 col-content">
+                    <h1>Zugriff verweigert!</h1>
+                    <p class="text-danger">Sie verf&uuml;gen nicht &uuml;ber die n&ouml;tige Berechtigung um diese Seite anzuzeigen.</p>
+                    <a href="@routes.Application.index()">Zur&uuml;ck zum Shop</a>
+                </div>
+                <div class="col-sm-3 col-right sidebar">
+                    <div>@product.searchbar()</div>
+                    <div>@Account.getLoginHtml()</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
