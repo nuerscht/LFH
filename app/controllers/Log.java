@@ -32,7 +32,17 @@ public class Log extends Eshomo {
     private final static int PAGE_SIZE = 5;
     private final static int VISIBLE_PAGE = 50;
     
-
+    /**
+     * Gets all log entries for the api log.
+     * 
+     * @author dal
+     * 
+     * @param filter Search for the specified value in the logs
+     * @param page The page to display
+     * @return The rendered html view
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
     public static Result getApiLogs(String filter, int page) throws InterruptedException,
             ExecutionException {
         if (isLoggedIn() && isAdminUser()) {
@@ -71,6 +81,17 @@ public class Log extends Eshomo {
             return forbidden();
     }
 
+    /**
+     * Gets all log entries for the login log.
+     * 
+     * @author dal
+     * 
+     * @param filter Search for the specified value in the logs
+     * @param page The page to display
+     * @return The rendered html view
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
     public static Result getLoginLogs(String filter, int page) throws InterruptedException,
             ExecutionException {
         if (isLoggedIn() && isAdminUser()) {
@@ -178,11 +199,24 @@ public class Log extends Eshomo {
         public PageLinkModel linkModel;
     }
     
+    /**
+     * View model for page links
+     * 
+     * @author dal
+     *
+     */
     public static class PageLinkModel{
         private int maxNumber;
         private int current;
         private int pages;
         
+        /**
+         * Instantiate the view model.
+         * 
+         * @param maxNumber Maximum page numbers to display
+         * @param current The current selected page
+         * @param pages Total pages
+         */
         public PageLinkModel(int maxNumber, int current, int pages ){
             if(maxNumber < 1)
                 throw new IllegalArgumentException("maxNumber");
@@ -195,6 +229,10 @@ public class Log extends Eshomo {
             this.pages = pages;
         }
         
+        /**
+         * Checks if a previous page is available. 
+         * @return <b>true</b> if previous page is available, otherwise <b>false</b>
+         */
         public boolean hasPrev(){
             if(current > 0)
                 return true;
@@ -202,6 +240,10 @@ public class Log extends Eshomo {
                 return false;
         }
         
+        /**
+         * Checks if next page is available. 
+         * @return <b>true</b> if next page is available, otherwise <b>false</b>
+         */
         public boolean hasNext(){
             if(current < pages - 1)
                 return true;
@@ -209,13 +251,20 @@ public class Log extends Eshomo {
                 return false;
         }
         
+        /**
+         * Gets the number for the next page.
+         * @return The index of the next page
+         */
         public int getNextLink(){
             if(hasNext())
                 return  (current + 1) ;     
             else
                 return pages - 1 ; 
         }
-        
+        /**
+         * Gets the number for the last page.
+         * @return The index of the last page
+         */
         public int getPrevLink(){
             if(hasPrev())
                 return  (current - 1);     
@@ -223,10 +272,18 @@ public class Log extends Eshomo {
                 return 0 ; 
         }
         
+        /**
+         * Gets the index of the last page.
+         * @return The index of the last page
+         */
         public int getLastLink(){
             return pages - 1;            
         }
         
+        /**
+         * Checks if there are more non visible pages on the right side.
+         * @return <b>true</b> if more non visible pages available, otherwise <b>false</b>
+         */
         public boolean hasMore(){
             List<Integer> ids = getPageLinks();           
             if(ids.contains(pages - 1))
@@ -235,6 +292,10 @@ public class Log extends Eshomo {
                 return true;
         }
         
+        /**
+         * Checks if there are more non visible pages on the left side.
+         * @return <b>true</b> if more non visible pages available, otherwise <b>false</b>
+         */
         public boolean hasLess(){
             List<Integer> ids = getPageLinks();           
             if(ids.contains(0))
@@ -242,7 +303,11 @@ public class Log extends Eshomo {
             else
                 return true;
         }
-               
+        
+        /**
+         * Gets a list with visible page indexes.
+         * @return List of visible page indexes
+         */
         public List<Integer> getPageLinks(){
             ArrayList<Integer> list = new ArrayList<Integer>();
             int lb;
