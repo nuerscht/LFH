@@ -91,7 +91,11 @@ public class Cart extends Eshomo {
         cart.setStatusOrdered();
         cart.save();
 
-        return redirect("/");
+        return redirect("/cart/successful");
+    }
+
+    public static Result orderDone() {
+        return ok(done.render());
     }
 
     public static Result history() {

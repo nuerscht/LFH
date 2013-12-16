@@ -23,6 +23,7 @@ GET         /cart                         controllers.Cart.index()
 POST        /cart                         controllers.Cart.update()
 GET         /cart/order                   controllers.Cart.order()
 POST        /cart/order                   controllers.Cart.submitOrder()
+GET         /cart/successful              controllers.Cart.orderDone()
 GET         /transactions                 controllers.Cart.history()
 GET         /transactions/:id             controllers.Cart.indexById(id: Integer)
 

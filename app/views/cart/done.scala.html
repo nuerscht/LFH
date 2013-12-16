@@ -1,0 +1,19 @@
+@main("Bestellung abgeschlossen") {
+    <div class="order-done">
+        <h1>Vielen Dank für die Bestellung!</h1>
+        <p>
+            Die Bestellung ist erfolgreich abgeschlossen.<br/>
+            Sie erhalten in Kürze eine Email von uns.
+        </p>
+        <p>
+            <a href="/">Weiter zur Startseite</a>
+        </p>
+        <script>
+            $(document ).ready(function() {
+                setTimeout(function() {
+                    window.location = "/";
+                }, 6000);
+            });
+        </script>
+    </div>
+}
