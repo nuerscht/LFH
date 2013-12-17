@@ -20,7 +20,13 @@ import static org.fluentlenium.core.filter.FilterConstructor.*;
 
 import org.fluentlenium.core.filter.matcher.MatcherType;
 import org.junit.Test;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
+
+
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import play.libs.F.Callback;
 import play.mvc.With;
@@ -118,30 +124,36 @@ public class LogIntegrationTest extends EshomoTest {
     @Test
     public void checkGetApiLogs() {
         FakeApplication fakeApp = Helpers.fakeApplication();
-        running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
                
+                
+                
                 getNewUser(true, true, USER_NAME, PASSWORD);
                 createLogEntries(LogApi.class);
-                browser.goTo("http://localhost:3333");
+                phantomBrowser.goTo("http://localhost:3333");
 
-                browser.fill("#email").with(USER_NAME);
-                browser.fill("#password").with(PASSWORD);
-                browser.submit("#signin");
+                phantomBrowser.fill("#email").with(USER_NAME);
+                phantomBrowser.fill("#password").with(PASSWORD);
+                phantomBrowser.submit("#signin");
+                //browser.quit();
+                assertThat(phantomBrowser.pageSource()).contains("Ausloggen");
 
-                assertThat(browser.pageSource()).contains("Ausloggen");
-
-                browser.goTo("http://localhost:3333/" + routes.Log.getApiLogs("", 0));
+                phantomBrowser.goTo("http://localhost:3333/" + routes.Log.getApiLogs("", 0));
                 //System.out.println(browser.pageSource());
-                FluentList<FluentWebElement> list = browser.find(".paging", (Filter[])null);
+                FluentList<FluentWebElement> list = phantomBrowser.find(".paging", (Filter[])null);
                 assertThat(list.size()).isEqualTo(1);
                // FluentWebElement element = browser.findFirst("form", with("action").contains("/log/login"));
                 //assertThat(element.getText()).contains("Logs durchsuchen");
                 //System.out.println(element.getText());
+                
              
      
             }
         });
+
+        
     }
 
    // @Test
