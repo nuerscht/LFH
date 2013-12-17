@@ -213,8 +213,12 @@ public class Product extends Eshomo {
 
                 //Finally move image as we know the id
                 if (image != null) {
-                	FileUtils.moveFile(imageFile.getFile(), new File("public/" + play.Play.application().configuration()
-                        .getString("eshomo.upload.directory"), image.getId() + image.getExtension()));
+                    String uploadDir = "public/" + play.Play.application().configuration().getString("eshomo.upload.directory");
+                    File file = new File(uploadDir);
+                    if(!file.exists()){
+                        file.mkdirs();
+                    }
+                	FileUtils.moveFile(imageFile.getFile(), new File(uploadDir, image.getId() + image.getExtension()));
                 }
 
                 Ebean.commitTransaction();
