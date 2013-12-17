@@ -48,9 +48,7 @@ public class EshomoTest {
         
         String createScript = ddl.generateCreateDdl();
         ddl.runScript(false, createScript);
-        
-        // Create TestBrowser
-        browser = getBrowser();
+
     }
     
     protected TestBrowser getBrowser(){
