@@ -29,7 +29,7 @@
             <input type="text" class="form-control" name="filter" id="filter" placeholder="Logs durchsuchen" value="@model.filter" />
         </div>
         <div class="form-group">
-            <button type="submit" id="search-product" class="btn btn-default">Suchen</button>
+            <button type="submit" id="search-log-button" class="btn btn-default">Suchen</button>
         </div>
     }
     @if(model.totalPage > 1){
@@ -55,7 +55,7 @@
         </ul>
     </div>
     }
-    <table class="table table-striped log-overview clear">
+    <table class="table table-striped log-overview clear" id="log-overview-table">
         <tr>
             <th class="log-overview-date">Datum</th>
             <th class="log-overview-user">Benutzer</th>

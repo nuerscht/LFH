@@ -1,12 +1,8 @@
 package eshomo.log;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static play.test.Helpers.HTMLUNIT;
 import static play.test.Helpers.running;
 import static play.test.Helpers.testServer;
-
-import java.util.Random;
-
 import models.LogApi;
 import models.LogLogin;
 import models.User;
@@ -15,21 +11,8 @@ import models.UserType;
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;
 import org.fluentlenium.core.filter.Filter;
-
-import static org.fluentlenium.core.filter.FilterConstructor.*;
-
-import org.fluentlenium.core.filter.matcher.MatcherType;
 import org.junit.Test;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.WebDriver;
 
-
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
-
-import play.libs.F.Callback;
-import play.mvc.With;
 import play.test.FakeApplication;
 import play.test.Helpers;
 import play.test.TestBrowser;
@@ -41,7 +24,7 @@ public class LogIntegrationTest extends EshomoTest {
     private final static String USER_NAME = "jabba@thehutt.com";
     private final static String PASSWORD = "ihatesolo";
 
-    //@Test
+    @Test
     public void checkGetApiLogs_WithoutLogin() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
@@ -59,7 +42,7 @@ public class LogIntegrationTest extends EshomoTest {
         });
     }
 
-    //@Test
+    @Test
     public void checkGetLoginLogs_WithoutLogin() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
@@ -76,7 +59,7 @@ public class LogIntegrationTest extends EshomoTest {
         });
     }
 
-    //@Test
+    @Test
     public void checkGetApiLogs_LoginNoAdmin() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
@@ -101,7 +84,7 @@ public class LogIntegrationTest extends EshomoTest {
         });
     }
 
-    //@Test
+    @Test
     public void checkGetLoginLogs_LoginNoAdmin() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
@@ -130,6 +113,7 @@ public class LogIntegrationTest extends EshomoTest {
     public void checkGetApiLogs() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
+            @SuppressWarnings("unchecked")
             public void run() {
                 TestBrowser browser = getBrowser();        
                 getNewUser(true, true, USER_NAME, PASSWORD);
@@ -142,16 +126,22 @@ public class LogIntegrationTest extends EshomoTest {
                 //browser.quit();
                 assertThat(browser.pageSource()).contains("Ausloggen");
 
-                browser.goTo("http://localhost:3333/" + routes.Log.getApiLogs("", 0));
-                System.out.println(browser.pageSource());
+                browser.goTo("http://localhost:3333" + routes.Log.getApiLogs("", 0));
                 FluentList<FluentWebElement> list = browser.find(".paging", (Filter[])null);
                 assertThat(list.size()).isEqualTo(1);
-               // FluentWebElement element = browser.findFirst("form", with("action").contains("/log/login"));
-                //assertThat(element.getText()).contains("Logs durchsuchen");
-                //System.out.println(element.getText());
-                
-             
-     
+                FluentWebElement element = browser.findFirst("#filter",(Filter[])null);
+                assertThat(element.getAttribute("placeholder")).contains("Logs durchsuchen");
+                element = browser.findFirst("#search-log-button",(Filter[])null);
+                assertThat(element.getText()).contains("Suchen");
+                element = browser.findFirst(".paging",(Filter[])null);
+                assertThat(element.isDisplayed()).isEqualTo(true);            
+                FluentList<FluentWebElement> fList = browser.findFirst("#log-overview-table",(Filter[])null)
+                        .findFirst("tr", (Filter[])null).find("th", (Filter[])null);
+                assertThat(fList.size()).isEqualTo(4);
+                assertThat(fList.get(0).getText()).isEqualTo("Datum");
+                assertThat(fList.get(1).getText()).isEqualTo("Benutzer");
+                assertThat(fList.get(2).getText()).isEqualTo("Info");
+                assertThat(fList.get(3).getText()).isEqualTo("Parameter");
             }
         });
 
@@ -162,6 +152,7 @@ public class LogIntegrationTest extends EshomoTest {
     public void checkGetLoginLogs() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
+            @SuppressWarnings("unchecked")
             public void run() {
                 TestBrowser browser = getBrowser();    
                 getNewUser(true, true, USER_NAME, PASSWORD);
@@ -175,11 +166,20 @@ public class LogIntegrationTest extends EshomoTest {
                 assertThat(browser.pageSource()).contains("Ausloggen");
 
                 browser.goTo("http://localhost:3333" + routes.Log.getLoginLogs("", 0));
-                assertThat(browser.pageSource()).contains("Zugriff verweigert!");
-                assertThat(browser.pageSource())
-                        .contains(
-                                "Sie verfügen nicht über die nötige Berechtigung um diese Seite anzuzeigen.");
-
+                FluentList<FluentWebElement> list = browser.find(".paging", (Filter[])null);
+                assertThat(list.size()).isEqualTo(1);
+                FluentWebElement element = browser.findFirst("#filter",(Filter[])null);
+                assertThat(element.getAttribute("placeholder")).contains("Logs durchsuchen");
+                element = browser.findFirst("#search-log-button",(Filter[])null);
+                assertThat(element.getText()).contains("Suchen");
+                element = browser.findFirst(".paging",(Filter[])null);
+                assertThat(element.isDisplayed()).isEqualTo(true);            
+                FluentList<FluentWebElement> fList = browser.findFirst("#log-overview-table",(Filter[])null)
+                        .findFirst("tr", (Filter[])null).find("th", (Filter[])null);
+                assertThat(fList.size()).isEqualTo(3);
+                assertThat(fList.get(0).getText()).isEqualTo("Datum");
+                assertThat(fList.get(1).getText()).isEqualTo("Benutzer");
+                assertThat(fList.get(2).getText()).isEqualTo("Info");
             }
         });
     }
