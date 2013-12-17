@@ -22,13 +22,14 @@ public class EshomoTest {
 
     public static FakeApplication app;
     public static DdlGenerator ddl; 
-    public static TestBrowser phantomBrowser;
+    private static TestBrowser browser;
     
     @After
     public void stopApp() {
         Helpers.stop(app);
         // Close browser
-        phantomBrowser.quit();
+        if(browser != null)
+            browser.quit();
     }
 
     @Before
@@ -47,10 +48,13 @@ public class EshomoTest {
         ddl.runScript(false, createScript);
         
         // Create TestBrowser
-        phantomBrowser = getBrowser();
+        browser = getBrowser();
     }
     
-    private TestBrowser getBrowser(){
+    protected TestBrowser getBrowser(){
+        
+        if(browser != null)
+            return browser;
         String binPath = "";
         if(SystemUtils.IS_OS_WINDOWS)
             binPath = "test/phantomjs/phantomjs.exe";
@@ -64,7 +68,7 @@ public class EshomoTest {
         final DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
         desiredCapabilities.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, binPath);
         final PhantomJSDriver driver = new PhantomJSDriver(desiredCapabilities);
-        final TestBrowser browser = new TestBrowser(driver, "Tester");
+        browser = new TestBrowser(driver, "Tester");
         return browser;
     }
 }

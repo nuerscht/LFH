@@ -41,7 +41,7 @@ public class LogIntegrationTest extends EshomoTest {
     private final static String USER_NAME = "jabba@thehutt.com";
     private final static String PASSWORD = "ihatesolo";
 
-    //@Test
+    @Test
     public void checkGetApiLogs_WithoutLogin() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
@@ -57,7 +57,7 @@ public class LogIntegrationTest extends EshomoTest {
         });
     }
 
-    //@Test
+    @Test
     public void checkGetLoginLogs_WithoutLogin() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
@@ -73,7 +73,7 @@ public class LogIntegrationTest extends EshomoTest {
         });
     }
 
-    //@Test
+    @Test
     public void checkGetApiLogs_LoginNoAdmin() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
@@ -97,7 +97,7 @@ public class LogIntegrationTest extends EshomoTest {
         });
     }
 
-    //@Test
+    @Test
     public void checkGetLoginLogs_LoginNoAdmin() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
@@ -127,22 +127,20 @@ public class LogIntegrationTest extends EshomoTest {
 
         running(testServer(3333, fakeApp), new Runnable() {
             public void run() {
-               
-                
-                
+                TestBrowser browser = getBrowser();        
                 getNewUser(true, true, USER_NAME, PASSWORD);
                 createLogEntries(LogApi.class);
-                phantomBrowser.goTo("http://localhost:3333");
+                browser.goTo("http://localhost:3333");
 
-                phantomBrowser.fill("#email").with(USER_NAME);
-                phantomBrowser.fill("#password").with(PASSWORD);
-                phantomBrowser.submit("#signin");
+                browser.fill("#email").with(USER_NAME);
+                browser.fill("#password").with(PASSWORD);
+                browser.submit("#signin");
                 //browser.quit();
-                assertThat(phantomBrowser.pageSource()).contains("Ausloggen");
+                assertThat(browser.pageSource()).contains("Ausloggen");
 
-                phantomBrowser.goTo("http://localhost:3333/" + routes.Log.getApiLogs("", 0));
+                browser.goTo("http://localhost:3333/" + routes.Log.getApiLogs("", 0));
                 //System.out.println(browser.pageSource());
-                FluentList<FluentWebElement> list = phantomBrowser.find(".paging", (Filter[])null);
+                FluentList<FluentWebElement> list = browser.find(".paging", (Filter[])null);
                 assertThat(list.size()).isEqualTo(1);
                // FluentWebElement element = browser.findFirst("form", with("action").contains("/log/login"));
                 //assertThat(element.getText()).contains("Logs durchsuchen");
@@ -156,7 +154,7 @@ public class LogIntegrationTest extends EshomoTest {
         
     }
 
-   // @Test
+    @Test
     public void checkGetLoginLogs() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
