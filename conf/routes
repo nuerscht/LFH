@@ -60,6 +60,9 @@ POST        /country/modify               controllers.Country.modify(id: Integer
 GET         /log/api                      controllers.Log.getApiLogs(filter: String ?= null, page: Integer ?= 0)
 GET         /log/login                    controllers.Log.getLoginLogs(filter: String ?= null, page: Integer ?= 0)
 
+#Image
+GET         /image/:id                    controllers.Image.get(id: Integer)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                 controllers.Assets.at(path="/public", file)

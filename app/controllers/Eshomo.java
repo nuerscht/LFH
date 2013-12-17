@@ -1,7 +1,7 @@
 package controllers;
 
+import customactions.CustomLogger;
 import models.UserType;
-
 import play.mvc.Controller;
 
 /**
@@ -10,6 +10,8 @@ import play.mvc.Controller;
  * @author boe
  */
 public class Eshomo extends Controller {
+    protected static final CustomLogger logger = new CustomLogger();
+    
     /**
      * holds the message if a problem with the login exists
      */
