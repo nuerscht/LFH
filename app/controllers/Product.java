@@ -213,7 +213,8 @@ public class Product extends Eshomo {
 
                 //Finally move image as we know the id
                 if (image != null) {
-                    String uploadDir = "public/" + play.Play.application().configuration().getString("eshomo.upload.directory");
+                    String uploadDir = play.Play.application().path().getAbsolutePath() + "/" + "public/" + play.Play.application().configuration().getString("eshomo.upload.directory");
+                    System.out.println(uploadDir);
                     File file = new File(uploadDir);
                     if(!file.exists()){
                         file.mkdirs();
