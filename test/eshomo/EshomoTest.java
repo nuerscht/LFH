@@ -28,8 +28,10 @@ public class EshomoTest {
     public void stopApp() {
         Helpers.stop(app);
         // Close browser
-        if(browser != null)
+        if(browser != null){
             browser.quit();
+            browser = null;
+        }
     }
 
     @Before
