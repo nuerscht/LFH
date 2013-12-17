@@ -7,6 +7,10 @@ import static play.test.Helpers.testServer;
 import models.*;
 
 import org.junit.Test;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import play.libs.F.Callback;
 import play.test.FakeApplication;
@@ -23,12 +27,13 @@ public class ProductIntegrationTest extends EshomoTest {
 	@Test
 	public void testBasicSearch() {
         FakeApplication fakeApp = Helpers.fakeApplication();
-		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
-                browser.goTo("http://localhost:3333");
+		running(testServer(3333, fakeApp), new Runnable() {
+			public void run() {
+				TestBrowser browser = getBrowser();
+				browser.goTo("http://localhost:3333");
                 
-                browser.fill("#search").with("HP");
-                browser.submit("#search");
+				browser.fill("#search").with("HP");
+				browser.submit("#search");
                 
                 assertThat(browser.pageSource()).contains("Compaq 6305 Pro");
                 assertThat(browser.pageSource()).doesNotContain("Apple");
@@ -38,8 +43,9 @@ public class ProductIntegrationTest extends EshomoTest {
 	
 	public void testProductList() {
 		FakeApplication fakeApp = Helpers.fakeApplication();
-		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+		running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+            	TestBrowser browser = getBrowser();
                 browser.goTo("http://localhost:3333");
                 
                 assertThat(browser.pageSource()).contains("Compaq 6305 Pro");
@@ -52,10 +58,11 @@ public class ProductIntegrationTest extends EshomoTest {
 	public void testProductDetails() {
 		
 		FakeApplication fakeApp = Helpers.fakeApplication();
-		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+		running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
             	Integer productId = 1;
             	Product product = Product.find.byId(productId);
+            	TestBrowser browser = getBrowser();
             	
                 browser.goTo("http://localhost:3333" + routes.Product.details(productId, 0));
                 
@@ -72,11 +79,12 @@ public class ProductIntegrationTest extends EshomoTest {
 	@Test
 	public void testProductRating() {
 		FakeApplication fakeApp = Helpers.fakeApplication();
-		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+		running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
             	Integer productId = 1;
             	String comment = "This is my comment";
             	User user = User.find.byId(1);
+            	TestBrowser browser = getBrowser();
             	
             	browser.goTo("http://localhost:3333");
             	
@@ -96,9 +104,7 @@ public class ProductIntegrationTest extends EshomoTest {
 
                 assertThat(browser.pageSource()).contains("Kommentar");
                 assertThat(browser.pageSource()).contains(comment);
-                // As long as we don't have stars to rate we check the value
-                assertThat(browser.pageSource()).contains("5");
-                assertThat(browser.pageSource()).contains(user.getEmail());
+                assertThat(browser.pageSource()).contains(user.getAdress().getFirstname());
             }
         });
 	}
@@ -106,8 +112,9 @@ public class ProductIntegrationTest extends EshomoTest {
 	@Test
 	public void testProductAdd(){
 		FakeApplication fakeApp = Helpers.fakeApplication();
-		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+		running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+            	TestBrowser browser = getBrowser();
             	String title = "Test Product";
             	String description = "This is my comment";
             	String ean = "1231231231239";
@@ -158,8 +165,9 @@ public class ProductIntegrationTest extends EshomoTest {
 	@Test
 	public void testProductEdit(){
 		FakeApplication fakeApp = Helpers.fakeApplication();
-		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+		running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+            	TestBrowser browser = getBrowser();
             	Integer productId = 1;
             	String title = "Test Product";
             	String description = "This is my comment";
