@@ -37,7 +37,7 @@ public class Product extends Model {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Attribute> attributes;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE)
     private List<Image> images;
     
     @ManyToMany(cascade = CascadeType.REMOVE, mappedBy="products")

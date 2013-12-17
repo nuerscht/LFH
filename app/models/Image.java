@@ -4,7 +4,6 @@ import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdateMode;
 
 import controllers.routes;
-import customactions.LogLevel;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
@@ -18,12 +17,9 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 @UpdateMode(updateChangesOnly = false)
@@ -93,33 +89,30 @@ public class Image extends Model {
     public File getDataAsFile() throws IOException {
         String tmpPathName = play.Play.application().path().getAbsolutePath().concat("/tmp/");
         String fileName    = tmpPathName.concat(this.id.toString()).concat(this.extension);
+        File   tmpPath     = new File(tmpPathName);
+        
+        if (!tmpPath.exists()) {
+            tmpPath.mkdirs();
+        } 
 
         File file = new File(fileName);
-        if (!file.exists()) {
-            //temporary file does NOT exists -> create it
-            File   tmpPath     = new File(tmpPathName);
-            
-            if (!tmpPath.exists()) {
-                tmpPath.mkdirs();
-            } 
-            
-            FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-            fileOutputStream.write(data);
-            fileOutputStream.flush();
-            fileOutputStream.close();
-        }
+        
+        FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+        fileOutputStream.write(data);
+        fileOutputStream.flush();
+        fileOutputStream.close();
                 
         return file;
     }
 
-    public void setDataAsFile(File data) throws IOException {
+    public void setDataAsFile(File data) throws IOException {        
         FileInputStream fileInputStream;
 
         fileInputStream = new FileInputStream(data);
-        byte[] file = IOUtils.toByteArray(fileInputStream);
+        byte[] bytes = IOUtils.toByteArray(fileInputStream);
         fileInputStream.close();
             
-        this.data = file;
+        this.data = bytes;
     }
 
     public Date getCreatedAt() {

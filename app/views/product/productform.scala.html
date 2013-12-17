@@ -127,7 +127,7 @@
         
             @if(productId != 0 && product.hasImage){
                 <div class="well">
-                    <img class="image" src="@routes.Image.get(product.getId())">
+                    <img class="image" src="@routes.Image.get(product.getImages.get(0).getId())">
                 </div>
             }
             

@@ -8,7 +8,7 @@
 	
 	@if(product.hasImage){
 	    <div class="well">
-            <img class="image" src="@routes.Image.get(product.getId())">
+            <img class="image" src="@routes.Image.get(product.getImages.get(imageIndex).getId())">
             <ul class="pagination">
             @for((image, index) <- product.getImages.zipWithIndex){
                 <li><a href="?image=@index">@{index + 1}</a></li>
