@@ -23,6 +23,7 @@ GET         /cart                         controllers.Cart.index()
 POST        /cart                         controllers.Cart.update()
 GET         /cart/order                   controllers.Cart.order()
 POST        /cart/order                   controllers.Cart.submitOrder()
+GET         /cart/successful              controllers.Cart.orderDone()
 GET         /transactions                 controllers.Cart.history()
 GET         /transactions/:id             controllers.Cart.indexById(id: Integer)
 
@@ -58,6 +59,9 @@ POST        /country/modify               controllers.Country.modify(id: Integer
 #Log
 GET         /log/api                      controllers.Log.getApiLogs(filter: String ?= null, page: Integer ?= 0)
 GET         /log/login                    controllers.Log.getLoginLogs(filter: String ?= null, page: Integer ?= 0)
+
+#Image
+GET         /image/:id                    controllers.Image.get(id: Integer)
 
 
 # Map static resources from the /public folder to the /assets URL path

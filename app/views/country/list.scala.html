@@ -3,8 +3,8 @@
 @import helper._
 @import helper.twitterBootstrap._
 
-@main("LFH Shop - L�nder bearbeiten") {
-    <h1>L&auml;nder bearbeiten</h1>
+@main("LFH Shop - L�nder bearbeiten") {
+    <h1>Länder bearbeiten</h1>
     @if(!message.isEmpty()) {
         <div class="alert alert-@messageType">
             <a class="close" data-dismiss="alert">x</a> 
@@ -25,5 +25,5 @@
         <tr>
     } 
     </table>
-    <a href="@routes.Country.edit(0)">Land hinzuf&uuml;gen</a>
+    <a href="@routes.Country.edit(0)">Land hinzufügen</a>
 }

@@ -1,6 +1,5 @@
 package models;
 
-import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 import com.avaje.ebean.Page;
 import com.avaje.ebean.annotation.CreatedTimestamp;
@@ -12,15 +11,8 @@ import play.db.ebean.Model;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import play.data.validation.Constraints;
-import play.db.ebean.Model;
-
-import com.avaje.ebean.annotation.CreatedTimestamp;
-import com.avaje.ebean.annotation.UpdatedTimestamp;
 
 
 @Entity
@@ -45,7 +37,7 @@ public class Product extends Model {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Attribute> attributes;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE)
     private List<Image> images;
     
     @ManyToMany(cascade = CascadeType.REMOVE, mappedBy="products")

@@ -4,9 +4,11 @@ import com.avaje.ebean.Ebean;
 import com.avaje.ebean.annotation.*;
 
 import play.db.ebean.Model;
+import scala.Char;
 
 import javax.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -182,4 +184,23 @@ public class Cart extends Model {
         }
         return price;
     }
+
+    public String getReferenceNumber() {
+        String number = "10000000000" + getId();
+        return number + getModule10(number).toString();
+    }
+
+    public Integer getModule10(String number)
+    {
+        int[] table = { 0, 9, 4, 6, 8, 2, 7, 1, 3, 5 };
+        int carryover = 0;
+
+        for (Character digitChar : number.toCharArray()) {
+            int digit = Integer.parseInt(digitChar.toString());
+            carryover = table[(carryover + digit) % 10];
+        }
+
+        return (10 - carryover) % 10;
+    }
+
 }

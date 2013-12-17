@@ -8,7 +8,7 @@
 	
 	@if(product.hasImage){
 	    <div class="well">
-            <img class="image" src="@product.getImages.get(imageIndex).getAssetUrl">
+            <img class="image" src="@routes.Image.get(product.getImages.get(imageIndex).getId())">
             <ul class="pagination">
             @for((image, index) <- product.getImages.zipWithIndex){
                 <li><a href="?image=@index">@{index + 1}</a></li>
@@ -76,7 +76,7 @@
 
         <div class="actions">
             <input id="submit-rating" type="submit" class="btn primary" value="Bewerten">
-            <a href="@routes.Product.details(product.getId)" class="btn">L&ouml;schen</a>
+            <a href="@routes.Product.details(product.getId)" class="btn">Löschen</a>
         </div>
         
     }}

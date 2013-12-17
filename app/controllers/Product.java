@@ -1,6 +1,5 @@
 package controllers;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -9,10 +8,7 @@ import java.util.ArrayList;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
 
-import customactions.CustomLogger;
 import customactions.LogLevel;
-
-import org.apache.commons.io.FileUtils;
 
 import models.*;
 import play.data.DynamicForm;
@@ -27,8 +23,7 @@ public class Product extends Eshomo {
     // An unbound rating form
     final static Form<Rating> ratingForm = Form.form(Rating.class);
     final static Form<models.Product> productForm = Form.form(models.Product.class);
-    final static Form<Image> imageForm = Form.form(Image.class);
-    private static final CustomLogger logger = new CustomLogger();
+    final static Form<models.Image> imageForm = Form.form(models.Image.class);
     
     /**
      * @return Product overview
@@ -133,13 +128,13 @@ public class Product extends Eshomo {
      * @return filled form to edit product
      */
     public static Result edit(Integer id) {
-        Form<Image> imageForm;
+        Form<models.Image> imageForm;
         List<models.Tag> tags = models.Tag.find.all();
         models.Product product = models.Product.find.byId(id);
         Form<models.Product> productForm = Form.form(models.Product.class).fill(product);
         //Form<Tags> tagForm = Form.form(Tags.class).fill(new Tags(product.getTags()));
         if (product.hasImage()) {
-            imageForm = Form.form(Image.class).fill(product.getImages().get(0));
+            imageForm = Form.form(models.Image.class).fill(product.getImages().get(0));
         } else {
             imageForm = Product.imageForm;
         }
@@ -156,14 +151,14 @@ public class Product extends Eshomo {
     public static Result save(Integer id) {
         // Get form from request
         Form<models.Product> form = Form.form(models.Product.class).bindFromRequest();
-        Form<Image> imageForm = Form.form(Image.class).bindFromRequest();
+        Form<models.Image> imageForm = Form.form(models.Image.class).bindFromRequest();
         DynamicForm dynForm = Form.form().bindFromRequest();
         
         // Get the models and data of the form
         List<models.Tag> tags = models.Tag.find.all();
         models.Product product = form.get();
         FilePart imageFile = request().body().asMultipartFormData().getFile("image");
-        Image image = null;
+        models.Image image = null;
 
         models.Product oldProduct = models.Product.find.byId(id);
 
@@ -189,7 +184,7 @@ public class Product extends Eshomo {
             	
                 if (imageFile != null) {
                     String extension = imageFile.getFilename().substring(imageFile.getFilename().lastIndexOf("."));
-                    image = new Image();
+                    image = new models.Image();
                     image.setName(dynForm.get("name"));
                     image.setDescription(dynForm.get("image-description"));
                     image.setExtension(extension);
@@ -197,10 +192,20 @@ public class Product extends Eshomo {
 
                     // Update old image if existing
                 } else if (oldProduct != null && oldProduct.getImages().size() > 0) {
-                    Image oldImage = oldProduct.getImages().get(0);
+                    models.Image oldImage = oldProduct.getImages().get(0);
                     oldImage.setName(dynForm.get("name"));
                     oldImage.setDescription(dynForm.get("image-description"));
                     product.addImage(oldImage);
+                }
+
+                //Finally save image
+                if (image != null) {
+                    try {
+                        image.setDataAsFile(imageFile.getFile());
+                    } catch (IOException e) {
+                        logger.logToFile(e.getMessage() + "=>" + Arrays.toString(e.getStackTrace()), LogLevel.ERROR, "application");
+                        return internalServerError();
+                    }
                 }
 
                 if (id != 0) {
@@ -209,18 +214,10 @@ public class Product extends Eshomo {
                 } else {
                     Ebean.save(product);
                 }
+                
                 product.saveManyToManyAssociations("tags");
 
-                //Finally move image as we know the id
-                if (image != null) {
-                	FileUtils.moveFile(imageFile.getFile(), new File("public/" + play.Play.application().configuration()
-                        .getString("eshomo.upload.directory"), image.getId() + image.getExtension()));
-                }
-
                 Ebean.commitTransaction();
-            }catch(IOException e){
-            	logger.logToFile(e.getMessage() + "=>" + Arrays.toString(e.getStackTrace()), LogLevel.ERROR, "application");
-            	return internalServerError();
             } finally {
                 Ebean.endTransaction();
             }

@@ -1,4 +1,4 @@
-@(productForm: Form[models.Product], imageForm: Form[Image], productId: Integer, product: models.Product, tags: List[models.Tag], title: String, message: String)
+@(productForm: Form[models.Product], imageForm: Form[models.Image], productId: Integer, product: models.Product, tags: List[models.Tag], title: String, message: String)
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -127,7 +127,7 @@
         
             @if(productId != 0 && product.hasImage){
                 <div class="well">
-                    <img class="image" src="@product.getImages.get(0).getAssetUrl">
+                    <img class="image" src="@routes.Image.get(product.getImages.get(0).getId())">
                 </div>
             }
             
