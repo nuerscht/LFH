@@ -36,7 +36,7 @@
 
     @form(action = routes.Product.save(productId), 'id -> "form", 'enctype -> "multipart/form-data") {
         @if(!message.isEmpty()) {
-            <div class="alert">
+            <div class="alert alert-info">
                 <a class="close" data-dismiss="alert">x</a>
                 <strong>Meldung:</strong> @message.
             </div>
@@ -152,6 +152,7 @@
             <h3>Neues Bild hochladen:</h3>
             <div class="input">
                 <input type="file" name="image">
+                <span class="help-block">Maximal 4 MB</span>
             </div>
         </div>
         

@@ -168,6 +168,8 @@ public class Product extends Eshomo {
 
         if (form.hasErrors()) {
             return badRequest(productform.render(form, imageForm, id, product, tags, "Produkt editieren", "Formular ungültig"));
+        } else if(imageFile != null && imageFile.getFile().length() > 4194304L){
+        	return badRequest(productform.render(form, imageForm, id, product, tags, "Produkt editieren", "Bild zu gross! Limit: 4MB"));
         } else {
 
             Ebean.beginTransaction();
@@ -183,6 +185,9 @@ public class Product extends Eshomo {
             	}
             	
                 if (imageFile != null) {
+                	// Remove old image
+                	Ebean.delete(models.Image.find.where().eq("product_id", id).findList());
+                	
                     String extension = imageFile.getFilename().substring(imageFile.getFilename().lastIndexOf("."));
                     image = new models.Image();
                     image.setName(dynForm.get("name"));
@@ -198,21 +203,23 @@ public class Product extends Eshomo {
                     product.addImage(oldImage);
                 }
 
-                //Finally save image
-                if (image != null) {
-                    try {
-                        image.setDataAsFile(imageFile.getFile());
-                    } catch (IOException e) {
-                        logger.logToFile(e.getMessage() + "=>" + Arrays.toString(e.getStackTrace()), LogLevel.ERROR, "application");
-                        return internalServerError();
-                    }
-                }
-
                 if (id != 0) {
                     product.setId(id);
                     Ebean.update(product);
                 } else {
                     Ebean.save(product);
+                }
+                
+                //Finally save image
+                if (image != null) {
+                    try {
+                        image.setDataAsFile(imageFile.getFile());
+                        image.setProduct(product);
+                        image.save();
+                    } catch (IOException e) {
+                        logger.logToFile(e.getMessage() + "=>" + Arrays.toString(e.getStackTrace()), LogLevel.ERROR, "application");
+                        return internalServerError();
+                    }
                 }
                 
                 product.saveManyToManyAssociations("tags");
