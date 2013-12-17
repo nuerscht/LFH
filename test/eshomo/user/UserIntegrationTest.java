@@ -1,6 +1,5 @@
 package eshomo.user;
 
-import static play.test.Helpers.HTMLUNIT;
 import static play.test.Helpers.running;
 import static play.test.Helpers.testServer;
 import static org.fest.assertions.Assertions.*;
@@ -8,6 +7,8 @@ import static org.fest.assertions.Assertions.*;
 import java.util.Random;
 
 import org.junit.Test;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 
 import controllers.routes;
 import play.test.FakeApplication;
@@ -57,8 +58,9 @@ public class UserIntegrationTest extends EshomoTest {
 	 */
 	private void showDataWithLoginContent(final String user, final String password, final int userid) {
         FakeApplication fakeApp = Helpers.fakeApplication();
-		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+		running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+            	TestBrowser browser = getBrowser();
                 browser.goTo("http://localhost:3333");
                 
                 browser.fill("#email").with(user);
@@ -72,7 +74,6 @@ public class UserIntegrationTest extends EshomoTest {
                 assertThat(browser.pageSource()).contains("Benutzerdaten");
                 assertThat(browser.pageSource()).contains("Adresse");
                 assertThat(browser.pageSource()).contains("Aktualisieren");
-                assertThat(browser.pageSource()).doesNotContain("Login");
             }
         });
 	}
@@ -102,8 +103,9 @@ public class UserIntegrationTest extends EshomoTest {
 	 */
 	private void updateDataWithLoginContent(final String user, final String password, final int userid) {
 	    FakeApplication fakeApp = Helpers.fakeApplication();
-		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+		running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+            	TestBrowser browser = getBrowser();
                 browser.goTo("http://localhost:3333");
                 
                 browser.fill("#email").with(user);
@@ -163,8 +165,9 @@ public class UserIntegrationTest extends EshomoTest {
 	 */
 	private void showTransactionsWithLoginContent(final String user, final String password, final int userid) {
         FakeApplication fakeApp = Helpers.fakeApplication();
-		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+		running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+            	TestBrowser browser = getBrowser();
                 browser.goTo("http://localhost:3333");
                 
                 browser.fill("#email").with(user);
@@ -173,12 +176,9 @@ public class UserIntegrationTest extends EshomoTest {
                 
                 //assertThat(browser.pageSource()).contains("Ausloggen");
 
-                browser.goTo("http://localhost:3333" + routes.User.showTransactions(userid));
+                browser.goTo("http://localhost:3333" + routes.Cart.history());
 
-                assertThat(browser.pageSource()).contains("Bestellungen");
-                assertThat(browser.pageSource()).contains("Status");
-                assertThat(browser.pageSource()).contains("Total");
-                assertThat(browser.pageSource()).doesNotContain("Login");
+                assertThat(browser.pageSource()).contains("Es sind keine Bestellungen vorhanden.");
             }
         });
 	}
@@ -189,8 +189,9 @@ public class UserIntegrationTest extends EshomoTest {
 	 */
 	private void withoutLoginContent(final String url) {
         FakeApplication fakeApp = Helpers.fakeApplication();
-		running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+		running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+            	TestBrowser browser = getBrowser();
                 browser.goTo(url);
                 
                 assertThat(browser.pageSource()).isEmpty();
@@ -206,8 +207,9 @@ public class UserIntegrationTest extends EshomoTest {
     @Test
     public void checkUserDelete() {
         FakeApplication fakeApp = Helpers.fakeApplication();
-        running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+            	TestBrowser browser = getBrowser();
                 browser.goTo("http://localhost:3333");
                 
                 browser.fill("#email").with("patrick.boesch@students.ffhs.ch");
@@ -235,8 +237,9 @@ public class UserIntegrationTest extends EshomoTest {
     @Test
     public void checkUserTypeChange() {
         FakeApplication fakeApp = Helpers.fakeApplication();
-        running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+            	TestBrowser browser = getBrowser();
                 browser.goTo("http://localhost:3333");
                 
                 browser.fill("#email").with("patrick.boesch@students.ffhs.ch");
@@ -277,8 +280,9 @@ public class UserIntegrationTest extends EshomoTest {
     @Test
     public void checkUserStatusChange() {
         FakeApplication fakeApp = Helpers.fakeApplication();
-        running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+            	TestBrowser browser = getBrowser();
                 browser.goTo("http://localhost:3333");
                 
                 browser.fill("#email").with("patrick.boesch@students.ffhs.ch");
@@ -319,8 +323,9 @@ public class UserIntegrationTest extends EshomoTest {
     @Test
     public void checkUserSearch() {
         FakeApplication fakeApp = Helpers.fakeApplication();
-        running(testServer(3333, fakeApp), HTMLUNIT, new Callback<TestBrowser>() {
-            public void invoke(TestBrowser browser) {
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+            	TestBrowser browser = getBrowser();
                 browser.goTo("http://localhost:3333");
 
                 browser.fill("#email").with("patrick.boesch@students.ffhs.ch");
