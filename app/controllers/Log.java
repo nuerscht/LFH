@@ -26,8 +26,8 @@ import com.avaje.ebean.PagingList;
  */
 public class Log extends Eshomo {
 
-    private final static int PAGE_SIZE = 5;
-    private final static int VISIBLE_PAGE = 50;
+    private final static int PAGE_SIZE = 50;
+    private final static int VISIBLE_PAGE = 5;
     
     /**
      * Gets all log entries for the api log.
@@ -148,11 +148,11 @@ public class Log extends Eshomo {
                 Date d = (Date) created.invoke(item);
                 model.date = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(d);
                 models.User user = (models.User) uMethod.invoke(item);
-                if(user != null && user.getAddresses() != null && user.getAddresses().get(0) != null)
+                if(user != null && user.getAddresses() != null && user.getAddresses().size() > 0  && user.getAddresses().get(0) != null)
                     model.userName = user.getAddresses().get(0).getFirstname() + " " + user.getAddresses().get(0).getLastname();
                 else
                     model.userName = "Anonymous";
-            } catch (Exception e) {
+            } catch (Exception e) { // Is required if object is passed which has not the needed methods.
                 continue;
             }
             try {
@@ -160,8 +160,7 @@ public class Log extends Eshomo {
                 model.params = (String) param.invoke(item);
                 if (model.params == null)
                     model.params = "";
-            } catch (Exception e) {
-            }
+            } catch (Exception e) {} // If hasn't getParams method, skip it.
             result.add(model);
         }
         return result;
