@@ -26,3 +26,4 @@ dist
 /.target
 /bin
 RUNNING_PID
+phantomjsdriver.log
