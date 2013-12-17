@@ -103,7 +103,6 @@ public class Image extends Model {
                 tmpPath.mkdirs();
             } 
             
-            System.out.println(fileName);
             FileOutputStream fileOutputStream = new FileOutputStream(fileName);
             fileOutputStream.write(data);
             fileOutputStream.flush();
