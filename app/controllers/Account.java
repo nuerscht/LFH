@@ -180,7 +180,7 @@ public class Account extends UserData {
      * @param user
      */
     protected static void fillModels(DynamicForm bindedForm, Address address, User user) {
-
+        user.setDeleted(false);
         user.setEmail(bindedForm.get("email"));
 
         address.setEmail(bindedForm.get("email"));
