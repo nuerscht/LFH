@@ -7,12 +7,9 @@ import static org.fest.assertions.Assertions.*;
 import java.util.Random;
 
 import org.junit.Test;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 
 import controllers.routes;
 import play.test.FakeApplication;
-import play.libs.F.Callback;
 import play.test.Helpers;
 import play.test.TestBrowser;
 import eshomo.EshomoTest;
@@ -29,8 +26,17 @@ public class UserIntegrationTest extends EshomoTest {
 	 */
 	@Test
 	public void showDataWithoutLoginContent() {
-	    int userid = 1;
-		withoutLoginContent("http://localhost:3333" + routes.User.showData(userid));
+        FakeApplication fakeApp = Helpers.fakeApplication();
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+                String url = "http://localhost:3333" + routes.User.showDataCurrent();
+                
+                TestBrowser browser = getBrowser();
+                browser.goTo(url);
+                
+                assertThat(browser.pageSource().contains("No logged in user found."));
+            }
+        }); 
 	}
 	
 	/**
@@ -136,8 +142,18 @@ public class UserIntegrationTest extends EshomoTest {
 	 */
 	@Test
 	public void showTransactionsWithoutLoginContent() {
-        int userid = 1;
-		withoutLoginContent("http://localhost:3333" + routes.User.showTransactions(userid));
+        FakeApplication fakeApp = Helpers.fakeApplication();
+        running(testServer(3333, fakeApp), new Runnable() {
+            public void run() {
+                int userid = 1;
+                String url = "http://localhost:3333" + routes.User.showTransactions(userid);
+                
+                TestBrowser browser = getBrowser();
+                browser.goTo(url);
+                
+                assertThat(browser.pageSource().contains("No logged in user found."));
+            }
+        }); 
 	}
 	
 	/**
