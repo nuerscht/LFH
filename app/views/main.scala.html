@@ -7,6 +7,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>@title</title>
+        <link href="http://fonts.googleapis.com/css?family=Ubuntu:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
 
@@ -18,16 +19,30 @@
     <body>
         <div class="container">
             <div class="row">
-                <div class="col-sm-3 col-left sidebar">
-                    <h1><a style="text-decoration:none;" href="@routes.Application.index">LFH Shop</a></h1>
-                    <div>@controllers.Tag.getSidebarHtml()</div>
+                <div class="col-sm-12 header"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 inner">
+                    <div class="row">
+                        <div class="col-sm-3 col-left sidebar">
+                            <h1><a href="@routes.Application.index">
+                                <img src="@routes.Assets.at("images/logo.png")" width="100%"/>
+                            </a></h1>
+                            <div>@controllers.Tag.getSidebarHtml()</div>
+                        </div>
+                        <div class="col-sm-6 col-content">
+                        @content
+                        </div>
+                        <div class="col-sm-3 col-right sidebar">
+                            <div>@product.searchbar()</div>
+                            <div>@Account.getLoginHtml()</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-6 col-content">
-                    @content
-                </div>
-                <div class="col-sm-3 col-right sidebar">
-                    <div>@product.searchbar()</div>
-                    <div>@Account.getLoginHtml()</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 footer">
+                    Webshop für die LFH &mdash; Entwickelt von Studenten der Fernfachhochschule Schweiz
                 </div>
             </div>
         </div>

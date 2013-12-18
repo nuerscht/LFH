@@ -8,15 +8,15 @@
 </ul>
 
 @if(user.getType().getId() == "admin") {
-<h2>Admin</h2>
 	<ul class="nav">
+        <li><b>Admin</b></li>
         <li><a href="@routes.User.list()">Kunden bearbeiten</a></li>
-        <li><a href="@routes.Product.list()">Produkte bearbeiten</a></li>    
+        <li><a href="@routes.Product.list()">Produkte bearbeiten</a></li>
         <li><a href="@routes.Country.list()">Länder bearbeiten</a></li>
         <li><a href="@routes.User.showTransactions(-1)">Bestellungen anzeigen</a></li>
         <li><b>Logs</b></li>
         <li><a href="@routes.Log.getApiLogs()">Api Log anzeigen</a></li>
         <li><a href="@routes.Log.getLoginLogs()">Login Log anzeigen</a></li>
-  
+
 	</ul>
 }
