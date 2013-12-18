@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   `is_active` TINYINT(4) NOT NULL DEFAULT '1',
   `updated_at` DATETIME NOT NULL,
   `created_at` DATETIME NOT NULL,
-  `deleted` TINYINT(4) NOT NULL DEFAULT 0,
+  `deleted` TINYINT(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   INDEX `fk_address_user1_idx` (`user_id` ASC),
   INDEX `fk_address_country1_idx` (`country_id` ASC),
