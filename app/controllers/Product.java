@@ -244,6 +244,9 @@ public class Product extends Eshomo {
         if (product != null) {
             models.Cart cart = models.Cart.fetchOrCreateOpenCart(getLoggedInUser());
             cart.addProduct(product);
+            flash("successMessage","Das Produkt wurde erfolgreich in den Warenkorb gelegt");
+        } else {
+            flash("errorMessage","Das Produkt konnte nicht in den Warenkorb gelegt werden");
         }
 
         return redirect(routes.Product.details(id, 0));

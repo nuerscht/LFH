@@ -4,6 +4,7 @@
 @import helper.twitterBootstrap._
 
 @main("Welcome to the LFH Shop") {
+    @messages()
 	<h1>@product.getTitle()</h1>
 	
 	@if(product.hasImage){
