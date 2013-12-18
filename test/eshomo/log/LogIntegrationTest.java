@@ -24,13 +24,16 @@ public class LogIntegrationTest extends EshomoTest {
     private final static String USER_NAME = "jabba@thehutt.com";
     private final static String PASSWORD = "ihatesolo";
 
+    /**
+     * Checks if a call to /log/api fails if user is anonymous.
+     * @author dal
+     */
     @Test
     public void checkGetApiLogs_WithoutLogin() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {
             public void run() {
-                TestBrowser browser = getBrowser();    
-                System.out.println("http://localhost:3333" + routes.Log.getApiLogs("", 0));
+                TestBrowser browser = getBrowser();                    
                 browser.goTo("http://localhost:3333" + routes.Log.getApiLogs("", 0));
 
                 assertThat(browser.pageSource()).contains("Zugriff verweigert!");
@@ -42,6 +45,10 @@ public class LogIntegrationTest extends EshomoTest {
         });
     }
 
+    /**
+     * Checks if a call to /log/login fails if user is anonymous.
+     * @author dal
+     */
     @Test
     public void checkGetLoginLogs_WithoutLogin() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -59,6 +66,10 @@ public class LogIntegrationTest extends EshomoTest {
         });
     }
 
+    /**
+     * Checks if a call to /log/api fails if user is authenticated but not an admin.
+     * @author dal
+     */
     @Test
     public void checkGetApiLogs_LoginNoAdmin() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -84,6 +95,10 @@ public class LogIntegrationTest extends EshomoTest {
         });
     }
 
+    /**
+     * Checks if a call to /log/login fails if user is authenticated but not an admin.
+     * @author dal
+     */
     @Test
     public void checkGetLoginLogs_LoginNoAdmin() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -109,6 +124,11 @@ public class LogIntegrationTest extends EshomoTest {
         });
     }
     
+    /**
+     * Checks if a call to /log/api succeeds if user is admin and verifies
+     * all necessary elements.
+     * @author dal
+     */
     @Test
     public void checkGetApiLogs() {
         FakeApplication fakeApp = Helpers.fakeApplication();
@@ -148,7 +168,12 @@ public class LogIntegrationTest extends EshomoTest {
         
     }
 
-    //@Test
+    /**
+     * Checks if a call to /log/login succeeds if user is admin and verifies
+     * all necessary elements.
+     * @author dal
+     */
+    @Test
     public void checkGetLoginLogs() {
         FakeApplication fakeApp = Helpers.fakeApplication();
         running(testServer(3333, fakeApp), new Runnable() {

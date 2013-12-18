@@ -11,7 +11,7 @@ import org.apache.commons.codec.binary.Base64;
 /**
  * Simple session serializer to serialize object to play session cookie
  *
- * @author Sandro Dallo
+ * @author dal
  */
 public class SessionSerializer {
     /**

@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 /**
  * Entities serializer for the API controller.
  *
- * @author Sandro Dallo
+ * @author dal
  */
 public class JsonSerializer {
 
