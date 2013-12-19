@@ -109,6 +109,11 @@ public class Product extends Model {
         return attributes;
     }
 
+    /**
+     * Adds a single image
+     * 
+     * @param image to add
+     */
     public void addImage(Image image) {
         this.images.add(image);
     }
@@ -129,6 +134,9 @@ public class Product extends Model {
         this.createdAt = createdAt;
     }
 
+    /**
+     * @return all ratings related to this product
+     */
     public List<Rating> getRatings() {
         return Rating.find.where().eq("product_id", this.getId()).orderBy("updatedAt desc").findList();
     }
@@ -141,6 +149,11 @@ public class Product extends Model {
     	this.tags = tags;
     }
 
+    /**
+     * Adds a tag if not yet assigned
+     * 
+     * @param tag to add
+     */
     public void addTag(Tag tag){
     	if(!(this.hasTag(tag))){
     		this.tags.add(tag);
@@ -180,6 +193,9 @@ public class Product extends Model {
                 .getPage(page);
     }
 
+	/**
+	 * @return products which are not deleted
+	 */
 	public static List<Product> all() {
         return
             find.where()

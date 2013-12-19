@@ -146,7 +146,7 @@ public class Product extends Eshomo {
      * Save or update product
      *
      * @param id of the product
-     * @return
+     * @return form if errors or list of all products
      */
     public static Result save(Integer id) {
         // Get form from request
