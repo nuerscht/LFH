@@ -69,7 +69,17 @@ public class Tag extends Model {
     }
 
     public List<Product> getProducts() {
-    	return products;
+        String sql = "select product.id, product.title, product.price, product.description, product.ean, product.updated_at, product.created_at"
+            + " from product"
+            + " join tag_product on tag_product.product_id = product.id"
+            + " and is_deleted = 0";
+
+        RawSql rawSql = RawSqlBuilder.parse(sql).create();
+
+    	return Ebean.find(Product.class).setRawSql(rawSql)
+            .where()
+            .eq("tag_product.tag_id", getId())
+            .findList();
     }
 
 	public static Tag getOrCreate(Tag tag) {

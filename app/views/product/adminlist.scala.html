@@ -21,7 +21,11 @@
             <th>Bearbeitet</th>
         </tr>
     @for(product <- products) {
-        <tr>
+        @if(product.getDeleted == 1) {
+            <tr class="active">
+        } else {
+            <tr>
+        }
             <td><a href="@routes.Product.edit(product.getId())">@product.getTitle()</a></td>
             <td>@product.getPrice()</td>
             <td>@product.getUpdatedAt().format("dd.MM.yy")</td>

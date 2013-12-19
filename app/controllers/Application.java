@@ -15,7 +15,7 @@ public class Application extends Eshomo {
      * @return The main page
      */
     public static Result index() {
-        List<Product> products = Product.find.all();
+        List<Product> products = Product.all();
         return ok(index.render(products));
     }
 }

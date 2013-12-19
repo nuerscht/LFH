@@ -34,6 +34,9 @@ public class Product extends Model {
     @Constraints.Required
     private Long ean;
 
+    @Constraints.Required
+    private Integer isDeleted;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<Attribute> attributes;
 
@@ -89,6 +92,14 @@ public class Product extends Model {
 
     public void setEan(Long ean) {
         this.ean = ean;
+    }
+
+    public Integer getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.isDeleted = deleted;
     }
 
     /**
@@ -160,6 +171,7 @@ public class Product extends Model {
     public static Page<Product> page(int page, int pageSize, String sortBy, String order, String filter) {
         return
             find.where()
+                .eq("is_deleted", "0")
                 .or(Expr.like("Title", "%" + filter + "%"),
                     Expr.like("Description", "%" + filter + "%"))
                 .orderBy(sortBy + " " + order)
@@ -168,5 +180,10 @@ public class Product extends Model {
                 .getPage(page);
     }
 
-	
+	public static List<Product> all() {
+        return
+            find.where()
+                .eq("is_deleted", "0")
+                .findList();
+    }
 }

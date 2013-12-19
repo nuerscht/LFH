@@ -81,6 +81,12 @@
                    'height -> "200"
             )
 
+        @select(productForm("deleted"),
+            options = options("0" -> "no", "1" -> "yes"),
+            '_label -> "Gelöscht?",
+            'required -> "required",
+            '_showConstraints -> false)
+
         <div class="attributes">
         
             <h2>Attribute</h2>
