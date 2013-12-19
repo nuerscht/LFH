@@ -35,7 +35,7 @@ public class Product extends Model {
     private Long ean;
 
     @Constraints.Required
-    private Integer isDeleted;
+    private Integer isDeleted = 0;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Attribute> attributes;

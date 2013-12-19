@@ -29,7 +29,7 @@ public class Product extends Eshomo {
      * @return Product overview
      */
     public static Result products() {
-        List<models.Product> productList = models.Product.find.all();
+        List<models.Product> productList = models.Product.all();
         return ok(views.html.product.products.render(productList));
     }
 

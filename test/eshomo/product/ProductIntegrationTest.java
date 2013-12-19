@@ -21,8 +21,7 @@ import eshomo.EshomoTest;
 
 public class ProductIntegrationTest extends EshomoTest {
 	/**
-	 * 
-	 * @param search 
+	 * Test search with a basic query 
 	 */
 	@Test
 	public void testBasicSearch() {
@@ -33,7 +32,7 @@ public class ProductIntegrationTest extends EshomoTest {
 				browser.goTo("http://localhost:3333");
                 
 				browser.fill("#search").with("HP");
-				browser.submit("#search");
+				browser.submit("#search-button");
                 
                 assertThat(browser.pageSource()).contains("Compaq 6305 Pro");
                 assertThat(browser.pageSource()).doesNotContain("Apple");
@@ -41,6 +40,10 @@ public class ProductIntegrationTest extends EshomoTest {
         });
 	}
 	
+	/**
+	 * Test list of all products
+	 */
+	@Test
 	public void testProductList() {
 		FakeApplication fakeApp = Helpers.fakeApplication();
 		running(testServer(3333, fakeApp), new Runnable() {
@@ -54,6 +57,9 @@ public class ProductIntegrationTest extends EshomoTest {
         });
 	}
 	
+	/**
+	 * Test the details page of a product
+	 */
 	@Test
 	public void testProductDetails() {
 		
@@ -76,6 +82,9 @@ public class ProductIntegrationTest extends EshomoTest {
         });
 	}
 	
+	/**
+	 * Test the rating a product
+	 */
 	@Test
 	public void testProductRating() {
 		FakeApplication fakeApp = Helpers.fakeApplication();
@@ -109,6 +118,9 @@ public class ProductIntegrationTest extends EshomoTest {
         });
 	}
 	
+	/**
+	 * Add a product and check values
+	 */
 	@Test
 	public void testProductAdd(){
 		FakeApplication fakeApp = Helpers.fakeApplication();
@@ -162,6 +174,9 @@ public class ProductIntegrationTest extends EshomoTest {
         });
 	}
 	
+	/**
+	 * Edit an existing product
+	 */
 	@Test
 	public void testProductEdit(){
 		FakeApplication fakeApp = Helpers.fakeApplication();
