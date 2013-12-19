@@ -3,7 +3,7 @@
 @import helper._
 @import helper.twitterBootstrap._
 
-@main("LFH Shop - Transaktionsübersicht") {
+@main("LFH Shop - Transaktionsï¿½bersicht") {
     <h1>Kundenliste</h1>
     @form(action = routes.User.search()) {
         <div class="form-group">
@@ -16,22 +16,20 @@
     }
     <table class="table table-striped">
         <tr>
-            <th>ID</th>
             <th>E-Mail</th>
-            <th>Typ</th>
-            <th>Aktiv</th>
+            <th class="hidden-xs hidden-sm">Typ</th>
+            <th class="hidden-xs">Aktiv</th>
             <th>Delete</th>
-            <th>Bestellungen</th>
+            <th class="break-all">Bestellungen</th>
         </tr>
     @for(user <- users) {
         <tr>
-            <td><a href="@routes.User.showData(user.id)">@user.id</a></td>
-            <td>@user.email</td>
-            <td><a href="@routes.User.changeUserType(user.id)">@user.usertype</a></td>
+            <td class="break-all"><a href="@routes.User.showData(user.id)">@user.email</a></td>
+            <td class="hidden-xs hidden-sm"><a href="@routes.User.changeUserType(user.id)">@user.usertype</a></td>
             @if(user.isActive) {
-                <td><a href="@routes.User.changeStatus(user.id)"><img src="@routes.Assets.at("images/check.png")" alt="Aktiv" /></a></td>
+                <td class="hidden-xs"><a href="@routes.User.changeStatus(user.id)"><img src="@routes.Assets.at("images/check.png")" alt="Aktiv" /></a></td>
             } else {
-                <td><a href="@routes.User.changeStatus(user.id)"><img src="@routes.Assets.at("images/sign_forbidden.png")" alt="Passiv" /></a></td>
+                <td class="hidden-xs"><a href="@routes.User.changeStatus(user.id)"><img src="@routes.Assets.at("images/sign_forbidden.png")" alt="Passiv" /></a></td>
             }
             <td><a href="@routes.User.delete(user.id)"><img src="@routes.Assets.at("images/delete.png")" alt="Delete" /></a></td>
             <td><a href="@routes.User.showTransactions(user.id)">anzeigen</a></td>

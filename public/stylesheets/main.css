@@ -5,6 +5,10 @@
     clear: both;
 }
 
+.break-all {
+    word-break: break-all;
+}
+
 /*
  * Design
  */
@@ -105,6 +109,8 @@ h3 {
  */
 .products > .product {
     box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
     position: relative;
     min-height: 100px;
     padding-top: 15px;

@@ -13,14 +13,12 @@
     }
     <table class="table table-striped">
         <tr>
-            <th>ID</th>
             <th>Name</th>
-            <th>Delete</th>
+            <th>Entfernen</th>
         </tr>
     @for(country <- countries) {
         <tr>
-            <td><a href="@routes.Country.edit(country.getId())">@country.getId()</a></td>
-            <td>@country.getName()</td>
+            <td><a href="@routes.Country.edit(country.getId())">@country.getName()</a></td>
             <td><a href="@routes.Country.delete(country.getId())"><img src="@routes.Assets.at("images/delete.png")" alt="Delete" /></a></td>
         <tr>
     } 

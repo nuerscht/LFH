@@ -11,7 +11,7 @@
             </tr>
             @for(item <- cart.getCartHasProduct) {
                 <tr>
-                    <td class="title"><a href="/details/@item.getProduct.getId">@item.getProduct.getTitle</a></td>
+                    <td class="title break-all"><a href="/details/@item.getProduct.getId">@item.getProduct.getTitle</a></td>
                     <td class="amount">@item.getAmount</td>
                     <td class="price">@item.getTotal</td>
                 <tr>

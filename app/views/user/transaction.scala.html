@@ -4,7 +4,6 @@
 	<h1>Bestellungen</h1>
 	<table class="table table-striped">
 		<tr>
-			<th>Nr.</th>
             <th>User</th>
 			<th>Datum</th>
 			<th>Status</th>
@@ -12,9 +11,8 @@
 		</tr>
 	@for(cart <- carts) {
   		<tr>
-  			<td>@cart.getId</td>
             <td><a href="/user/data?userid=@cart.getUser.getId">@cart.getUser.getId</a></td>
-  			<td>@cart.getUpdatedAt.format("dd.MM.yyyy")</td>
+  			<td>@cart.getUpdatedAt.format("dd.MM.yy")</td>
   			<td>
                 <a href="/transactions/@cart.getId">
                     @if(cart.getTotalAmount > 1) {

@@ -16,19 +16,15 @@
     }
     <table class="table table-striped">
         <tr>
-            <th>ID</th>
             <th>Title</th>
-            <th>EAN</th>
             <th>Preis</th>
             <th>Bearbeitet</th>
         </tr>
     @for(product <- products) {
         <tr>
-            <td><a href="@routes.Product.edit(product.getId())">@product.getId()</a></td>
             <td><a href="@routes.Product.edit(product.getId())">@product.getTitle()</a></td>
-            <td>@product.getEan()</td>
             <td>@product.getPrice()</td>
-            <td>@product.getUpdatedAt().format("dd.MM.yyyy hh:mm")</td>
+            <td>@product.getUpdatedAt().format("dd.MM.yy")</td>
         <tr>
     } 
     </table>
