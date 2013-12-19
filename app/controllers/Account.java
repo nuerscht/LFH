@@ -37,7 +37,9 @@ public class Account extends UserData {
         String loginMsg = loginMessage;
         loginMessage    = "";
         if ("1".equals(session("loggedin"))) {
-            return loggedin.render(getLoggedInUser());
+            models.User user = getLoggedInUser();
+            models.Cart cart = models.Cart.fetchOrCreateOpenCart(user);
+            return loggedin.render(user, cart);
         } else
             return login.render(loginMsg);
     }

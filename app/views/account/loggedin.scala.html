@@ -1,7 +1,13 @@
-@(user: models.User)
+@(user: models.User, cart: models.Cart)
 
 <ul class="nav">
-    <li><a href="@routes.Cart.index()">Warenkorb</a></li>
+    <li>
+        <a href="@routes.Cart.index()">Warenkorb
+            @if(cart.getTotalAmount > 0) {
+                <span class="badge">@cart.getTotalAmount</span>
+            }
+        </a>
+    </li>
     <li><a href="@routes.Cart.history()">Bestellungen</a></li>
     <li><a href="@routes.User.showDataCurrent()">Persönliche Daten</a></li>
     <li><a href="@routes.Account.logout()">Ausloggen</a></li>

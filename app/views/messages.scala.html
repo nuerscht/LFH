@@ -2,23 +2,23 @@
 @defining(flash.get("errorMessage")) { error =>
  @defining(flash.get("successMessage")) { success =>
    @defining(flash.get("infoMessage")) { info =>
-    <div class="messages">
+    <div class="messages" style="margin-top: 20px;">
     @if(error != null && !error.isEmpty()) {
     <div class="alert alert-danger">
         <a class="close" data-dismiss="alert">x</a> 
-        <strong>Meldung: </strong>@error.
+        <strong>Fehler: </strong>@error.
     </div>
     }
     @if(success != null && !success.isEmpty()) {
     <div class="alert alert-success">
         <a class="close" data-dismiss="alert">x</a> 
-        <strong>Meldung: </strong>@success.  
+        @success.
     </div>
     }
     @if( info != null && !info.isEmpty()) {
     <div class="alert alert-info">
         <a class="close" data-dismiss="alert">x</a> 
-        <strong>Meldung: </strong>@info.  
+        @info.
     </div>
     }
     </div>
